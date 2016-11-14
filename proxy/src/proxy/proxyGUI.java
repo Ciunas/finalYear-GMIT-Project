@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 public class proxyGUI {
 
 	private JFrame frame;
+	static JTextArea textArea;
 	private JTextField textField;
 	ServerSocket serverSocket = null;
     boolean listening = true;
@@ -101,7 +102,7 @@ public class proxyGUI {
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		JScrollPane scrollPane = new JScrollPane();
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 		panel.add(scrollPane);
 		
@@ -112,10 +113,10 @@ public class proxyGUI {
 				btnStartProxy.setEnabled(false);
 				portNum = Integer.parseInt(textField.getText());
 				textField.setText("");
-				textArea.append("Proxy server started on port: " + portNum);
+				//textArea.append("Proxy server started on port: " + portNum);
 				Thread thread = new Thread(new MyRunnable());
 				thread.start();
-				System.out.println("listen you piece of shit");
+				updateOutput("Proxy server started on port: " + portNum);
 				//btnStartProxy.setEnabled(true);
 
 			}
@@ -132,11 +133,27 @@ public class proxyGUI {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
+				 System.exit(0);
 			}
 		});
 		btnNewButton.setBounds(22, 396, 209, 25);
 		frame.getContentPane().add(btnNewButton);
-		System.out.println("over");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+	
+	static public void updateOutput(String text){
+    	
+       // display message from GUI thread of execution
+       SwingUtilities.invokeLater(
+          new Runnable() {  // inner class to ensure GUI updates properly
+
+             public void run()  // sets enterField's editability
+             {
+            	 textArea.append(text + "\n");
+             }
+          }  // end inner class
+       ); // end call to SwingUtilities.invokeLater
+    }
+	
+	
 }
