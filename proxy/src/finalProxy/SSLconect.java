@@ -8,10 +8,8 @@ public class SSLconect implements Runnable{
 
     private OutputStream outStream = null;
     private InputStream inStream = null;
-
-    private volatile boolean isClosed = false;
-    private int messagePointer = 0;
-    private byte[] currentMessage = null;
+    //private int messagePointer = 0;
+    //private byte[] currentMessage = null;
 
     private Record currentRecord = new Record();
     private boolean upStream;
@@ -25,18 +23,13 @@ public class SSLconect implements Runnable{
     public void run() {
        
     	//reading and writing messages
-        while(currentRecord.read(this.inStream) != -1) {
+        while(currentRecord.read(inStream) != -1 ) {
+        	
             currentRecord.write(outStream);
             System.out.println("alive in records");
         }
         System.out.println("finished writing records");
-        close();
         return;
     }
-    
-    //close
-    public void close() {
-        this.isClosed = true;
-    }
-
+ 
 }

@@ -13,10 +13,8 @@ public class ProxyThreadBuilder extends Thread {
 
 	private Socket clinetSocket = null;
 	// Streams from the Client and Server
-	 private InputStream fromClient = null;
-	 private OutputStream toClient = null;
-	// private InputStream fromServer = null;
-	// private OutputStream toServer = null;
+	private InputStream fromClient = null;
+	private OutputStream toClient = null;
 	String[] tokens = null;
 	BufferedReader bReader = null;
 	DataOutputStream dataOut = null;
@@ -26,10 +24,10 @@ public class ProxyThreadBuilder extends Thread {
 		super();
 		this.clinetSocket = socket;
 		try {
-			
+
 			fromClient = clinetSocket.getInputStream();
 			toClient = clinetSocket.getOutputStream();
-			
+
 			bReader = new BufferedReader(new InputStreamReader(fromClient));
 			dataOut = new DataOutputStream(toClient);
 
@@ -52,41 +50,41 @@ public class ProxyThreadBuilder extends Thread {
 
 		if (tokens[0].equalsIgnoreCase("GET")) {
 			try {
-				String temp = tokens[1].toString();
+				
+				//String temp = tokens[1].toString();
 				HttpRequests.processHttp(tokens[1].toString(), dataOut);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else if (tokens[0].equalsIgnoreCase("CONNECT")) {
-			
+
 			try {
-				
+
 				HttpsRequests.processHttps(tokens, fromClient, toClient);
-				
-				
+
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			System.out.println("CONNECT Thread Finsihed");
+
+			System.out.println("CONNECT Thread Finshed");
+
 		} else if (tokens[0].equalsIgnoreCase("POST")) {
 			System.out.println("POST Thread Finsihed");
 		}
-		try{
-	    if (bReader != null) {
-	    	bReader.close();
-        }
-        if (dataOut != null) {
-        	dataOut.close();
-        }
-        if (clinetSocket != null) {
-        	clinetSocket.close();
-        }
-		}catch (IOException e) {
-            e.printStackTrace();
-        }
+		try {
+			if (bReader != null) {
+				bReader.close();
+			}
+			if (dataOut != null) {
+				dataOut.close();
+			}
+			if (clinetSocket != null) {
+				clinetSocket.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -7,11 +7,10 @@ import java.io.OutputStream;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 
-import selproxy.TlsRecord.CopyStatus;
-
 public class Record {
 	
 	   public enum CopyStatus {
+		   
 	        MSG_FINISHED, RECORD_FINISHED, MSG_AND_RECORD_FINISHED
 	    }
 
