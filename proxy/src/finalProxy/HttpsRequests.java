@@ -19,6 +19,7 @@ public class HttpsRequests {
 		System.out.println("Port number: " + serverInfo[1]);
 		
 		
+		
 		if(Integer.parseInt(serverInfo[1]) == 443){
 			processHttps443(serverInfo,  fromClient,  toClient);
 			System.out.println("processing port 433 data");
@@ -79,6 +80,7 @@ public class HttpsRequests {
 	public static void processHttps80(String[] serverDetails, InputStream fromClient, OutputStream toClient) throws IOException {
 		
 		serverSocket = new Socket(serverDetails[0], Integer.parseInt(serverDetails[1]));
+		
 		InputStream fromServer = serverSocket.getInputStream();
 		OutputStream toServer = serverSocket.getOutputStream();
 		//Write message to client
@@ -89,7 +91,37 @@ public class HttpsRequests {
 		toClient.write("\r\n".getBytes());
 		toClient.write("\r\n".getBytes());
 		toClient.flush();
+		
 		System.out.println("writing message to client");
+		
+		Websock streamToServer  = new Websock(fromClient, toServer, true);
+		Websock streamToClient = new Websock(fromServer, toClient, true);
+		
+		Thread t1 = new Thread(streamToServer);
+		Thread t2 = new Thread(streamToClient);
+		t1.start();
+		t2.start();
+		
+		while (t1.isAlive() || t2.isAlive()) {
+			System.out.println("Ciunas Proxy inside Websock");
+			System.out.println("is thread t1 still alve " + t1.isAlive());
+			try {
+				
+				Thread.sleep(5000);
+			} catch (InterruptedException ie) {
+				ie.printStackTrace();
+			}
+		}
+		try {
+			System.out.println("");
+			
+			toClient.close();
+			toServer.close();
+			fromClient.close();
+			fromServer.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 
 	}
 
