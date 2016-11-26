@@ -6,6 +6,13 @@ import com.google.api.services.translate.Translate;
 import com.google.api.services.translate.model.TranslationsListResponse;
 import com.google.api.services.translate.model.TranslationsResource;
 
+
+import java.util.Arrays;
+
+import com.google.api.services.translate.Translate;
+import com.google.api.services.translate.model.TranslationsListResponse;
+import com.google.api.services.translate.model.TranslationsResource;
+
 public class TranslateMe {
 
 
@@ -29,7 +36,7 @@ public class TranslateMe {
                         //Target language   
                         "ES");  
             //Set your API-Key from https://console.developers.google.com/
-            list.setKey("AIzaSyD2dJR14HXBIY0rKUqxJihS8eeo1qFXM6g");
+            list.setKey("");
             TranslationsListResponse response = list.execute();
             for(TranslationsResource tr : response.getTranslations()) {
                 System.out.println(tr.getTranslatedText());
@@ -39,3 +46,4 @@ public class TranslateMe {
         }
     }
 }
+

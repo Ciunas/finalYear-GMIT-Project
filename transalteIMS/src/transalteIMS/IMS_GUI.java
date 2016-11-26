@@ -20,7 +20,7 @@ public class IMS_GUI {
 	 */
 	public static void main(String[] args) throws Exception {
 		Translate.setClientId("4579531");
-		Translate.setClientSecret("9x5MHdWiJ13cVDRx9o5tb6kPoN2hS5G4A68xFDzr3RE=");
+		Translate.setClientSecret("");
 		String englishString = "Well unwell";
 		String spanishTranslation = Translate.execute(englishString, Language.GERMAN);
 

@@ -16,18 +16,18 @@ public class HttpRequests {
 		InputStream is = null;
 		BufferedReader rd = null;
         URL url = new URL(urlCall);
-        URLConnection conn = url.openConnection();
-        conn.setDoInput(true);
-        conn.setDoOutput(false);
-        System.out.println("Type is: " + conn.getContentType());
-        System.out.println("content length: " + conn.getContentLength());
-        System.out.println("allowed user interaction: " + conn.getAllowUserInteraction());
-        System.out.println("content encoding: " + conn.getContentEncoding());
-        System.out.println("content type: " + conn.getContentType());
+        URLConnection connection = url.openConnection();
+        connection.setDoInput(true);
+        connection.setDoOutput(false);
+        System.out.println("Type is: " + connection.getContentType());
+        System.out.println("content length: " + connection.getContentLength());
+        System.out.println("allowed user interaction: " + connection.getAllowUserInteraction());
+        System.out.println("content encoding: " + connection.getContentEncoding());
+        System.out.println("content type: " + connection.getContentType());
        
-        if (conn.getContentLength() > 0) {
+        if (connection.getContentLength() > 0) {
             try {
-                is = conn.getInputStream();
+                is = connection.getInputStream();
                 rd = new BufferedReader(new InputStreamReader(is));
             } catch (IOException ioe) {
                 System.out.println("** IO EXCEPTION **: " + ioe);

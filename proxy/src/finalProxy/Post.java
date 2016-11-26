@@ -1,12 +1,7 @@
 package finalProxy;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -49,11 +44,11 @@ public class Post {
 
 				connection.setRequestProperty("Connection ", temp[1]);
 
-				System.out.println("connection  set");
+				// System.out.println("connection set");
 
 			} else if (temp[0].toLowerCase().equals("accept-language:")) {
 				System.out.println("Accept launguage set:" + temp[1]);
-				// connection.setRequestProperty("Accept-Language ", temp[1]);
+				connection.setRequestProperty("Accept-Language ", temp[1]);
 
 			}
 		}
@@ -67,7 +62,7 @@ public class Post {
 		dataOutServer.writeBytes(specDetailes[1]);
 		final int SIZE = 32768;
 
-		//int responseCode = connection.getResponseCode();
+		// int responseCode = connection.getResponseCode();
 
 		// send response to client
 		byte by[] = new byte[SIZE];
@@ -79,7 +74,6 @@ public class Post {
 			toClient.write(by, 0, index);
 			index = dataInServer.read(by, 0, SIZE);
 		}
-
 		toClient.flush();
 
 		dataOutServer.close();
