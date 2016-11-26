@@ -26,7 +26,7 @@ public class SSLconect implements Runnable{
         while(currentRecord.read(inStream) != -1 ) {
         	
             currentRecord.write(outStream);
-            System.out.println("alive in records");
+            //System.out.println("alive in records");
         }
         System.out.println("finished writing records");
         return;

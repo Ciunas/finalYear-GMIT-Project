@@ -53,6 +53,7 @@ public class ProxyThreadBuilder extends Thread {
 				
 				//String temp = tokens[1].toString();
 				HttpRequests.processHttp(tokens[1].toString(), dataOut);
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -70,6 +71,16 @@ public class ProxyThreadBuilder extends Thread {
 			System.out.println("CONNECT Thread Finshed");
 
 		} else if (tokens[0].equalsIgnoreCase("POST")) {
+			
+			try {
+				Post.postProcess(tokens, dataOut);
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 			System.out.println("POST Thread Finsihed");
 		}
 		try {

@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class Websock implements Runnable {
+public class Websock implements Runnable{
 
 	private OutputStream OutStream = null;
 	private InputStream InStream = null;
-	Boolean runnnig = false;
+	 Boolean  runnnig = false;
+	//public  synchronized
 
 	public Websock(InputStream in, OutputStream os, Boolean running) {
 

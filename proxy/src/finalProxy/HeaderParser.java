@@ -7,15 +7,19 @@ import java.util.StringTokenizer;
 public class HeaderParser {
 
 	
-	public static String[] parser(BufferedReader bReader) throws IOException {
+	public static String[]  parser(BufferedReader bReader) throws IOException {
 
 		String inputLine;
 		String[] tokens = null;
 		int count = 0;
 		String url;
 		String requestType;
-		///////////////////////////////////
-		// begin get request from client
+		StringBuffer sb = new StringBuffer();
+
+		
+		
+		// request from client
+		
 		while ((inputLine = bReader.readLine()) != null) {
 			try {
 				StringTokenizer tok = new StringTokenizer(inputLine);
@@ -29,10 +33,16 @@ public class HeaderParser {
 				requestType = tokens[0];
 				url = tokens[1];
 				System.out.println(requestType + " Request for: " + url);
+				//System.out.println("Extra data encodede in the POST " + inputLine.toString());
+			}else{
+				//Add the rest of the request This data is needed for a post request.
+				sb.append(inputLine + "&&&");
+				//okens[count] = inputLine;
 			}
 
 			count++;
 		}
+		tokens[2]= sb.toString();
 		return tokens;
 	}
 

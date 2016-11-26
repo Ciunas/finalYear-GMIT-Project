@@ -11,6 +11,7 @@ import java.net.URLConnection;
 public class HttpRequests {
 	
 	public static void processHttp(String urlCall, DataOutputStream dataOut) throws IOException{
+		
 		final int SIZE = 32768;
 		InputStream is = null;
 		BufferedReader rd = null;
@@ -32,7 +33,7 @@ public class HttpRequests {
                 System.out.println("** IO EXCEPTION **: " + ioe);
             }
         }
-        ///////////////////////////////////
+
         //send response to client
         byte by[] = new byte[ SIZE ];
         int index = is.read( by, 0, SIZE );
