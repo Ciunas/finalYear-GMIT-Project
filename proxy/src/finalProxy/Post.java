@@ -39,59 +39,61 @@ public class Post {
 		for (int j = 0; j < postData.length; j++) {
 
 			System.out.println("Line " + j + " " + postData[j]);
-			String[] temp = postData[j].split(" ");
-			temp[1].replaceAll("\n", "");
+			String[] temp = postData[j].split(":");
 			
-			if (temp[0].toLowerCase().equals("content-type:")) {
+			temp[1] = temp[1].replaceAll("\n", "");
+			
+			if (temp[0].toLowerCase().equals("content-type")) {
 
-				connection.setRequestProperty("Content-Type ", temp[1]);
+				connection.setRequestProperty("Content-Type", temp[1]);
 				System.out.println("content type set" + temp[1]);
 
-			} else if (temp[0].toLowerCase().equals("content-length:")) {
+			} else if (temp[0].toLowerCase().equals("content-length")) {
 
-				connection.setRequestProperty("Content-Length ", temp[1]);
-				contentLenght = Integer.parseInt(temp[1]);
-				System.out.println("content lenght set");
+				connection.setRequestProperty("Content-Length", temp[1]);
+				temp[1] = temp[1].replaceAll("\\s","");
+				contentLenght = temp[1].toString().length();
+				System.out.println("content lenght set " + temp[1].toString().length());
 
-			} else if (temp[0].toLowerCase().equals("connection:")) {
+			} else if (temp[0].toLowerCase().equals("connection")) {
 
-				connection.setRequestProperty("Connection ", temp[1]);
+				connection.setRequestProperty("Connection", temp[1]);
 
 				System.out.println("connection set " + temp[1]);
 
-			} else if (temp[0].toLowerCase().equals("accept-language:")) {
-				System.out.println("Accept launguage set:" + temp[1]);
-				connection.setRequestProperty("Accept-Language ", temp[1]);
+			} else if (temp[0].toLowerCase().equals("accept-language")) {
+				System.out.println("Accept launguage set" + temp[1]);
+				connection.setRequestProperty("Accept-Language", temp[1]);
 
 			}
-			else if (temp[0].toLowerCase().equals("user-agent:")) {
+			else if (temp[0].toLowerCase().equals("user-agent")) {
 				System.out.println("User Agent: "  + temp[1]);
-				connection.setRequestProperty("User-Agent ", temp[1]);
+				connection.setRequestProperty("User-Agent", temp[1]);
 
 			}
-			else if (temp[0].toLowerCase().equals("accept-encoding:")) {
+			else if (temp[0].toLowerCase().equals("accept-encoding")) {
 				System.out.println("Accept-Encoding: "  + temp[1]);
-				connection.setRequestProperty("Accept-Encoding ", temp[1]);
+				connection.setRequestProperty("Accept-Encoding", temp[1]);
 
 			}
-			else if (temp[0].toLowerCase().equals("host:")) {
+			else if (temp[0].toLowerCase().equals("host")) {
 				System.out.println("Host: "  + temp[1]);
-				connection.setRequestProperty("Host ", temp[1]);
+				connection.setRequestProperty("Host", temp[1]);
 
 			}
-			else if (temp[0].toLowerCase().equals("charset:")) {
+			else if (temp[0].toLowerCase().equals("charset")) {
 				System.out.println("charset: "  + temp[1]);
-				connection.setRequestProperty("charset ", temp[1]);
+				connection.setRequestProperty("charset", temp[1]);
 
 			}
-			else if (temp[0].toLowerCase().equals("accept:")) {
+			else if (temp[0].toLowerCase().equals("accept")) {
 				System.out.println("Accept: "  + temp[1]);
-				connection.setRequestProperty("Accept ", temp[1]);
+				connection.setRequestProperty("Accept", temp[1]);
 
 			}
-			else if (temp[0].toLowerCase().equals("dnt:")) {
-				System.out.println("DNT: "  + temp[1]);
-				connection.setRequestProperty("DNT ", temp[1]);
+			else if (temp[0].toLowerCase().equals("dnt")) {
+				System.out.println("DNT:"  + temp[1]);
+				connection.setRequestProperty("DNT", temp[1]);
 
 			}
 			
@@ -100,7 +102,7 @@ public class Post {
 
 		DataOutputStream dataOutServer = new DataOutputStream(connection.getOutputStream());
 		System.out.println("here2");
-		DataInputStream dataInServer = new DataInputStream(connection.getInputStream());
+		
 
 		System.out.println("here!");
 		
@@ -113,12 +115,20 @@ public class Post {
 		}
 		final int SIZE = 32768;
 
-		// int responseCode = connection.getResponseCode();
-
+		int responseCode = connection.getResponseCode();
+		System.out.println("Response Code: " + responseCode );
 		// send response to client
 		byte by[] = new byte[SIZE];
+		DataInputStream dataInServer = new DataInputStream(connection.getInputStream());
 		int index = dataInServer.read(by, 0, SIZE);
-
+		
+//		while (contentLenght != -1) {
+//			System.out.println("Inside send to client: content lenght");
+//
+//			toClient.write(by, 0, index);
+//			index = dataInServer.read(by, 0, SIZE);
+//		}
+		
 		while (index != -1) {
 			System.out.println("Inside send to client");
 
@@ -126,12 +136,7 @@ public class Post {
 			index = dataInServer.read(by, 0, SIZE);
 		}
 		
-		while (contentLenght != -1) {
-			System.out.println("Inside send to client: content lenght");
-
-			toClient.write(by, 0, index);
-			index = dataInServer.read(by, 0, SIZE);
-		}
+		
 		
 		
 		toClient.flush();

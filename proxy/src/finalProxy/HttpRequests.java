@@ -23,15 +23,21 @@ public class HttpRequests {
         System.out.println("content length: " + connection.getContentLength());
         System.out.println("allowed user interaction: " + connection.getAllowUserInteraction());
         System.out.println("content encoding: " + connection.getContentEncoding());
-        System.out.println("content type: " + connection.getContentType());
-       
-        if (connection.getContentLength() > 0) {
-            try {
-                is = connection.getInputStream();
-                rd = new BufferedReader(new InputStreamReader(is));
-            } catch (IOException ioe) {
-                System.out.println("** IO EXCEPTION **: " + ioe);
-            }
+        //System.out.println("content type: " + connection.getContentType());
+//       
+//        if (connection.getContentLength() > 0) {
+//            try {
+//                is = connection.getInputStream();
+//                rd = new BufferedReader(new InputStreamReader(is));
+//            } catch (IOException ioe) {
+//                System.out.println("** IO EXCEPTION **: " + ioe);
+//            }
+//        }
+        try {
+            is = connection.getInputStream();
+            //rd = new BufferedReader(new InputStreamReader(is));
+        } catch (IOException ioe) {
+            System.out.println("** IO EXCEPTION **: " + ioe);
         }
 
         //send response to client
@@ -39,6 +45,7 @@ public class HttpRequests {
         int index = is.read( by, 0, SIZE );
         while ( index != -1 )
         {
+        	//System.out.println("Wrinting data GET");
         	dataOut.write( by, 0, index );
           index = is.read( by, 0, SIZE );
         }
