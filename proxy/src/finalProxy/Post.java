@@ -26,8 +26,7 @@ public class Post {
 			System.out.println("Url: " + url );
 		}
 
-		int contentLenght = 0;
-		
+	
 		
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setDoOutput(true);
@@ -49,7 +48,7 @@ public class Post {
 				System.out.println("content type set" + temp[1]);
 
 			} else if (temp[0].toLowerCase().equals("content-length")) {
-
+				int contentLenght = 0;
 				connection.setRequestProperty("Content-Length", temp[1]);
 				temp[1] = temp[1].replaceAll("\\s","");
 				contentLenght = temp[1].toString().length();
@@ -121,13 +120,7 @@ public class Post {
 		byte by[] = new byte[SIZE];
 		DataInputStream dataInServer = new DataInputStream(connection.getInputStream());
 		int index = dataInServer.read(by, 0, SIZE);
-		
-//		while (contentLenght != -1) {
-//			System.out.println("Inside send to client: content lenght");
-//
-//			toClient.write(by, 0, index);
-//			index = dataInServer.read(by, 0, SIZE);
-//		}
+
 		
 		while (index != -1) {
 			System.out.println("Inside send to client");

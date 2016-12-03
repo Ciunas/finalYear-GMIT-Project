@@ -16,8 +16,6 @@ public class HeaderParser {
 		String requestType;
 		StringBuffer sb = new StringBuffer();
 
-		
-		
 		// request from client
 		
 		while ((inputLine = bReader.readLine()) != null) {
@@ -33,11 +31,9 @@ public class HeaderParser {
 				requestType = tokens[0];
 				url = tokens[1];
 				System.out.println(requestType + " Request for: " + url);
-				//System.out.println("Extra data encodede in the POST " + inputLine.toString());
 			}else{
 				//Add the rest of the request This data is needed for a post request.
 				sb.append(inputLine + "&&&");
-				//okens[count] = inputLine;
 			}
 
 			count++;

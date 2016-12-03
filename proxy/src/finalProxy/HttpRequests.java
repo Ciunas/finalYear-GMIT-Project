@@ -23,16 +23,7 @@ public class HttpRequests {
         System.out.println("content length: " + connection.getContentLength());
         System.out.println("allowed user interaction: " + connection.getAllowUserInteraction());
         System.out.println("content encoding: " + connection.getContentEncoding());
-        //System.out.println("content type: " + connection.getContentType());
-//       
-//        if (connection.getContentLength() > 0) {
-//            try {
-//                is = connection.getInputStream();
-//                rd = new BufferedReader(new InputStreamReader(is));
-//            } catch (IOException ioe) {
-//                System.out.println("** IO EXCEPTION **: " + ioe);
-//            }
-//        }
+
         try {
             is = connection.getInputStream();
             //rd = new BufferedReader(new InputStreamReader(is));
