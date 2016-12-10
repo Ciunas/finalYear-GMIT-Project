@@ -8,12 +8,12 @@ public class Websock implements Runnable{
 
 	private OutputStream OutStream = null;
 	private InputStream InStream = null;
-	 Boolean  runnnig = false;
+	Boolean  runnig = false;
 	//public  synchronized
 
 	public Websock(InputStream in, OutputStream os, Boolean running) {
 
-		this.runnnig = running;
+		this.runnig = running;
 		this.OutStream = os;
 		this.InStream = in;
 
@@ -22,29 +22,29 @@ public class Websock implements Runnable{
 	@Override
 	public void run() {
 
-		while (runnnig) {
-			//System.out.println("inside  running thread port 80 websock");
-			
+		while (runnig) {
 			int temp = 0;
 			try {
 				temp = InStream.read();
 				if(temp == -1){
-					runnnig = false;
+					runnig = false;
 				}
-				//System.out.println(temp);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			try {
 				OutStream.write(temp);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 		}
-		System.out.println("finished writing Websocket");
+		ProxyGUI.displayInGui("Closeing Websocket for Port 80");
 		return;
+	}
+	
+
+	public void stopThread(boolean runnig) {
+		this.runnig = runnig;
 	}
 }

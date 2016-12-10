@@ -38,37 +38,34 @@ public class ProxyThreadBuilder extends Thread {
 		}
 	}
 
+	
 	// @Override
 	public void run() {
 		try {
 			tokens = HeaderParser.parser(bReader);
-			System.out.println("Connecting and returnig URL");
+			ProxyGUI.displayInGui("Connecting and returnig URL");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		if (tokens[0].equalsIgnoreCase("GET")) {
 			try {
 				
-				//String temp = tokens[1].toString();
 				HttpRequests.processHttp(tokens[1].toString(), dataOut);
 				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else if (tokens[0].equalsIgnoreCase("CONNECT")) {
 
 			try {
-
 				HttpsRequests.processHttps(tokens, fromClient, toClient);
 
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
-			System.out.println("CONNECT Thread Finshed");
+			//System.out.println("CONNECT Thread Finshed");
 
 		} else if (tokens[0].equalsIgnoreCase("POST")) {
 			
@@ -81,7 +78,7 @@ public class ProxyThreadBuilder extends Thread {
 			}
 			
 			
-			System.out.println("POST Thread Finsihed");
+			//System.out.println("POST Thread Finsihed");
 		}
 		try {
 			if (bReader != null) {
