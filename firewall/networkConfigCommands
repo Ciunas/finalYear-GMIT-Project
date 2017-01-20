@@ -1,0 +1,16 @@
+Commmnads used to configure network.
+
+sudo iptables -S       	//Show iptables rules
+sudo iptables-save 	//Show iptables hit count
+
+
+
+Share internet
+sudo iptables -A FORWARD -o eth0  -i eth1 -s 192.168.0.0/24 -m conntrack --ctstate NEW -j ACCEPT // -o = internet connection,-i = network to share it with, $
+sudo iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+sudo iptables -t nat -F POSTROUTING
+sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+Save the iptables: sudo iptables-save | sudo tee /etc/iptables.sav
+Edit /etc/rc.local and add the following lines before the "exit 0" line:  iptables-restore < /etc/iptables.sav
+Configure the gateway for routing between two interfaces by enabling IP forwarding: sudo sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
+edit /etc/sysctl.conf and uncomment: #net.ipv4.ip_forward=1
