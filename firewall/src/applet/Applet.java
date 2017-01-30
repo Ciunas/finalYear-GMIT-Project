@@ -3,22 +3,28 @@ package applet;
 import javax.swing.JApplet;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
-
+import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-
+import javax.swing.table.TableColumnModel;
 import java.awt.GridLayout;
 import javax.swing.JButton;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import java.awt.event.ActionListener;
@@ -45,8 +51,10 @@ public class Applet extends JApplet {
 	private JPanel panel_7;
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
+	private JButton btnNewButton_2;
 	private JTable table;
 	private JScrollPane resultTableScrollPane;
+	private JPanel panel_8;
 
 	@Override
 	public void init() {
@@ -58,7 +66,6 @@ public class Applet extends JApplet {
 
 					initComponents();
 					getContentPane().setBackground(Color.WHITE);
-
 				}
 			});
 		} catch (Exception ex) {
@@ -69,6 +76,7 @@ public class Applet extends JApplet {
 	/**
 	 * Create the applet.
 	 */
+	@SuppressWarnings("serial")
 	private void initComponents() {
 
 		panel = new JPanel();
@@ -82,7 +90,6 @@ public class Applet extends JApplet {
 		panel_1 = new JPanel();
 		getContentPane().add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(new BorderLayout(0, 0));
-		// panel_6.add(table);
 
 		panel_2 = new JPanel();
 		panel_1.add(panel_2, BorderLayout.CENTER);
@@ -109,20 +116,46 @@ public class Applet extends JApplet {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				try {
-					AddRule(evt);
+					addRule(evt);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
 			}
 		});
 		panel_3.add(btnNewButton);
 
-		btnNewButton_1 = new JButton("New button");
-		panel_3.add(btnNewButton_1);
-
 		panel_7 = new JPanel();
 		panel_2.add(panel_7, BorderLayout.CENTER);
+
+		panel_8 = new JPanel(new GridLayout(1, 2));
+		panel_2.add(panel_8, BorderLayout.SOUTH);
+
+		btnNewButton_1 = new JButton("View");
+		panel_8.add(btnNewButton_1);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+
+				try {
+					viewRule(evt);
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				btnNewButton_2.setEnabled(true);
+			}
+		});
+
+		btnNewButton_2 = new JButton("Delete");
+		panel_8.add(btnNewButton_2);
+		btnNewButton_2.setEnabled(false);
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				try {
+					deleteRule(evt);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 
 		panel_6 = new JPanel();
 		panel_1.add(panel_6, BorderLayout.SOUTH);
@@ -141,29 +174,29 @@ public class Applet extends JApplet {
 				new java.awt.Font("Calibri", 1, 14), new Color(51, 153, 255))); // NOI18N
 
 		table.setAutoCreateRowSorter(true);
-		table.setModel(
-				new DefaultTableModel(new Object[][] { { null } },
-						new String[] { "ID", }) {
-					Class[] types = new Class[] { String.class };
-					boolean[] canEdit = new boolean[] { false};
+		table.setModel(new DefaultTableModel(new Object[][] { { null } }, new String[] { "NUM", "RULE", }) {
+			Class[] types = new Class[] { int.class, String.class };
+			boolean[] canEdit = new boolean[] { false, false };
 
-					public Class getColumnClass(int columnIndex) {
-						return types[columnIndex];
-					}
+			public Class getColumnClass(int columnIndex) {
+				return types[columnIndex];
+			}
 
-					public boolean isCellEditable(int rowIndex, int columnIndex) {
-						return canEdit[columnIndex];
-					}
-				});
+			public boolean isCellEditable(int rowIndex, int columnIndex) {
+				return canEdit[columnIndex];
+			}
+
+		});
+
 		table.setFillsViewportHeight(true);
 		table.setGridColor(new Color(51, 102, 255));
 		table.setInheritsPopupMenu(true);
-		table.setPreferredSize(new java.awt.Dimension(30, 16));
 		table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		resultTableScrollPane.setViewportView(table);
-
-		//resultTableScrollPane.setBounds(30, 10, 70, 300);
-		resultTableScrollPane.setPreferredSize(new java.awt.Dimension(360, 160));
+		resultTableScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		TableColumnModel columnModel = table.getColumnModel();
+		columnModel.getColumn(0).setWidth(5);
+		columnModel.getColumn(1).setPreferredWidth(800);
 		panel_6.add(resultTableScrollPane, BorderLayout.CENTER);
 
 		panel_5 = new JPanel();
@@ -172,29 +205,115 @@ public class Applet extends JApplet {
 		panel_5.setLayout(new BorderLayout(0, 0));
 
 		setMessageLabel = new JLabel();
-		// Label.setBackground(new Color(51, 153, 255));
-		// Label.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
-		// Label.setForeground(new Color(255, 255, 255));
+		setMessageLabel.setBackground(new Color(51, 153, 255));
+		setMessageLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+		setMessageLabel.setForeground(new Color(255, 0, 0));
 		setMessageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		setMessageLabel.setText("Test");
 		panel_5.add(setMessageLabel);
+		clearResults();
 
 	}
 
 	/**
+	 * Delete Rules added already
 	 * 
+	 * @throws IOException
+	 */
+	private void deleteRule(ActionEvent evt) throws IOException {
+
+		URL link = new URL("http://localhost:8080/FirewallDeleteRule");
+		HttpURLConnection urlconnection = (HttpURLConnection) link.openConnection();
+		urlconnection.setDoOutput(true);
+		urlconnection.setDoInput(true);
+		urlconnection.setUseCaches(false);
+		urlconnection.setDefaultUseCaches(false);
+		urlconnection.setRequestProperty("Content-Type", "application/octet-stream");
+		String rule =  null;
+		try {
+			int row = table.getSelectedRow();
+			if (row < 0) {
+				setMessageLabel.setText("No Row Selected");
+				return;
+			}
+
+			ObjectOutputStream oos = new ObjectOutputStream(urlconnection.getOutputStream());
+			rule = (String) table.getValueAt(row, 1);
+			Rules r = new Rules(rule);
+			oos.writeObject(r); // send the object
+			oos.flush();
+
+			ObjectInputStream ois = new ObjectInputStream(urlconnection.getInputStream());
+			int count = ois.readInt(); // read back the number of rows deleted
+			oos.close();
+			ois.close();
+
+			DefaultTableModel tm = (DefaultTableModel) table.getModel();
+			tm.removeRow(row); // remove the row from the screen
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			setMessageLabel.setText("Error processing request");
+		} finally {
+
+			setMessageLabel.setText("Rule " + rule  + " Deleted");
+		}
+	}
+
+	/**
+	 * View Rules added already
+	 * 
+	 * @throws ClassNotFoundException
+	 */
+	private void viewRule(ActionEvent evt) throws ClassNotFoundException {
+
+		clearResults();
+		DefaultTableModel tm = (DefaultTableModel) table.getModel();
+
+		try {
+
+			URL link = new URL("http://localhost:8080/FirewallViewRules");
+			HttpURLConnection urlconnection = (HttpURLConnection) link.openConnection();
+
+			urlconnection.setDoOutput(true);
+			urlconnection.setDoInput(true);
+			urlconnection.setUseCaches(false);
+			urlconnection.setDefaultUseCaches(false);
+			urlconnection.setRequestProperty("Content-Type", "application/octet-stream");
+			ObjectOutputStream oos = new ObjectOutputStream(urlconnection.getOutputStream());
+			ObjectInputStream ois = new ObjectInputStream(urlconnection.getInputStream());
+
+			while (true) {
+
+				Rules r = (Rules) ois.readObject();
+				if (r.isEnd()) // true boolean indicates last rule
+					break;
+				else {
+
+					Object[] row = { tm.getRowCount(), r.getRule() };
+					tm.addRow(row);
+				}
+			}
+			ois.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			setMessageLabel(tm.getRowCount() + " Rules in database");
+		}
+	}
+
+	/**
 	 * Clear the Update tab fields
 	 * 
 	 * @param evt
 	 */
-	private void AddRule(java.awt.event.ActionEvent evt) throws IOException {
+	private void addRule(java.awt.event.ActionEvent evt) throws IOException {
 
 		// setMessageLabel("Connected");
 
 		try {
 
 			URL link = new URL("http://localhost:8080/FirewallRuleAdd");
-			// System.out.println("connecting to tomcat");
 			HttpURLConnection urlconnection = (HttpURLConnection) link.openConnection();
 
 			urlconnection.setDoOutput(true);
@@ -206,7 +325,7 @@ public class Applet extends JApplet {
 			urlconnection.setRequestProperty("Content-Type", "application/octet-stream");
 
 			ObjectOutputStream oos = new ObjectOutputStream(urlconnection.getOutputStream());
-			Rules r = new Rules("help", "help", "help", 2, "Help");
+			Rules r = new Rules("help");
 			oos.writeObject(r);
 			oos.flush();
 
@@ -253,6 +372,12 @@ public class Applet extends JApplet {
 		} // end inner class
 		); // end call to SwingUtilities.invokeLater
 
+	}
+
+	//Method to clear the rule table of any data.
+	public void clearResults() {
+		DefaultTableModel tm = (DefaultTableModel) table.getModel();
+		tm.setRowCount(0); // clear the table
 	}
 
 }

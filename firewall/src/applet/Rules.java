@@ -2,64 +2,64 @@ package applet;
 
 import java.io.Serializable;
 
-public class Rules implements Serializable{
-	
-	private static final long serialVersionUID = 1L;
-	String name;				//User name for rule
-	String type;				//TCP or UDP
-	String direction; 			//In or Out direction
-	int port; 					//Port number 
-	String ip; 					//ip to block
-	
-	//Constructor
-	public Rules() {
-		super();
-	}
-	
-	//Constructor using all parameters
-	public Rules(String name, String type, String direction, int port, String ip) {
-		super();
-		this.name = name;
-		this.type = type;
-		this.direction = direction;
-		this.port = port;
-		this.ip = ip;
-	}
+public class Rules implements Serializable {
 
-	
-	
-	/*
-	* Getters and setters
-	*/
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public String getDirection() {
-		return direction;
-	}
-	public void setDirection(String direction) {
-		this.direction = direction;
-	}
-	public int getPort() {
-		return port;
-	}
-	public void setPort(int port) {
-		this.port = port;
-	}
-	public String getIp() {
-		return ip;
-	}
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
+    private static final long serialVersionUID = 1L;
+    String name = "";;				//User name for rule
+    String type = "";;				//TCP or UDP
+    String direction = "";; 			//In or Out direction
+    int port = 0; 					//Port number
+    String ip = "0.0.0.0"; 					//ip to block
+    String rule = "";					// Full rule
+    boolean end = false;
+
+    public Rules(boolean end) {
+        this.end = end;
+    }
+
+    public Rules(String rule) {
+        this.rule = rule;
+    }
+
+    public Rules(String name, String type, String direction, int port, String ip, String rule) {
+        this.name = name;
+        this.type = type;
+        this.direction = direction;
+        this.port = port;
+        this.ip = ip;
+        this.rule = rule;
+    }
+
+    @Override
+    public String toString() {
+        return "Rules{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", direction='" + direction + '\'' +
+                ", port=" + port +
+                ", ip='" + ip + '\'' +
+                ", rule='" + rule + '\'' +
+                '}';
+    }
+
+    public boolean isEnd() {
+        return end;
+    }
+
+    public void setEnd(boolean end) {
+        this.end = end;
+    }
+
+    public String getRule() {
+        return rule;
+    }
+
+    public void setRule(String rule) {
+        this.rule = rule;
+    }
+    //Constructor
+    public Rules() {
+        super();
+    }
 
 }
