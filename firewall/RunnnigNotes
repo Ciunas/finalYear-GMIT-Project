@@ -1,0 +1,5 @@
+//Notes relatingto applets and servlets
+
+in iced tea the Ploicy Settings must be  chnged to allow Access the network, read from the system and write to the system.
+
+Must make the temp folder accesable by the user when creatig a  temp file in it. "chmod 775 /opt/tomcat/temp"
