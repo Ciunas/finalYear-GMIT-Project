@@ -1,6 +1,6 @@
 package servlet;
 
-
+import firewallObject.FirewallRule;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +18,16 @@ import static java.io.File.createTempFile;
 @WebServlet(urlPatterns = {"/FirewallDeleteRule"})
 public class FirewallDeleteRule extends HttpServlet {
 
-
+    /**
+     * Processes requests for both HTTP
+     * <code>GET</code> and
+     * <code>POST</code> methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ClassNotFoundException {
 
@@ -29,57 +38,39 @@ public class FirewallDeleteRule extends HttpServlet {
         ObjectOutputStream oos = new ObjectOutputStream(outstr);
 
 
-        System.out.println("Accessed");
-
-        File myTempFile = null;
-        File rules = null;
-
-        BufferedWriter bw = null;
-        System.out.println("AccessedHere");
-
-        try (BufferedReader br = new BufferedReader(new FileReader("/home/ciunas/Project/testFile"))) {
 
 
-            Rules r = (Rules) inputFromApplet.readObject();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("/opt/tomcat/webapps/firewallServlet/command.sh"))) {
+
+            FirewallRule r = (FirewallRule) inputFromApplet.readObject();
             String rule = r.getRule();
             System.out.println(rule);
-            String line;
-
-            myTempFile = createTempFile("myTempFile",".tmp");
-            myTempFile.deleteOnExit();
-            rules = new File("/home/ciunas/Project/testFile");
-            bw = new BufferedWriter(new FileWriter(myTempFile));
-
-            while (( line = br.readLine()) != null) {
-
-                if (line.matches(rule)) {
-                    System.out.println("Matches");
-                } else {
-                    bw.append(line + "\n");
-                    System.out.println("Written to Temp file : " + myTempFile.getAbsolutePath());
-                }
-
-            }
-
+            rule = rule.replace("-A ","-D ");
+            bw.write("#!/bin/bash" + "\n");
+            bw.append("iptables ");
+            rule = rule.replace("-A ", "-D ").replace("-P ", "-D ").replace("-N ", "-D ");
+            bw.append(rule + "\n");
+            bw.flush();
+            System.out.println(rule);
 
         } catch (IOException e) {
-            System.out.println("printstack error");
             e.printStackTrace();
 
-
         } finally {
-            bw.close();
-            copyFile(myTempFile, rules);
+
+            String[] cmd = {"/bin/bash","-c"," echo \"nag0ri4H\" | sudo -S /opt/tomcat/webapps/firewallServlet/command.sh"};
+            Process pb = Runtime.getRuntime().exec(cmd);
+            try {
+                pb.waitFor();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             oos.writeInt(1);
             oos.flush();
             oos.close();
-            System.out.println("finally");
         }
-
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     /**
      * Handles the HTTP
@@ -94,7 +85,6 @@ public class FirewallDeleteRule extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("Accessed");
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException e) {
@@ -114,7 +104,6 @@ public class FirewallDeleteRule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("Accessed");
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException e) {
@@ -136,7 +125,7 @@ public class FirewallDeleteRule extends HttpServlet {
     private static void copyFile(File source, File dest) throws IOException {
         dest.delete();
         System.out.println(source.getAbsolutePath() + "  " + dest.getAbsolutePath());
-        Files.copy(source.toPath(), dest.toPath());
+        //Files.copy(source.toPath(), dest.toPath());
     }
 
 
