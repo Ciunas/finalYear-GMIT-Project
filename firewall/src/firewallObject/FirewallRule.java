@@ -1,8 +1,8 @@
-package applet;
+package firewallObject;
 
 import java.io.Serializable;
 
-public class Rules implements Serializable {
+public class FirewallRule implements Serializable {
 
     private static final long serialVersionUID = 1L;
     String name = "";;				//User name for rule
@@ -13,15 +13,15 @@ public class Rules implements Serializable {
     String rule = "";					// Full rule
     boolean end = false;
 
-    public Rules(boolean end) {
+    public FirewallRule(boolean end) {
         this.end = end;
     }
 
-    public Rules(String rule) {
+    public FirewallRule(String rule) {
         this.rule = rule;
     }
 
-    public Rules(String name, String type, String direction, int port, String ip, String rule) {
+    public FirewallRule(String name, String type, String direction, int port, String ip, String rule) {
         this.name = name;
         this.type = type;
         this.direction = direction;
@@ -58,7 +58,7 @@ public class Rules implements Serializable {
         this.rule = rule;
     }
     //Constructor
-    public Rules() {
+    public FirewallRule() {
         super();
     }
 
