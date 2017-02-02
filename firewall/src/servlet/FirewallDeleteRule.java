@@ -58,7 +58,7 @@ public class FirewallDeleteRule extends HttpServlet {
 
         } finally {
 
-            String[] cmd = {"/bin/bash","-c"," echo \"nag0ri4H\" | sudo -S /opt/tomcat/webapps/firewallServlet/command.sh"};
+            String[] cmd = {"/bin/bash","-c"," echo \"password\" | sudo -S /opt/tomcat/webapps/firewallServlet/command.sh"};
             Process pb = Runtime.getRuntime().exec(cmd);
             try {
                 pb.waitFor();

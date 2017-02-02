@@ -35,7 +35,7 @@ public class FirewallViewRules extends HttpServlet {
         OutputStream outstr = response.getOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(outstr);
 
-        String[] cmd = {"/bin/bash","-c"," echo \"nag0ri4H\" | sudo -S /opt/tomcat/webapps/firewallServlet/script.sh"};
+        String[] cmd = {"/bin/bash","-c"," echo \"password\" | sudo -S /opt/tomcat/webapps/firewallServlet/script.sh"};
 
         Process pb = Runtime.getRuntime().exec(cmd);
 
