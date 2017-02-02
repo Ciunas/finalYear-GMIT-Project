@@ -1,13 +1,13 @@
 package servlet;
 
+import firewallObject.FirewallRule;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import firewallObject.*;
 
-public class FirewallViewRules extends HttpServlet {
+public class FirewallAddRule extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,31 +23,34 @@ public class FirewallViewRules extends HttpServlet {
 	 *             if a servlet-specific error occurs
 	 * @throws IOException
 	 *             if an I/O error occurs
+	 * @throws ClassNotFoundException
 	 */
+
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException, IOException, ClassNotFoundException {
 
 		response.setContentType("application/octet-stream");
 		InputStream in = request.getInputStream();
 		ObjectInputStream inputFromApplet = new ObjectInputStream(in);
 		OutputStream outstr = response.getOutputStream();
 		ObjectOutputStream oos = new ObjectOutputStream(outstr);
+		String rule = null;
 
-		String[] cmd = { "/bin/bash", "-c", "echo \"password\" | sudo -S /sbin/iptables -S" };
+		FirewallRule r = (FirewallRule) inputFromApplet.readObject();
+		rule = r.getRule();
+
+		String[] cmd = { "/bin/bash", "-c", "echo \"password\" | sudo -S /sbin/iptables " + rule };
 		Process pb = Runtime.getRuntime().exec(cmd);
-		String line;
-
-		BufferedReader input = new BufferedReader(new InputStreamReader(pb.getInputStream()));
-		while ((line = input.readLine()) != null) {
-			FirewallRule r = new FirewallRule(line);
-			oos.writeObject(r);
-			oos.flush();
+		try {
+			pb.waitFor();
+			oos.writeInt(0);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			oos.writeInt(-1);
 		}
-		input.close();
-		FirewallRule r = new FirewallRule(true);
-		oos.writeObject(r);
 		oos.flush();
 		oos.close();
+
 	}
 
 	/**
@@ -66,7 +69,11 @@ public class FirewallViewRules extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		processRequest(request, response);
+		try {
+			processRequest(request, response);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -84,7 +91,12 @@ public class FirewallViewRules extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		processRequest(request, response);
+		System.out.println("Accessed");
+		try {
+			processRequest(request, response);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -94,6 +106,6 @@ public class FirewallViewRules extends HttpServlet {
 	 */
 	@Override
 	public String getServletInfo() {
-		return "View Firewall Rule.";
+		return "Add a Rule to firewall";
 	}
 }
