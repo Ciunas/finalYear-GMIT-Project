@@ -5,31 +5,27 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
+
+import firewallObject.FirewallRule;
+
 import java.awt.GridLayout;
 import javax.swing.JButton;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
-
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 public class Applet extends JApplet {
 	public Applet() {
@@ -55,6 +51,7 @@ public class Applet extends JApplet {
 	private JTable table;
 	private JScrollPane resultTableScrollPane;
 	private JPanel panel_8;
+	private JTextField text;
 
 	@Override
 	public void init() {
@@ -112,10 +109,11 @@ public class Applet extends JApplet {
 		panel_2.add(panel_3, BorderLayout.EAST);
 		panel_3.setLayout(new GridLayout(6, 1, 0, 0));
 
-		btnNewButton = new JButton("New button");
+		btnNewButton = new JButton("Add Rule");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				try {
+					
 					addRule(evt);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -125,6 +123,11 @@ public class Applet extends JApplet {
 		panel_3.add(btnNewButton);
 
 		panel_7 = new JPanel();
+		panel_7.setLayout(new GridLayout(6, 1, 0, 0));
+		
+		text = new JTextField();
+		panel_7.add(text);
+		
 		panel_2.add(panel_7, BorderLayout.CENTER);
 
 		panel_8 = new JPanel(new GridLayout(1, 2));
@@ -221,8 +224,10 @@ public class Applet extends JApplet {
 	 * @throws IOException
 	 */
 	private void deleteRule(ActionEvent evt) throws IOException {
-
-		URL link = new URL("http://localhost:8080/FirewallDeleteRule");
+		
+		URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallDeleteRule");
+		//URL link = new URL( getCodeBase() + "/firewallDeleteRule" );
+		//URL link = new URL("http://localhost:8080/FirewallDeleteRule");
 		HttpURLConnection urlconnection = (HttpURLConnection) link.openConnection();
 		urlconnection.setDoOutput(true);
 		urlconnection.setDoInput(true);
@@ -239,7 +244,7 @@ public class Applet extends JApplet {
 
 			ObjectOutputStream oos = new ObjectOutputStream(urlconnection.getOutputStream());
 			rule = (String) table.getValueAt(row, 1);
-			Rules r = new Rules(rule);
+			FirewallRule r = new FirewallRule(rule);
 			oos.writeObject(r); // send the object
 			oos.flush();
 
@@ -255,8 +260,7 @@ public class Applet extends JApplet {
 			e.printStackTrace();
 			setMessageLabel.setText("Error processing request");
 		} finally {
-
-			setMessageLabel.setText("Rule " + rule  + " Deleted");
+			setMessageLabel.setText("Rule \"" + rule  + "\" Deleted");
 		}
 	}
 
@@ -271,8 +275,10 @@ public class Applet extends JApplet {
 		DefaultTableModel tm = (DefaultTableModel) table.getModel();
 
 		try {
-
-			URL link = new URL("http://localhost:8080/FirewallViewRules");
+			
+			URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallViewRules");
+			//URL link = new URL("http://localhost:8080/FirewallViewRules");
+			//URL link = new URL( getCodeBase() + "/firewallViewRules");
 			HttpURLConnection urlconnection = (HttpURLConnection) link.openConnection();
 
 			urlconnection.setDoOutput(true);
@@ -285,7 +291,7 @@ public class Applet extends JApplet {
 
 			while (true) {
 
-				Rules r = (Rules) ois.readObject();
+				FirewallRule r = (FirewallRule) ois.readObject();
 				if (r.isEnd()) // true boolean indicates last rule
 					break;
 				else {
@@ -300,6 +306,8 @@ public class Applet extends JApplet {
 		} finally {
 			setMessageLabel(tm.getRowCount() + " Rules in database");
 		}
+		
+		//-A INPUT -s 65.55.44.100 -j DROP
 	}
 
 	/**
@@ -308,12 +316,12 @@ public class Applet extends JApplet {
 	 * @param evt
 	 */
 	private void addRule(java.awt.event.ActionEvent evt) throws IOException {
-
-		// setMessageLabel("Connected");
-
+		Integer count = null;
+		DefaultTableModel tm = (DefaultTableModel) table.getModel();
+		FirewallRule r = null;
 		try {
-
-			URL link = new URL("http://localhost:8080/FirewallRuleAdd");
+			URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallAddRule");
+			//URL link = new URL("http://localhost:8080/servlet/FirewallRuleAdd");
 			HttpURLConnection urlconnection = (HttpURLConnection) link.openConnection();
 
 			urlconnection.setDoOutput(true);
@@ -325,33 +333,28 @@ public class Applet extends JApplet {
 			urlconnection.setRequestProperty("Content-Type", "application/octet-stream");
 
 			ObjectOutputStream oos = new ObjectOutputStream(urlconnection.getOutputStream());
-			Rules r = new Rules("help");
+			String newRule = text.getText();
+			r = new FirewallRule(newRule);
 			oos.writeObject(r);
 			oos.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(urlconnection.getInputStream());
-			// while(true)
-			// {
-			// Customer c = ( Customer)ois.readObject();
-			// if(c.id.length() == 0) // empty id indicates last customer
-			// break;
-			// else
-			// {
-			// // Object[] row =
-			// {c.id,c.firstName,c.lastName,c.address1,c.address2,c.city,c.state,c.zip,c.phone};
-			//
-			// }
-			// }
+			count = ois.readInt(); // read back int
 			oos.close();
 			ois.close();
 
 		} catch (Exception ex) {
 			setMessageLabel("Unable to process request " + ex.toString());
 		} finally {
-			setMessageLabel("Connected2");
+			Object[] row = { tm.getRowCount(), r.getRule() };
+			tm.addRow(row);
+			if(count.compareTo(0) >= 0)
+				setMessageLabel("Rule added");
+			else
+				setMessageLabel("Error when adding rule.");
 		}
 
-	}// GEN-LAST:event_AddRule
+	}
 
 	/**
 	 * setMessageLabel
@@ -379,5 +382,6 @@ public class Applet extends JApplet {
 		DefaultTableModel tm = (DefaultTableModel) table.getModel();
 		tm.setRowCount(0); // clear the table
 	}
+	
 
 }
