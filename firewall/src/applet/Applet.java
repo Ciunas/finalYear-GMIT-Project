@@ -8,6 +8,7 @@ import javax.swing.JTabbedPane;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -19,11 +20,15 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
+import com.sun.corba.se.impl.orbutil.closure.Constant;
+
 import firewallObject.FirewallRule;
+import servlet.TestFrame1;
 
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -39,9 +44,13 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import java.awt.FlowLayout;
+import javax.swing.BoxLayout;
 
 public class Applet extends JApplet {
 	public Applet() {
+		setSize(new Dimension(800, 800));
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -110,7 +119,14 @@ public class Applet extends JApplet {
 	private JPanel panel_24;
 	private JLabel firewallLabe;
 	private JPanel panel_25;
-	private Object dialog;
+	private JPanel panel_26;
+	private JLabel lblNewLabel_2;
+	private JPanel panel_27;
+	private JPanel panel_28;
+	private JPanel panel_29;
+	private JPanel panel_30;
+	private JPasswordField passwordField;
+	private JPanel panel_31;
 	
 	@Override
 	public void init() {
@@ -119,9 +135,15 @@ public class Applet extends JApplet {
 		try {
 			java.awt.EventQueue.invokeAndWait(new Runnable() {
 				public void run() {
-
-					initComponents();
-					getContentPane().setBackground(Color.WHITE);
+					final JFrame frame = new JFrame("JDialog Demo");
+					PasswordFrame pframe = new PasswordFrame(frame);
+					pframe.setVisible(true);
+                     if(pframe.isSucceeded()){
+                    	 initComponents();
+     					getContentPane().setBackground(Color.WHITE);
+                     }else{
+                    	 System.out.println("You loose");
+                     }
 				}
 			});
 		} catch (Exception ex) {
@@ -164,15 +186,48 @@ public class Applet extends JApplet {
 		panel_23 = new JPanel(new GridLayout(1, 2, 0, 0));
 		panel_20.add(panel_23, BorderLayout.CENTER);
 		panel_24 = new JPanel();
-		panel_23.add(panel_24, BorderLayout.WEST);
-		ImageIcon img1 = new ImageIcon(getClass().getResource("/resources/resources/firewall-no-fill-hi.png"));
+
+		ImageIcon img1 = new ImageIcon(getClass().getResource("/resources/firewall-no-fill-hi.png"));
 		firewallLabe = new JLabel(img1);
-		panel_24.add(firewallLabe);
+		panel_24.add(firewallLabe, BorderLayout.CENTER);
+
 		panel_25 = new JPanel();
-		panel_23.add(panel_25, BorderLayout.EAST);
-		dialog =  new JTextArea();
-		//panel_25.add(dialog);
 		
+		panel_23.add(panel_25, BorderLayout.WEST);
+		panel_25.setLayout(new GridLayout(3, 1, 0, 0));
+		
+		panel_27 = new JPanel();
+		panel_25.add(panel_27);
+		
+		panel_26 = new JPanel();
+		panel_25.add(panel_26);
+		panel_26.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		lblNewLabel_2 = new JLabel("Enter your password.", SwingConstants.CENTER);
+		lblNewLabel_2.setFont(new Font("Aroania", Font.BOLD, 26));
+		panel_26.add(lblNewLabel_2);
+		
+		panel_28 = new JPanel();
+		panel_26.add(panel_28);
+		panel_28.setLayout(new GridLayout(3, 0, 0, 0));
+		
+		panel_29 = new JPanel();
+		panel_28.add(panel_29);
+		
+		panel_30 = new JPanel();
+		panel_28.add(panel_30);
+		panel_30.setLayout(new BorderLayout(0, 0));
+		
+		passwordField = new JPasswordField();
+		passwordField.setFont(new Font("Dialog", Font.PLAIN, 26));
+		panel_30.add(passwordField);
+		
+		panel_31 = new JPanel();
+		panel_30.add(panel_31, BorderLayout.EAST);
+		panel_23.add(panel_24, BorderLayout.EAST);
+		
+		
+
 		
 		btnNewButton_6 = new JButton("View");
 		btnNewButton_6.setFont(new Font("Dialog", Font.BOLD, 18));
