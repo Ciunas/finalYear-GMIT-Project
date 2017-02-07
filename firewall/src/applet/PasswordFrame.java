@@ -3,6 +3,7 @@ package applet;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
  
 public class PasswordFrame extends JDialog {
  
@@ -14,10 +15,10 @@ public class PasswordFrame extends JDialog {
     private JButton btnCancel;
     private boolean succeeded;
     private JPanel panel_1;
-    private Label lblNewLabel_1;
+    private JLabel lblNewLabel_1;
     private JLabel lblNewLabel_2;
     private JLabel lblNewLabel_3;
-    private JTextPane userName;
+    private JTextField userName;
     private JPasswordField passwordField;
  
     public PasswordFrame(Frame parent) {
@@ -58,22 +59,25 @@ public class PasswordFrame extends JDialog {
             }
         });
         JPanel bp = new JPanel();
+
         bp.setLayout(new GridLayout(0, 2, 0, 0));
         bp.add(btnLogin);
         bp.add(btnCancel);
  
         getContentPane().add(panel, BorderLayout.CENTER);
         panel.setLayout(null);
+
         
         panel_1 = new JPanel();
-        panel_1.setBounds(0, 78, 232, 55);
+        panel_1.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
+        panel_1.setBounds(12, 66, 205, 55);
         panel.add(panel_1);
         panel_1.setLayout(new GridLayout(2, 2, 0, 0));
         
         lblNewLabel_3 = new JLabel("UserName", SwingConstants.CENTER);
         panel_1.add(lblNewLabel_3);
         
-        userName = new JTextPane();
+        userName = new JTextField();
         panel_1.add(userName);
         
         lblNewLabel_2 = new JLabel("Password", SwingConstants.CENTER);
@@ -82,18 +86,14 @@ public class PasswordFrame extends JDialog {
         passwordField = new JPasswordField();
         panel_1.add(passwordField);
         
-        lblNewLabel_1 = new Label();
+        lblNewLabel_1 = new JLabel("MyFirewall: Enter your details to login.", SwingConstants.CENTER);
         lblNewLabel_1.setFont(new Font("Dialog", Font.BOLD, 12));
-        String myString = 
-        	    "<html><p>Welcome to my firewall please enter <p>"
-        	    + " your password to use it.</p></html>";
-        lblNewLabel_1.setText(myString);
         lblNewLabel_1.setBounds(0, 12, 390, 30);
         panel.add(lblNewLabel_1);
         
         JLabel lblNewLabel = new JLabel("");
         lblNewLabel.setIcon(new ImageIcon(PasswordFrame.class.getResource("/resources/firewallSmall.png")));
-        lblNewLabel.setBounds(250, 43, 128, 90);
+        lblNewLabel.setBounds(235, 43, 128, 90);
         panel.add(lblNewLabel);
         getContentPane().add(bp, BorderLayout.PAGE_END);
  
