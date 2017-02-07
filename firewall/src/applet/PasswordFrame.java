@@ -23,8 +23,9 @@ public class PasswordFrame extends JDialog {
  
     public PasswordFrame(Frame parent) {
         super(parent, "Login", true);
-        setPreferredSize(new Dimension(400, 200));
+        setLocation(new Point(450, 400));
         setResizable(false);
+        setPreferredSize(new Dimension(400, 200));
         JPanel panel = new JPanel();
   
  
@@ -58,6 +59,8 @@ public class PasswordFrame extends JDialog {
                 dispose();
             }
         });
+        
+        
         JPanel bp = new JPanel();
 
         bp.setLayout(new GridLayout(0, 2, 0, 0));
@@ -98,7 +101,6 @@ public class PasswordFrame extends JDialog {
         getContentPane().add(bp, BorderLayout.PAGE_END);
  
         pack();
-        setLocationRelativeTo(parent);
     }
  
     public String getUsername() {
@@ -114,7 +116,7 @@ public class PasswordFrame extends JDialog {
     }
     
     public boolean authenticate(String username, String password) {
-        if (username.equals("userName") && password.equals("12345")) {
+        if (username.equals("1") && password.equals("1")) {
             return true;
         }
         return false;
