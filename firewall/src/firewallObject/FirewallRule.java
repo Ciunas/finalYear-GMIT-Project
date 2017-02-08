@@ -1,47 +1,45 @@
 package firewallObject;
 
 import java.io.Serializable;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 public class FirewallRule implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    String name = "";;				//User name for rule
-    String type = "";;				//TCP or UDP
-    String direction = "";; 			//In or Out direction
-    int port = 0; 					//Port number
-    String ip = "0.0.0.0"; 					//ip to block
     String rule = "";					// Full rule
     boolean end = false;
+    public Vector<String> myVector= new Vector<String>();
+    public List<String> Interfaces = new ArrayList<String>();
 
-    public FirewallRule(boolean end) {
+
+    public Vector<String> getMyVector() {
+        return myVector;
+    }
+
+    public void setMyVector(Vector<String> myVector) {
+        this.myVector = myVector;
+    }
+
+    public void addToMyVector(String vectorData ){
+        myVector.add(vectorData);
+    }
+
+    public void resetMyVector(){
+        myVector.clear();
+    }
+
+    public FirewallRule(boolean end) throws SocketException {
         this.end = end;
     }
 
-    public FirewallRule(String rule) {
+    public FirewallRule(String rule) throws SocketException {
         this.rule = rule;
     }
 
-    public FirewallRule(String name, String type, String direction, int port, String ip, String rule) {
-        this.name = name;
-        this.type = type;
-        this.direction = direction;
-        this.port = port;
-        this.ip = ip;
-        this.rule = rule;
-    }
-
-    @Override
-    public String toString() {
-        return "Rules{" +
-                "name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", direction='" + direction + '\'' +
-                ", port=" + port +
-                ", ip='" + ip + '\'' +
-                ", rule='" + rule + '\'' +
-                '}';
-    }
-
+    //Getters and Setters
     public boolean isEnd() {
         return end;
     }
@@ -58,7 +56,7 @@ public class FirewallRule implements Serializable {
         this.rule = rule;
     }
     //Constructor
-    public FirewallRule() {
+    public FirewallRule() throws SocketException {
         super();
     }
 

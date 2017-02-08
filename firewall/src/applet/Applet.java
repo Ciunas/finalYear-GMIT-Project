@@ -19,6 +19,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
+import javax.swing.text.MaskFormatter;
 
 import com.sun.corba.se.impl.orbutil.closure.Constant;
 
@@ -38,6 +39,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.Enumeration;
 
@@ -47,6 +49,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -58,6 +62,7 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.JScrollBar;
 import javax.swing.Icon;
 import javax.swing.border.EtchedBorder;
+import javax.swing.JFormattedTextField;
 
 public class Applet extends JApplet {
 	public Applet() {
@@ -73,7 +78,6 @@ public class Applet extends JApplet {
 	private JPanel panel_12;
 	private JPanel panel_4;
 	private JPanel panel_5;
-	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JPanel panel_6;
 	private JPanel panel_2;
@@ -87,7 +91,6 @@ public class Applet extends JApplet {
 	private JButton btnNewButton_4;
 	private JButton btnAdd;
 	private JButton btnAdd_1;
-	private JButton btnAdd_2;
 	private JLabel lblSetDefaultChain;
 	private JCheckBox input;
 	private JCheckBox output;
@@ -97,25 +100,11 @@ public class Applet extends JApplet {
 	private JLabel lblAllowHttphttpsTraffic;
 	private JCheckBox chckbxNewCheckBox;
 	private JCheckBox chckbxNewCheckBox_1;
-	private JLabel lblAllowPing;
-	private JCheckBox chckbxNewCheckBox_4;
-	private JCheckBox chckbxNewCheckBox_5;
 	private JPanel panel_10;
-	private JLabel lblPortForwarding;
-	private JLabel lblIpaddress;
-	private JTextField textField_2;
-	private JLabel lblPortToForward;
-	private JTextField textField;
-	private JLabel lblToPort;
-	private JTextField textField_1;
-	private JPanel panel_11;
-	private JLabel lblAlllowLoopbackO;
 	private JPanel panel_14;
 	private JPanel panel_16;
 	private JPanel panel_15;
 	private JPanel panel_17;
-	private JPanel panel_18;
-	private JPanel panel_19;
 	private JPanel panel_13;
 	private JPanel panel_20;
 	private JTabbedPane pane;
@@ -123,7 +112,6 @@ public class Applet extends JApplet {
 	private JButton btnNewButton_5;
 	private JButton btnNewButton_6;
 	private JPanel panel_23;
-	private JPanel panel_24;
 	private JPanel panel_25;
 	private JPanel panel_26;
 	private JLabel lblAllowhttphttpsTrafficOutgoing;
@@ -140,13 +128,41 @@ public class Applet extends JApplet {
 	private JPanel panel_3;
 	private JPanel panel_9;
 	private JPanel panel_31;
-	private JPanel panel_32;
-	private JPanel panel_33;
-	private JPanel panel_34;
-	private JButton button;
-	private JButton button_1;
 	private JPanel panel_36;
 	private JLabel lblFirewallConfiguration;
+	protected boolean in = false;
+	protected boolean out = false;
+	protected boolean forw =  false;
+	protected boolean chBox2;
+	protected boolean chBox3;
+	private JPanel panel_24;
+	private JPanel panel_33;
+	private JPanel panel_34;
+	private JPanel panel_35;
+	private JButton btnPressToImplement;
+	private JPanel panel_37;
+	private JLabel lblTo;
+	private JPanel panel_38;
+	private JCheckBox chckbxNewCheckBox_8;
+	private JCheckBox chckbxNewCheckBox_9;
+	private JButton btnPressToImplement_1;
+	private JPanel panel_11;
+	private JLabel lblPressToDelete;
+	private JButton btnNewButton;
+	private JPanel panel_18;
+	private JPanel panel_19;
+	private JFormattedTextField textField;
+	private JLabel lblUseThsiTo;
+	private JLabel lblEnterIpTo;
+	private MaskFormatter mf;
+	private JButton btnNewButton_7;
+	private JPanel panel_32;
+	private JLabel lblPressToAllow;
+	private JPanel panel_39;
+	private JLabel lblNewLabel;
+	private JTextField textField_1;
+	protected boolean chBox9;
+	protected boolean chBox8;
 
 	@Override
 	public void init() {
@@ -165,8 +181,8 @@ public class Applet extends JApplet {
 //				      UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
 //				      UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
 //				      UIManager.setLookAndFeel("com.jtattoo.plaf.fast.FastLookAndFeel");
-				      UIManager.setLookAndFeel("com.jtattoo.plaf.bernstein.BernsteinLookAndFeel");
-//				      UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
+//				      UIManager.setLookAndFeel("com.jtattoo.plaf.bernstein.BernsteinLookAndFeel");
+				      UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				} catch (InstantiationException e) {
@@ -177,19 +193,19 @@ public class Applet extends JApplet {
 					e.printStackTrace();
 				}
 			      
-					JFrame frame = new JFrame();
-					PasswordFrame pframe = null;
-					pframe = new PasswordFrame(frame);
-					pframe.setVisible(true);
-					if (pframe.isSucceeded()) {
-						initComponents();
-						getContentPane().setBackground(Color.WHITE);
-					} else {
-						System.out.println("You loose");
-					}
+//					JFrame frame = new JFrame();
+//					PasswordFrame pframe = null;
+//					pframe = new PasswordFrame(frame);
+//					pframe.setVisible(true);
+//					if (pframe.isSucceeded()) {
+//						initComponents();
+//						getContentPane().setBackground(Color.WHITE);
+//					} else {
+//						System.out.println("You loose");
+//					}
 					
-//					initComponents();
-//					getContentPane().setBackground(Color.WHITE);
+					initComponents();
+					getContentPane().setBackground(Color.WHITE);
 				}
 			});
 		} catch (Exception ex) {
@@ -234,11 +250,11 @@ public class Applet extends JApplet {
 		panel_22.setPreferredSize(new Dimension(10, 20));
 		panel_20.add(panel_22, BorderLayout.SOUTH);
 		panel_22.setLayout(new GridLayout(1, 2, 0, 0));
-		panel_23 = new JPanel(new GridLayout(1, 2, 0, 0));
+		panel_23 = new JPanel();
 		panel_20.add(panel_23, BorderLayout.CENTER);
-		panel_24 = new JPanel();
 
 		ImageIcon img = new ImageIcon(getClass().getResource("/resources/add.jpg"));
+		panel_23.setLayout(new BorderLayout(0, 0));
 		
 		panel_25 = new JPanel();
 		panel_25.setMaximumSize(new Dimension(32767, 200));
@@ -256,61 +272,221 @@ public class Applet extends JApplet {
 		btnNewButton_8 = new JButton("List network Interfaces.");
 		btnNewButton_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				Enumeration<NetworkInterface> nets = null;
-				textArea.setText("");
-				try {
-					nets = NetworkInterface.getNetworkInterfaces();
-				} catch (SocketException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-		        for (NetworkInterface netint : Collections.list(nets))
+				textArea.setText("");	
 					try {
-						displayInterfaces(netint);
-					} catch (SocketException e) {
-						// TODO Auto-generated catch block
+						viewInterfaces(arg0);
+					} catch (ClassNotFoundException | IOException e) {
 						e.printStackTrace();
 					}
-				
-			}
+			}			 
 		});
-		panel_25.add(btnNewButton_8, BorderLayout.SOUTH);
-		panel_23.add(panel_24, BorderLayout.EAST);
+		panel_25.add(btnNewButton_8, BorderLayout.NORTH);
 
 		panel_10 = new JPanel();
 		panel_23.add(panel_10);
 		panel_10.setMinimumSize(new Dimension(10, 8));
+		panel_10.setLayout(new GridLayout(2, 2, 0, 0));
+		
+		panel_33 = new JPanel();
+		panel_33.setBorder(new TitledBorder(null, "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_10.add(panel_33);
+		panel_33.setLayout(new BorderLayout(0, 0));
+		
+		btnPressToImplement_1 = new JButton("Press to Implement");
+		btnPressToImplement_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				FirewallRule r = null;
+				try {
+					r = new FirewallRule();
+				} catch (SocketException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				r.myVector.add("iptables -F");
+				try {
+					addRule(arg0, r);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		panel_33.add(btnPressToImplement_1, BorderLayout.SOUTH);
+		
+		panel_11 = new JPanel();
+		panel_33.add(panel_11, BorderLayout.CENTER);
+		panel_11.setLayout(new BorderLayout(0, 0));
+		
+		lblPressToDelete = new JLabel("Press to delete all firewalll rules in databse");
+		lblPressToDelete.setFont(new Font("Bitstream Charter", Font.BOLD, 18));
+		panel_11.add(lblPressToDelete, BorderLayout.CENTER);
+		
+		panel_24 = new JPanel();
+		panel_24.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panel_10.add(panel_24);
+		panel_24.setLayout(new BorderLayout(0, 0));
 
-		lblPortForwarding = new JLabel("Port Forwarding");
-		lblPortForwarding.setFont(new Font("Dialog", Font.BOLD, 18));
-		panel_10.add(lblPortForwarding);
+		btnPressToImplement = new JButton("Press to Implement");
+		btnPressToImplement.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FirewallRule r = null;
+				try {
+					r = new FirewallRule();
+				} catch (SocketException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
 
-		lblIpaddress = new JLabel("Ipaddress");
-		lblIpaddress.setFont(new Font("Dialog", Font.BOLD, 18));
-		panel_10.add(lblIpaddress);
+				if (chBox9) {
+					r.myVector.add("iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT");
+					chBox9 = false;
+				}
+				if (chBox8) {
+					r.myVector.add("iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT");
+					chBox8 = false;
+				}
 
-		textField_2 = new JTextField();
-		textField_2.setFont(new Font("Dialog", Font.PLAIN, 18));
-		panel_10.add(textField_2);
-		textField_2.setColumns(10);
+				try {
+					addRule(e, r);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 
-		lblPortToForward = new JLabel("port to forward");
-		lblPortToForward.setFont(new Font("Dialog", Font.BOLD, 18));
-		panel_10.add(lblPortToForward);
+			}
+		});
+		panel_24.add(btnPressToImplement, BorderLayout.SOUTH);
+		
+		panel_37 = new JPanel();
+		panel_24.add(panel_37, BorderLayout.CENTER);
+		panel_37.setLayout(new BorderLayout(0, 0));
+		
+		lblTo = new JLabel("This gives the abiltiy to ping ");
+		lblTo.setFont(new Font("Bitstream Charter", Font.BOLD, 18));
+		panel_37.add(lblTo, BorderLayout.CENTER);
+		
+		panel_38 = new JPanel();
+		panel_37.add(panel_38, BorderLayout.SOUTH);
+		
+		chckbxNewCheckBox_8 = new JCheckBox("In->Out");
+		panel_38.add(chckbxNewCheckBox_8);
+		chckbxNewCheckBox_8.setFont(new Font("Dialog", Font.BOLD, 18));
+		chckbxNewCheckBox_8.addItemListener(new ItemListener() {
+	         public void itemStateChanged(ItemEvent e) {  
+	        	 chBox8 = true;
+	         }
+	      });
+		
+		chckbxNewCheckBox_9 = new JCheckBox("Out->In");
+		panel_38.add(chckbxNewCheckBox_9);
+		chckbxNewCheckBox_9.setFont(new Font("Dialog", Font.BOLD, 18));
+		chckbxNewCheckBox_9.addItemListener(new ItemListener() {
+	         public void itemStateChanged(ItemEvent e) {  
+	        	 chBox9 = true;
+	         }
+	      });
 
-		textField = new JTextField();
-		textField.setFont(new Font("Dialog", Font.PLAIN, 18));
-		panel_10.add(textField);
+	
+		
+		
+		
+		
+		panel_34 = new JPanel();
+		panel_34.setBorder(new TitledBorder(null, "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_10.add(panel_34);
+		panel_34.setLayout(new BorderLayout(0, 0));
+		
+		btnNewButton = new JButton("New button");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String temp = textField.getText();
+				FirewallRule r = null;
+				try {
+					r = new FirewallRule();
+				} catch (SocketException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				r.myVector.add("iptables -A INPUT -s " + temp + " -j DROP");
+				try {
+					addRule(arg0, r);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		panel_34.add(btnNewButton, BorderLayout.SOUTH);
+		
+		panel_18 = new JPanel();
+		panel_34.add(panel_18, BorderLayout.CENTER);
+		panel_18.setLayout(new BorderLayout(0, 0));
+		
+		panel_19 = new JPanel();
+		panel_18.add(panel_19, BorderLayout.SOUTH);
+		
+		lblEnterIpTo = new JLabel("ENter IP to Block");
+		panel_19.add(lblEnterIpTo);
+		
+		
+		try {
+			 mf = new MaskFormatter("###.###.###.###");
+		} catch (ParseException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		textField = new JFormattedTextField(mf);
+		panel_19.add(textField);
 		textField.setColumns(10);
+		
+		lblUseThsiTo = new JLabel("Use this to block a specific IP address");
+		lblUseThsiTo.setFont(new Font("Bitstream Charter", Font.BOLD, 18));
+		panel_18.add(lblUseThsiTo, BorderLayout.CENTER);
+		
+		panel_35 = new JPanel();
+		panel_35.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panel_10.add(panel_35);
+		panel_35.setLayout(new BorderLayout(0, 0));
 
-		lblToPort = new JLabel("to Port");
-		lblToPort.setFont(new Font("Dialog", Font.BOLD, 18));
-		panel_10.add(lblToPort);
+		btnNewButton_7 = new JButton("New button");
+		btnNewButton_7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 
+				FirewallRule r = null;
+				try {
+					r = new FirewallRule();
+				} catch (SocketException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				String temp = textField_1.getText();
+				r.myVector.add("iptables -A OUTPUT -p udp -o " +  temp + " --dport 53 -j ACCEPT");
+				r.myVector.add("iptables -A INPUT -p udp -i " +  temp + " --sport 53 -j ACCEPT");
+				try {
+					addRule(e, r);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+
+			}
+		});
+		panel_35.add(btnNewButton_7, BorderLayout.SOUTH);
+		
+		panel_32 = new JPanel();
+		panel_35.add(panel_32, BorderLayout.CENTER);
+		panel_32.setLayout(new BorderLayout(0, 0));
+		
+		lblPressToAllow = new JLabel("Press To allow DNS ");
+		panel_32.add(lblPressToAllow, BorderLayout.CENTER);
+		
+		panel_39 = new JPanel();
+		panel_32.add(panel_39, BorderLayout.SOUTH);
+		
+		lblNewLabel = new JLabel("Enter Interface");
+		panel_39.add(lblNewLabel);
+		
 		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Dialog", Font.PLAIN, 18));
-		panel_10.add(textField_1);
+		panel_39.add(textField_1);
 		textField_1.setColumns(10);
 
 		btnNewButton_6 = new JButton("View");
@@ -407,20 +583,63 @@ public class Applet extends JApplet {
 		panel_3 = new JPanel();
 		panel_12.add(panel_3, BorderLayout.CENTER);
 
-		input = new JCheckBox("Input");
+		
+		
+		input = new JCheckBox("Input");						//3 Checkboxes relating to Set default chain policies
 		panel_3.add(input);
 		input.setFont(new Font("Dialog", Font.BOLD, 18));
-
+		input.addItemListener(new ItemListener() {
+	         public void itemStateChanged(ItemEvent e) {  
+	        	 in = true;
+	         }
+	      });
+	
 		output = new JCheckBox("Output");
 		panel_3.add(output);
 		output.setFont(new Font("Dialog", Font.BOLD, 18));
+		output.addItemListener(new ItemListener() {
+	         public void itemStateChanged(ItemEvent e) {  
+	        	 out = true;
+	         }
+	      });
 
 		forward = new JCheckBox("Forward");
 		panel_3.add(forward);
 		forward.setFont(new Font("Dialog", Font.BOLD, 18));
+		forward.addItemListener(new ItemListener() {
+	         public void itemStateChanged(ItemEvent e) {  
+	        	 forw = true;
+	         }
+	      });
 
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				input.setSelected(false);							//Reset check boxes
+				output.setSelected(false);
+				forward.setSelected(false);
+				FirewallRule r = null;
+				try {
+					r = new FirewallRule();
+				} catch (SocketException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				if(in){
+					r.myVector.add("iptables -P INPUT ACCEPT");
+					in = false;
+				}
+				if(out){
+					r.myVector.add("iptables -P FORWARD DROP");
+					out = false;
+				}
+				if(forw){
+					r.myVector.add("iptables -P OUTPUT DROP");
+					forw = false;
+				}
+				
+				
+				//addRule(e, r);
 			}
 		});
 
@@ -444,20 +663,63 @@ public class Applet extends JApplet {
 				TitledBorder.TOP, null, new Color(51, 51, 51)));
 		panel_4.add(panel_16);
 		panel_16.setLayout(new BorderLayout(0, 0));
+		panel_9 = new JPanel();
+		panel_16.add(panel_9, BorderLayout.CENTER);
 		
-				btnNewButton_4 = new JButton(img);
-				panel_16.add(btnNewButton_4, BorderLayout.EAST);
+		chckbxNewCheckBox_3 = new JCheckBox("Outgoing");
+		panel_9.add(chckbxNewCheckBox_3);
+		chckbxNewCheckBox_3.setFont(new Font("Dialog", Font.BOLD, 18));
+		chckbxNewCheckBox_3.addItemListener(new ItemListener() {
+	         public void itemStateChanged(ItemEvent e) {  
+	        	 chBox3 = true;
+	         }
+	      });
+
+		chckbxNewCheckBox_2 = new JCheckBox("Incoming");
+		panel_9.add(chckbxNewCheckBox_2);
+		chckbxNewCheckBox_2.setFont(new Font("Dialog", Font.BOLD, 18));
+		chckbxNewCheckBox_2.addItemListener(new ItemListener() {
+	         public void itemStateChanged(ItemEvent e) {  
+	        	 chBox2 = true;
+	         }
+	      });
+		
+		btnNewButton_4 = new JButton(img);
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				
-				panel_9 = new JPanel();
-				panel_16.add(panel_9, BorderLayout.CENTER);
 				
-						chckbxNewCheckBox_3 = new JCheckBox("Outgoing");
-						panel_9.add(chckbxNewCheckBox_3);
-						chckbxNewCheckBox_3.setFont(new Font("Dialog", Font.BOLD, 18));
-						
-								chckbxNewCheckBox_2 = new JCheckBox("Incoming");
-								panel_9.add(chckbxNewCheckBox_2);
-								chckbxNewCheckBox_2.setFont(new Font("Dialog", Font.BOLD, 18));
+				chckbxNewCheckBox_3.setSelected(false);							//Reset check boxes
+				chckbxNewCheckBox_2.setSelected(false);
+				FirewallRule r = null;
+				try {
+					r = new FirewallRule();
+				} catch (SocketException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				
+				if(chBox2){
+					r.myVector.add("iptables -A INPUT -i eth0 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT");
+					chBox2 = false;
+				}
+				if(chBox3){
+					r.myVector.add("iptables -A OUTPUT -o eth0 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT");
+					chBox3 = false;
+				}
+				
+				try {
+					addRule(e, r);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}										//Call addRUle method to send new rules to servlet.
+				
+				
+			}
+		});
+		panel_16.add(btnNewButton_4, BorderLayout.EAST);
+	
 
 		panel_5 = new JPanel();
 		panel_5.setMinimumSize(new Dimension(10, 8));
@@ -478,25 +740,25 @@ public class Applet extends JApplet {
 				TitledBorder.TOP, null, new Color(51, 51, 51)));
 		panel_5.add(panel_17);
 		panel_17.setLayout(new BorderLayout(0, 0));
-		
-				btnAdd = new JButton(img);
-				panel_17.add(btnAdd, BorderLayout.EAST);
-				
-				panel_31 = new JPanel();
-				panel_17.add(panel_31, BorderLayout.CENTER);
-						
-								chckbxNewCheckBox = new JCheckBox("Http");
-								panel_31.add(chckbxNewCheckBox);
-								chckbxNewCheckBox.setFont(new Font("Dialog", Font.BOLD, 18));
-				
-						chckbxNewCheckBox_1 = new JCheckBox("Https");
-						panel_31.add(chckbxNewCheckBox_1);
-						chckbxNewCheckBox_1.setFont(new Font("Dialog", Font.BOLD, 18));
-				btnAdd.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-					}
-				});
-		
+
+		btnAdd = new JButton(img);
+		panel_17.add(btnAdd, BorderLayout.EAST);
+
+		panel_31 = new JPanel();
+		panel_17.add(panel_31, BorderLayout.CENTER);
+
+		chckbxNewCheckBox = new JCheckBox("Http");
+		panel_31.add(chckbxNewCheckBox);
+		chckbxNewCheckBox.setFont(new Font("Dialog", Font.BOLD, 18));
+
+		chckbxNewCheckBox_1 = new JCheckBox("Https");
+		panel_31.add(chckbxNewCheckBox_1);
+		chckbxNewCheckBox_1.setFont(new Font("Dialog", Font.BOLD, 18));
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+
 		panel_26 = new JPanel();
 		panel_7.add(panel_26);
 		panel_26.setLayout(new GridLayout(0, 2, 0, 0));
@@ -525,80 +787,9 @@ public class Applet extends JApplet {
 		chckbxNewCheckBox_6 = new JCheckBox("Https");
 		panel_27.add(chckbxNewCheckBox_6);
 		chckbxNewCheckBox_6.setFont(new Font("FreeSerif", Font.BOLD, 22));
-		
-				btnAdd_1 = new JButton(img);
-				panel_28.add(btnAdd_1, BorderLayout.EAST);
 
-		panel_6 = new JPanel();
-		panel_6.setMinimumSize(new Dimension(10, 8));
-		panel_7.add(panel_6);
-		panel_6.setLayout(new GridLayout(1, 2, 0, 0));
-
-		panel_18 = new JPanel();
-		panel_18.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		panel_6.add(panel_18);
-		panel_18.setLayout(new BorderLayout(0, 0));
-
-		lblAllowPing = new JLabel("Allow ping ", SwingConstants.CENTER);
-		lblAllowPing.setVerticalAlignment(SwingConstants.CENTER);
-		panel_18.add(lblAllowPing);
-		lblAllowPing.setFont(new Font("Dialog", Font.BOLD, 18));
-
-		panel_19 = new JPanel();
-		panel_19.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Choose", TitledBorder.LEADING,
-				TitledBorder.TOP, null, new Color(51, 51, 51)));
-		panel_6.add(panel_19);
-		panel_19.setLayout(new BorderLayout(0, 0));
-
-		btnAdd_2 = new JButton(img);
-		btnAdd_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		panel_19.add(btnAdd_2, BorderLayout.EAST);
-
-		panel_32 = new JPanel();
-		panel_19.add(panel_32, BorderLayout.CENTER);
-
-		chckbxNewCheckBox_5 = new JCheckBox("Inside to Outside");
-		panel_32.add(chckbxNewCheckBox_5);
-		chckbxNewCheckBox_5.setFont(new Font("Dialog", Font.BOLD, 18));
-
-		chckbxNewCheckBox_4 = new JCheckBox("Outside to Inside");
-		panel_32.add(chckbxNewCheckBox_4);
-		chckbxNewCheckBox_4.setFont(new Font("Dialog", Font.BOLD, 18));
-
-		panel_11 = new JPanel();
-		panel_11.setBorder(null);
-		panel_11.setMinimumSize(new Dimension(10, 8));
-		panel_7.add(panel_11);
-		panel_11.setLayout(new GridLayout(1, 2, 0, 0));
-
-		panel_34 = new JPanel();
-		panel_34.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		panel_11.add(panel_34);
-		panel_34.setLayout(new BorderLayout(0, 0));
-
-		lblAlllowLoopbackO = new JLabel("Allow Loopback Connections", SwingConstants.CENTER);
-		panel_34.add(lblAlllowLoopbackO, BorderLayout.CENTER);
-		lblAlllowLoopbackO.setFont(new Font("FreeSerif", Font.BOLD, 22));
-
-		button = new JButton(new ImageIcon(Applet.class.getResource("/resources/add.jpg")));
-		button.setPreferredSize(new Dimension(162, 138));
-		panel_34.add(button, BorderLayout.EAST);
-
-		panel_33 = new JPanel();
-		panel_33.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		panel_11.add(panel_33);
-		panel_33.setLayout(new BorderLayout(0, 0));
-
-		lblNewLabel = new JLabel("Allow outbound DNS", SwingConstants.CENTER);
-		panel_33.add(lblNewLabel, BorderLayout.CENTER);
-		lblNewLabel.setFont(new Font("FreeSerif", Font.BOLD, 22));
-
-		button_1 = new JButton(new ImageIcon(Applet.class.getResource("/resources/add.jpg")));
-		button_1.setPreferredSize(new Dimension(162, 138));
-		panel_33.add(button_1, BorderLayout.EAST);
+		btnAdd_1 = new JButton(img);
+		panel_28.add(btnAdd_1, BorderLayout.EAST);
 
 		panel_8 = new JPanel(new GridLayout(1, 2));
 		panel_8.setPreferredSize(new Dimension(0, 20));
@@ -701,9 +892,9 @@ public class Applet extends JApplet {
 	 */
 	private void deleteRule(ActionEvent evt) throws IOException {
 
-		URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallDeleteRule");
-		// URL link = new URL( getCodeBase() + "/firewallDeleteRule" );
-		// URL link = new URL("http://localhost:8080/FirewallDeleteRule");
+		//URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallDeleteRule");
+		 //URL link = new URL( getCodeBase() + "/FirewallDeleteRule" );
+		 URL link = new URL("http://localhost:8080/FirewallDeleteRule");
 		HttpURLConnection urlconnection = (HttpURLConnection) link.openConnection();
 		urlconnection.setDoOutput(true);
 		urlconnection.setDoInput(true);
@@ -756,8 +947,8 @@ public class Applet extends JApplet {
 
 		try {
 
-			URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallViewRules");
-			// URL link = new URL("http://localhost:8080/FirewallViewRules");
+			//URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallViewRules");
+			URL link = new URL("http://localhost:8080/FirewallViewRules");
 			// URL link = new URL( getCodeBase() + "/firewallViewRules");
 			HttpURLConnection urlconnection = (HttpURLConnection) link.openConnection();
 
@@ -787,7 +978,6 @@ public class Applet extends JApplet {
 			setMessageLabel(tm.getRowCount() + " Rules in database");
 		}
 
-		// -A INPUT -s 65.55.44.100 -j DROP
 	}
 
 	/**
@@ -797,14 +987,18 @@ public class Applet extends JApplet {
 	 * 
 	 * @param evt
 	 */
-	private void addRule(java.awt.event.ActionEvent evt) throws IOException {
+	private void addRule(java.awt.event.ActionEvent evt, FirewallRule r) throws IOException {
 		Integer count = null;
 		DefaultTableModel tm = (DefaultTableModel) table.getModel();
-		FirewallRule r = null;
+		
+		System.out.println("Size of vector: " + r.myVector.size());
+		for(int i = 0 ; i <  r.myVector.size(); i++){
+			System.out.println(r.myVector.get(i));
+		}
+		
 		try {
-			URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallAddRule");
-			// URL link = new
-			// URL("http://localhost:8080/servlet/FirewallRuleAdd");
+			//URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallAddRule");
+			URL link = new URL("http://localhost:8080/FirewallRuleAdd");
 			HttpURLConnection urlconnection = (HttpURLConnection) link.openConnection();
 
 			urlconnection.setDoOutput(true);
@@ -817,7 +1011,7 @@ public class Applet extends JApplet {
 
 			ObjectOutputStream oos = new ObjectOutputStream(urlconnection.getOutputStream());
 			//String newRule = text.getText();
-			r = new FirewallRule("put text area here");
+			//r = new FirewallRule("put text area here");
 			oos.writeObject(r);
 			oos.flush();
 
@@ -838,6 +1032,45 @@ public class Applet extends JApplet {
 		}
 
 	}
+	
+	
+	/**
+	 * viewInterfaces
+	 * 
+	 * View the interfaces no firewall machine
+	 * 
+	 * @param evt
+	 * @throws ClassNotFoundException 
+	 */
+	private void viewInterfaces(java.awt.event.ActionEvent evt) throws IOException, ClassNotFoundException {
+		FirewallRule r = null;
+		try {
+			// URL("http://192.168.122.112:8080/firewallservlet/firewallViewRules");
+			URL link = new URL("http://localhost:8080/FirewallViewInterfaces");
+			// URL link = new URL( getCodeBase() + "/firewallViewRules");
+			HttpURLConnection urlconnection = (HttpURLConnection) link.openConnection();
+
+			urlconnection.setDoOutput(true);
+			urlconnection.setDoInput(true);
+			urlconnection.setUseCaches(false);
+			urlconnection.setDefaultUseCaches(false);
+			urlconnection.setRequestProperty("Content-Type", "application/octet-stream");
+			ObjectOutputStream oos = new ObjectOutputStream(urlconnection.getOutputStream());
+			ObjectInputStream ois = new ObjectInputStream(urlconnection.getInputStream());
+
+
+			r = (FirewallRule) ois.readObject();
+			System.out.println(r.Interfaces.get(0));
+			ois.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			
+				displayInterfaces(r);
+		}
+
+	}
+
 
 	/**
 	 * setMessageLabel
@@ -857,16 +1090,13 @@ public class Applet extends JApplet {
 
 	}
 	
-	public void displayInterfaces(NetworkInterface netint) throws SocketException {
+	public void displayInterfaces(FirewallRule r) throws SocketException {
 
 		SwingUtilities.invokeLater(new Runnable() { // inner class to ensure GUI													// updates properly
 			public void run() {
-				textArea.append("Display name: "+ netint.getDisplayName() + "\n");
-				
-				textArea.append("Name: " + netint.getName() + "\n");
-			        Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
-			        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-			        	textArea.append("InetAddress: " + inetAddress + "\n");
+							
+				for (int i =0; i < r.Interfaces.size(); i++) {
+			        	textArea.append(r.Interfaces.get(i));
 			        }
 			        textArea.append("\n");
 			}
