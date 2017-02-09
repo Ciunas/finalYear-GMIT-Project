@@ -72,11 +72,8 @@ public class Applet extends JApplet {
 	private static final long serialVersionUID = 1L;
 	private JLabel setMessageLabel;
 	private JPanel panel;
-	private JPanel panel_21;
 	private JLabel lblFirewall;
 	private JPanel panel_1;
-	private JPanel panel_12;
-	private JPanel panel_4;
 	private JPanel panel_5;
 	private JLabel lblNewLabel_1;
 	private JPanel panel_6;
@@ -97,15 +94,8 @@ public class Applet extends JApplet {
 	private JCheckBox forward;
 	private JCheckBox chckbxNewCheckBox_2;
 	private JCheckBox chckbxNewCheckBox_3;
-	private JLabel lblAllowHttphttpsTraffic;
-	private JCheckBox chckbxNewCheckBox;
-	private JCheckBox chckbxNewCheckBox_1;
 	private JPanel panel_10;
-	private JPanel panel_14;
-	private JPanel panel_16;
-	private JPanel panel_15;
 	private JPanel panel_17;
-	private JPanel panel_13;
 	private JPanel panel_20;
 	private JTabbedPane pane;
 	private JPanel panel_22;
@@ -128,11 +118,9 @@ public class Applet extends JApplet {
 	private JPanel panel_3;
 	private JPanel panel_9;
 	private JPanel panel_31;
-	private JPanel panel_36;
-	private JLabel lblFirewallConfiguration;
 	protected boolean in = false;
 	protected boolean out = false;
-	protected boolean forw =  false;
+	protected boolean forw = false;
 	protected boolean chBox2;
 	protected boolean chBox3;
 	private JPanel panel_24;
@@ -163,6 +151,27 @@ public class Applet extends JApplet {
 	private JTextField textField_1;
 	protected boolean chBox9;
 	protected boolean chBox8;
+	private JPanel panel_40;
+	private JScrollPane scrollPane;
+	private JButton btnNewButton_9;
+	private JTextArea textArea_1;
+	private JPanel panel_43;
+	private JPanel panel_45;
+	private JPanel panel_4;
+	private JLabel label;
+	private JLabel lblBlockASpecific;
+	private JTextField textField_2;
+	private JPanel panel_13;
+	private JLabel lblNewLabel_2;
+	private JPanel panel_12;
+	private JPanel panel_15;
+	private JPanel panel_14;
+	private JPanel panel_16;
+	private JPanel panel_21;
+	private JPanel panel_36;
+	private JPanel panel_41;
+	private JPanel panel_42;
+	private JPanel panel_44;
 
 	@Override
 	public void init() {
@@ -172,38 +181,38 @@ public class Applet extends JApplet {
 			java.awt.EventQueue.invokeAndWait(new Runnable() {
 				public void run() {
 
-			      try {
-//			        UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
-//				      UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
-//				      UIManager.setLookAndFeel("com.jtattoo.plaf.mint.MintLookAndFeel");
-//				      UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
-//				      UIManager.setLookAndFeel("com.jtattoo.plaf.luna.LunaLookAndFeel");
-//				      UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
-//				      UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
-//				      UIManager.setLookAndFeel("com.jtattoo.plaf.fast.FastLookAndFeel");
-//				      UIManager.setLookAndFeel("com.jtattoo.plaf.bernstein.BernsteinLookAndFeel");
-				      UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (UnsupportedLookAndFeelException e) {
-					e.printStackTrace();
-				}
-			      
-//					JFrame frame = new JFrame();
-//					PasswordFrame pframe = null;
-//					pframe = new PasswordFrame(frame);
-//					pframe.setVisible(true);
-//					if (pframe.isSucceeded()) {
-//						initComponents();
-//						getContentPane().setBackground(Color.WHITE);
-//					} else {
-//						System.out.println("You loose");
-//					}
-					
+					try {
+						// UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+						// UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
+						// UIManager.setLookAndFeel("com.jtattoo.plaf.mint.MintLookAndFeel");
+						// UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
+						// UIManager.setLookAndFeel("com.jtattoo.plaf.luna.LunaLookAndFeel");
+						// UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
+						// UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
+						// UIManager.setLookAndFeel("com.jtattoo.plaf.fast.FastLookAndFeel");
+						// UIManager.setLookAndFeel("com.jtattoo.plaf.bernstein.BernsteinLookAndFeel");
+						UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					} catch (InstantiationException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (UnsupportedLookAndFeelException e) {
+						e.printStackTrace();
+					}
+
+					// JFrame frame = new JFrame();
+					// PasswordFrame pframe = null;
+					// pframe = new PasswordFrame(frame);
+					// pframe.setVisible(true);
+					// if (pframe.isSucceeded()) {
+					// initComponents();
+					// getContentPane().setBackground(Color.WHITE);
+					// } else {
+					// System.out.println("You loose");
+					// }
+
 					initComponents();
 					getContentPane().setBackground(Color.WHITE);
 				}
@@ -218,7 +227,6 @@ public class Applet extends JApplet {
 	 */
 	@SuppressWarnings("serial")
 	private void initComponents() {
-		
 
 		panel = new JPanel();
 		panel.setMaximumSize(new Dimension(32767, 400));
@@ -244,41 +252,44 @@ public class Applet extends JApplet {
 		pane.addTab("1st Tab", panel_2);
 		pane.addTab("2nd Tab", panel_20);
 		pane.setForegroundAt(1, Color.BLUE);
-		// Tab1//////////////////////////////////////////
+		
+		// Tab1////////////////////////////////////////////////////////////////////////////////////////////
 
 		panel_22 = new JPanel();
 		panel_22.setPreferredSize(new Dimension(10, 20));
 		panel_20.add(panel_22, BorderLayout.SOUTH);
 		panel_22.setLayout(new GridLayout(1, 2, 0, 0));
 		panel_23 = new JPanel();
+		panel_23.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel_20.add(panel_23, BorderLayout.CENTER);
 
 		ImageIcon img = new ImageIcon(getClass().getResource("/resources/add.jpg"));
 		panel_23.setLayout(new BorderLayout(0, 0));
-		
+
 		panel_25 = new JPanel();
 		panel_25.setMaximumSize(new Dimension(32767, 200));
 
 		panel_23.add(panel_25, BorderLayout.WEST);
 		panel_25.setLayout(new BorderLayout(0, 0));
-		
+
 		textArea = new JTextArea();
 		textArea.setFont(new Font("FreeSerif", Font.PLAIN, 18));
 		textArea.setMaximumSize(new Dimension(2147483647, 400));
 		scrollBar = new JScrollPane(textArea);
 		panel_25.add(scrollBar, BorderLayout.CENTER);
 		scrollBar.setMaximumSize(new Dimension(32767, 400));
-		
+
 		btnNewButton_8 = new JButton("List network Interfaces.");
+		btnNewButton_8.setPreferredSize(new Dimension(275, 25));
 		btnNewButton_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				textArea.setText("");	
-					try {
-						viewInterfaces(arg0);
-					} catch (ClassNotFoundException | IOException e) {
-						e.printStackTrace();
-					}
-			}			 
+				textArea.setText("");
+				try {
+					viewInterfaces(arg0);
+				} catch (ClassNotFoundException | IOException e) {
+					e.printStackTrace();
+				}
+			}
 		});
 		panel_25.add(btnNewButton_8, BorderLayout.NORTH);
 
@@ -286,24 +297,23 @@ public class Applet extends JApplet {
 		panel_23.add(panel_10);
 		panel_10.setMinimumSize(new Dimension(10, 8));
 		panel_10.setLayout(new GridLayout(2, 2, 0, 0));
-		
+
 		panel_33 = new JPanel();
-		panel_33.setBorder(new TitledBorder(null, "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_33.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, UIManager.getColor("CheckBoxMenuItem.acceleratorForeground")));
 		panel_10.add(panel_33);
 		panel_33.setLayout(new BorderLayout(0, 0));
-		
+
 		btnPressToImplement_1 = new JButton("Press to Implement");
 		btnPressToImplement_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				FirewallRule r = null;
 				try {
 					r = new FirewallRule();
 				} catch (SocketException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				r.myVector.add("iptables -F");
+				r.myVector.add("-F");
 				try {
 					addRule(arg0, r);
 				} catch (IOException e) {
@@ -312,17 +322,18 @@ public class Applet extends JApplet {
 			}
 		});
 		panel_33.add(btnPressToImplement_1, BorderLayout.SOUTH);
-		
+
 		panel_11 = new JPanel();
 		panel_33.add(panel_11, BorderLayout.CENTER);
 		panel_11.setLayout(new BorderLayout(0, 0));
-		
+
 		lblPressToDelete = new JLabel("Press to delete all firewalll rules in databse");
-		lblPressToDelete.setFont(new Font("Bitstream Charter", Font.BOLD, 18));
+		lblPressToDelete.setFont(new Font("Bitstream Charter", Font.BOLD, 28));
 		panel_11.add(lblPressToDelete, BorderLayout.CENTER);
-		
+
 		panel_24 = new JPanel();
-		panel_24.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panel_24.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEFT,
+				TitledBorder.TOP, null, new Color(51, 51, 51)));
 		panel_10.add(panel_24);
 		panel_24.setLayout(new BorderLayout(0, 0));
 
@@ -333,16 +344,15 @@ public class Applet extends JApplet {
 				try {
 					r = new FirewallRule();
 				} catch (SocketException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 
 				if (chBox9) {
-					r.myVector.add("iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT");
+					r.myVector.add("-A INPUT -p icmp --icmp-type echo-request -j ACCEPT");
 					chBox9 = false;
 				}
 				if (chBox8) {
-					r.myVector.add("iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT");
+					r.myVector.add("-A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT");
 					chBox8 = false;
 				}
 
@@ -355,100 +365,97 @@ public class Applet extends JApplet {
 			}
 		});
 		panel_24.add(btnPressToImplement, BorderLayout.SOUTH);
-		
+
 		panel_37 = new JPanel();
 		panel_24.add(panel_37, BorderLayout.CENTER);
-		panel_37.setLayout(new BorderLayout(0, 0));
+		panel_37.setLayout(new GridLayout(2, 1, 0, 0));
 		
+		panel_42 = new JPanel();
+		panel_37.add(panel_42);
+
 		lblTo = new JLabel("This gives the abiltiy to ping ");
-		lblTo.setFont(new Font("Bitstream Charter", Font.BOLD, 18));
-		panel_37.add(lblTo, BorderLayout.CENTER);
-		
+		panel_42.add(lblTo);
+		lblTo.setFont(new Font("Bitstream Charter", Font.BOLD, 28));
+
 		panel_38 = new JPanel();
-		panel_37.add(panel_38, BorderLayout.SOUTH);
-		
+		panel_37.add(panel_38);
+
 		chckbxNewCheckBox_8 = new JCheckBox("In->Out");
 		panel_38.add(chckbxNewCheckBox_8);
 		chckbxNewCheckBox_8.setFont(new Font("Dialog", Font.BOLD, 18));
 		chckbxNewCheckBox_8.addItemListener(new ItemListener() {
-	         public void itemStateChanged(ItemEvent e) {  
-	        	 chBox8 = true;
-	         }
-	      });
-		
+			public void itemStateChanged(ItemEvent e) {
+				chBox8 = true;
+			}
+		});
+
 		chckbxNewCheckBox_9 = new JCheckBox("Out->In");
 		panel_38.add(chckbxNewCheckBox_9);
 		chckbxNewCheckBox_9.setFont(new Font("Dialog", Font.BOLD, 18));
 		chckbxNewCheckBox_9.addItemListener(new ItemListener() {
-	         public void itemStateChanged(ItemEvent e) {  
-	        	 chBox9 = true;
-	         }
-	      });
+			public void itemStateChanged(ItemEvent e) {
+				chBox9 = true;
+			}
+		});
 
-	
-		
-		
-		
-		
 		panel_34 = new JPanel();
-		panel_34.setBorder(new TitledBorder(null, "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_34.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		panel_10.add(panel_34);
 		panel_34.setLayout(new BorderLayout(0, 0));
-		
-		btnNewButton = new JButton("New button");
+
+		btnNewButton = new JButton("Press To Implement");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				String temp = textField.getText();
 				FirewallRule r = null;
 				try {
 					r = new FirewallRule();
 				} catch (SocketException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				r.myVector.add("iptables -A INPUT -s " + temp + " -j DROP");
+				r.myVector.add("-A INPUT -s " + temp + " -j DROP");
 				try {
 					addRule(arg0, r);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
+				textField.setText("");
+
 			}
 		});
 		panel_34.add(btnNewButton, BorderLayout.SOUTH);
-		
+
 		panel_18 = new JPanel();
 		panel_34.add(panel_18, BorderLayout.CENTER);
-		panel_18.setLayout(new BorderLayout(0, 0));
-		
+		panel_18.setLayout(new GridLayout(2, 1, 0, 0));
+
+		lblUseThsiTo = new JLabel("Use this to block a specific IP address");
+		lblUseThsiTo.setFont(new Font("Bitstream Charter", Font.BOLD, 28));
+		panel_18.add(lblUseThsiTo);
+
 		panel_19 = new JPanel();
-		panel_18.add(panel_19, BorderLayout.SOUTH);
-		
+		panel_18.add(panel_19);
+
 		lblEnterIpTo = new JLabel("ENter IP to Block");
 		panel_19.add(lblEnterIpTo);
-		
-		
+
 		try {
-			 mf = new MaskFormatter("###.###.###.###");
+			mf = new MaskFormatter("###.###.###.###");
 		} catch (ParseException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 		textField = new JFormattedTextField(mf);
 		panel_19.add(textField);
 		textField.setColumns(10);
-		
-		lblUseThsiTo = new JLabel("Use this to block a specific IP address");
-		lblUseThsiTo.setFont(new Font("Bitstream Charter", Font.BOLD, 18));
-		panel_18.add(lblUseThsiTo, BorderLayout.CENTER);
-		
+
 		panel_35 = new JPanel();
-		panel_35.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panel_35.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEADING,
+				TitledBorder.TOP, null, new Color(51, 51, 51)));
 		panel_10.add(panel_35);
 		panel_35.setLayout(new BorderLayout(0, 0));
 
-		btnNewButton_7 = new JButton("New button");
+		btnNewButton_7 = new JButton("Press To Implement");
 		btnNewButton_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -456,340 +463,373 @@ public class Applet extends JApplet {
 				try {
 					r = new FirewallRule();
 				} catch (SocketException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 				String temp = textField_1.getText();
-				r.myVector.add("iptables -A OUTPUT -p udp -o " +  temp + " --dport 53 -j ACCEPT");
-				r.myVector.add("iptables -A INPUT -p udp -i " +  temp + " --sport 53 -j ACCEPT");
+				r.myVector.add("-A OUTPUT -p udp -o " + temp + " --dport 53 -j ACCEPT");
+				r.myVector.add("-A INPUT -p udp -i " + temp + " --sport 53 -j ACCEPT");
 				try {
 					addRule(e, r);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+				textField_1.setText("");
 
 			}
 		});
 		panel_35.add(btnNewButton_7, BorderLayout.SOUTH);
-		
+
 		panel_32 = new JPanel();
 		panel_35.add(panel_32, BorderLayout.CENTER);
-		panel_32.setLayout(new BorderLayout(0, 0));
+		panel_32.setLayout(new GridLayout(2, 1, 0, 0));
 		
+		panel_44 = new JPanel();
+		panel_32.add(panel_44);
+
 		lblPressToAllow = new JLabel("Press To allow DNS ");
-		panel_32.add(lblPressToAllow, BorderLayout.CENTER);
-		
+		panel_44.add(lblPressToAllow);
+		lblPressToAllow.setFont(new Font("Bitstream Charter", Font.BOLD, 28));
+
 		panel_39 = new JPanel();
-		panel_32.add(panel_39, BorderLayout.SOUTH);
-		
+		panel_32.add(panel_39);
+
 		lblNewLabel = new JLabel("Enter Interface");
 		panel_39.add(lblNewLabel);
-		
+
 		textField_1 = new JTextField();
 		panel_39.add(textField_1);
 		textField_1.setColumns(10);
 
-		btnNewButton_6 = new JButton("View");
+		btnNewButton_6 = new JButton("View Current Rules");
 		btnNewButton_6.setFont(new Font("Dialog", Font.BOLD, 18));
 		panel_22.add(btnNewButton_6);
-		
+
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				try {
 					viewRule(evt);
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				btnNewButton_5.setEnabled(true);
 			}
 		});
 
-		btnNewButton_5 = new JButton("Delete");
+		btnNewButton_5 = new JButton(" Delete a Current Rule");
 		btnNewButton_5.setFont(new Font("Dialog", Font.BOLD, 18));
 		panel_22.add(btnNewButton_5);
 		btnNewButton_5.setEnabled(false);
 		
-		panel_36 = new JPanel();
-		panel_36.setFont(new Font("Dialog", Font.PLAIN, 26));
-		panel_36.setForeground(Color.RED);
-		panel_36.setBackground(Color.DARK_GRAY);
-		panel_36.setPreferredSize(new Dimension(1, 50));
-		panel_36.setMinimumSize(new Dimension(165, 65));
-		panel_20.add(panel_36, BorderLayout.NORTH);
-		panel_36.setLayout(new BorderLayout(0, 0));
+		panel_4 = new JPanel();
+		panel_4.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		panel_20.add(panel_4, BorderLayout.NORTH);
+		panel_4.setLayout(new BorderLayout(0, 0));
 		
-		lblFirewallConfiguration = new JLabel("Firewall Configuration", SwingConstants.CENTER);
-		lblFirewallConfiguration.setFont(new Font("Dialog", Font.BOLD, 26));
-		lblFirewallConfiguration.setForeground(Color.RED);
-		panel_36.add(lblFirewallConfiguration);
-		
-		
+		label = new JLabel("Firewall Configuration", SwingConstants.CENTER);
+		label.setOpaque(true);
+		label.setForeground(Color.RED);
+		label.setFont(new Font("Dialog", Font.BOLD, 26));
+		label.setBackground(Color.DARK_GRAY);
+		panel_4.add(label, BorderLayout.NORTH);
+
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				try {
 					deleteRule(evt);
 				} catch (IOException e) {
-					
+
 					e.printStackTrace();
 				}
 			}
 		});
 
-		
-
 		panel_7 = new JPanel();
 		panel_7.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_7.setLayout(new GridLayout(7, 1, 0, 0));
 		panel_2.add(panel_7, BorderLayout.CENTER);
-		
-		panel_30 = new JPanel();
-		panel_30.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
-		panel_7.add(panel_30);
-		panel_30.setLayout(new BorderLayout(0, 0));
-		
-		lblFirewall_1 = new JLabel("Firewall Configuration", SwingConstants.CENTER);
-		lblFirewall_1.setOpaque(true);
-		lblFirewall_1.setBackground(Color.DARK_GRAY);
-		lblFirewall_1.setForeground(Color.RED);
-		lblFirewall_1.setFont(new Font("Dialog", Font.BOLD, 26));
-		panel_30.add(lblFirewall_1, BorderLayout.CENTER);
+		panel_7.setLayout(new BorderLayout(0, 0));
 
-		panel_21 = new JPanel();
-		panel_21.setMinimumSize(new Dimension(10, 8));
-		panel_7.add(panel_21);
-		panel_21.setLayout(new GridLayout(1, 2, 0, 0));
+		panel_40 = new JPanel();
+		panel_7.add(panel_40, BorderLayout.WEST);
+		panel_40.setMaximumSize(new Dimension(32767, 200));
+		panel_40.setLayout(new BorderLayout(0, 0));
 
+		textArea_1 = new JTextArea();
+		textArea_1.setWrapStyleWord(true);
+		textArea_1.setMaximumSize(new Dimension(2147483647, 400));
+		textArea_1.setFont(new Font("FreeSerif", Font.PLAIN, 18));
+		
+		
+		scrollPane = new JScrollPane(textArea_1);
+		panel_40.add(scrollPane, BorderLayout.CENTER);
+		scrollPane.setMaximumSize(new Dimension(32767, 400));
+		
+
+		btnNewButton_9 = new JButton("List Network Interfaces");
+		btnNewButton_9.setMinimumSize(new Dimension(204, 25));
+		btnNewButton_9.setMaximumSize(new Dimension(204, 25));
+		btnNewButton_9.setPreferredSize(new Dimension(275, 25));
+		panel_40.add(btnNewButton_9, BorderLayout.NORTH);
+		btnNewButton_9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				textArea_1.setText("");
+				try {
+					viewInterfaces(arg0);
+				} catch (ClassNotFoundException | IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+		panel_5 = new JPanel();
+		panel_5.setMinimumSize(new Dimension(10, 8));
+		panel_7.add(panel_5);
+		panel_5.setLayout(new GridLayout(2, 2, 0, 0));
+
+		panel_17 = new JPanel();
+		panel_17.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panel_5.add(panel_17);
+		panel_17.setLayout(new BorderLayout(0, 0));
+
+		btnAdd = new JButton((Icon) null);
+		btnAdd.setText("Press To Implement");
+		btnAdd.setPreferredSize(new Dimension(171, 25));
+		panel_17.add(btnAdd, BorderLayout.SOUTH);
+
+		panel_31 = new JPanel();
+		panel_17.add(panel_31, BorderLayout.CENTER);
+		panel_31.setLayout(new GridLayout(2, 1, 0, 0));
+		
+		panel_41 = new JPanel();
+		panel_31.add(panel_41);
+		
+		lblBlockASpecific = new JLabel("Block a Specific Port");
+		lblBlockASpecific.setFont(new Font("Bitstream Charter", Font.BOLD, 28));
+		panel_41.add(lblBlockASpecific);
+		
 		panel_13 = new JPanel();
-		panel_13.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		panel_21.add(panel_13);
-		panel_13.setLayout(new BorderLayout(0, 0));
+		panel_31.add(panel_13);
+		
+		lblNewLabel_2 = new JLabel("Enter Port number");
+		panel_13.add(lblNewLabel_2);
+		
+		textField_2 = new JTextField();
+		panel_13.add(textField_2);
+		textField_2.setColumns(10);
 
-		lblSetDefaultChain = new JLabel("Set default Chain policies", SwingConstants.CENTER);
-		lblSetDefaultChain.setVerticalTextPosition(SwingConstants.BOTTOM);
-		lblSetDefaultChain.setVerticalAlignment(SwingConstants.BOTTOM);
-		panel_13.add(lblSetDefaultChain);
-		lblSetDefaultChain.setFont(new Font("FreeSerif", Font.BOLD, 22));
+		panel_43 = new JPanel();
+		panel_43.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLACK));
+		panel_5.add(panel_43);
+		panel_43.setLayout(new BorderLayout(0, 0));
 
-		panel_12 = new JPanel();
-		panel_12.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Choose", TitledBorder.LEADING,
-				TitledBorder.TOP, null, new Color(51, 51, 51)));
-		panel_21.add(panel_12);
-		panel_12.setLayout(new BorderLayout(0, 0));
-
-		btnNewButton_3 = new JButton(img);
-		panel_12.add(btnNewButton_3, BorderLayout.EAST);
+		btnNewButton_3 = new JButton((Icon) null);
+		btnNewButton_3.setText("Press To Implement");
+		btnNewButton_3.setPreferredSize(new Dimension(171, 25));
+		panel_43.add(btnNewButton_3, BorderLayout.SOUTH);
 
 		panel_3 = new JPanel();
-		panel_12.add(panel_3, BorderLayout.CENTER);
+		panel_43.add(panel_3, BorderLayout.WEST);
+		panel_3.setLayout(new GridLayout(2, 1, 0, 0));
 
-		
-		
-		input = new JCheckBox("Input");						//3 Checkboxes relating to Set default chain policies
-		panel_3.add(input);
+		panel_21 = new JPanel();
+		panel_3.add(panel_21);
+
+		lblSetDefaultChain = new JLabel("Set default Chain policies", SwingConstants.CENTER);
+		panel_21.add(lblSetDefaultChain);
+		lblSetDefaultChain.setVerticalTextPosition(SwingConstants.BOTTOM);
+		lblSetDefaultChain.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblSetDefaultChain.setFont(new Font("FreeSerif", Font.BOLD, 22));
+
+		panel_15 = new JPanel();
+		panel_3.add(panel_15);
+		panel_15.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
+		input = new JCheckBox("Input");
+		panel_15.add(input);
 		input.setFont(new Font("Dialog", Font.BOLD, 18));
-		input.addItemListener(new ItemListener() {
-	         public void itemStateChanged(ItemEvent e) {  
-	        	 in = true;
-	         }
-	      });
-	
+
 		output = new JCheckBox("Output");
-		panel_3.add(output);
+		panel_15.add(output);
 		output.setFont(new Font("Dialog", Font.BOLD, 18));
-		output.addItemListener(new ItemListener() {
-	         public void itemStateChanged(ItemEvent e) {  
-	        	 out = true;
-	         }
-	      });
 
 		forward = new JCheckBox("Forward");
-		panel_3.add(forward);
+		panel_15.add(forward);
 		forward.setFont(new Font("Dialog", Font.BOLD, 18));
 		forward.addItemListener(new ItemListener() {
-	         public void itemStateChanged(ItemEvent e) {  
-	        	 forw = true;
-	         }
-	      });
+			public void itemStateChanged(ItemEvent e) {
+				forw = true;
+			}
+		});
+		output.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				out = true;
+			}
+		});
+		input.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				in = true;
+			}
+		});
 
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				input.setSelected(false);							//Reset check boxes
+				input.setSelected(false); // Reset check boxes
 				output.setSelected(false);
 				forward.setSelected(false);
 				FirewallRule r = null;
 				try {
 					r = new FirewallRule();
 				} catch (SocketException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-				if(in){
-					r.myVector.add("iptables -P INPUT ACCEPT");
+
+				if (in) {
+					r.myVector.add("-P INPUT ACCEPT");
 					in = false;
 				}
-				if(out){
-					r.myVector.add("iptables -P FORWARD DROP");
+				if (out) {
+					r.myVector.add("-P FORWARD DROP");
 					out = false;
 				}
-				if(forw){
-					r.myVector.add("iptables -P OUTPUT DROP");
+				if (forw) {
+					r.myVector.add("-P OUTPUT DROP");
 					forw = false;
 				}
-				
-				
-				//addRule(e, r);
+
+				// addRule(e, r);
 			}
 		});
 
-		panel_4 = new JPanel();
-		panel_4.setMinimumSize(new Dimension(10, 8));
-		panel_7.add(panel_4);
-		panel_4.setLayout(new GridLayout(1, 2, 0, 0));
-
-		panel_14 = new JPanel();
-		panel_14.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		panel_4.add(panel_14);
-		panel_14.setLayout(new BorderLayout(0, 0));
-
-		lblNewLabel_1 = new JLabel("Alllow  ssh incoming/outgoing");
-		panel_14.add(lblNewLabel_1);
-		lblNewLabel_1.setFont(new Font("Dialog", Font.BOLD, 18));
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-
-		panel_16 = new JPanel();
-		panel_16.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Choose", TitledBorder.LEADING,
-				TitledBorder.TOP, null, new Color(51, 51, 51)));
-		panel_4.add(panel_16);
-		panel_16.setLayout(new BorderLayout(0, 0));
+		panel_45 = new JPanel();
+		panel_45.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panel_5.add(panel_45);
+		panel_45.setLayout(new BorderLayout(0, 0));
 		panel_9 = new JPanel();
-		panel_16.add(panel_9, BorderLayout.CENTER);
+		panel_45.add(panel_9);
+				panel_9.setLayout(new GridLayout(2, 1, 0, 0));
+				
+				panel_36 = new JPanel();
+				panel_9.add(panel_36);
 		
-		chckbxNewCheckBox_3 = new JCheckBox("Outgoing");
-		panel_9.add(chckbxNewCheckBox_3);
-		chckbxNewCheckBox_3.setFont(new Font("Dialog", Font.BOLD, 18));
-		chckbxNewCheckBox_3.addItemListener(new ItemListener() {
-	         public void itemStateChanged(ItemEvent e) {  
-	        	 chBox3 = true;
-	         }
-	      });
+				lblNewLabel_1 = new JLabel("Alllow  ssh incoming/outgoing");
+				panel_36.add(lblNewLabel_1);
+				lblNewLabel_1.setFont(new Font("Dialog", Font.BOLD, 18));
+				lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		panel_12 = new JPanel();
+		panel_9.add(panel_12);
 
-		chckbxNewCheckBox_2 = new JCheckBox("Incoming");
-		panel_9.add(chckbxNewCheckBox_2);
-		chckbxNewCheckBox_2.setFont(new Font("Dialog", Font.BOLD, 18));
-		chckbxNewCheckBox_2.addItemListener(new ItemListener() {
-	         public void itemStateChanged(ItemEvent e) {  
-	        	 chBox2 = true;
-	         }
-	      });
+		chckbxNewCheckBox_3 = new JCheckBox("Outgoing");
+		panel_12.add(chckbxNewCheckBox_3);
+		chckbxNewCheckBox_3.setFont(new Font("Dialog", Font.BOLD, 18));
 		
-		btnNewButton_4 = new JButton(img);
+				chckbxNewCheckBox_2 = new JCheckBox("Incoming");
+				panel_12.add(chckbxNewCheckBox_2);
+				chckbxNewCheckBox_2.setFont(new Font("Dialog", Font.BOLD, 18));
+				chckbxNewCheckBox_2.addItemListener(new ItemListener() {
+					public void itemStateChanged(ItemEvent e) {
+						chBox2 = true;
+					}
+				});
+		chckbxNewCheckBox_3.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				chBox3 = true;
+			}
+		});
+
+		btnNewButton_4 = new JButton((Icon) null);
+		btnNewButton_4.setText("Press To Implement");
+		btnNewButton_4.setPreferredSize(new Dimension(171, 25));
+		panel_45.add(btnNewButton_4, BorderLayout.SOUTH);
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
-				chckbxNewCheckBox_3.setSelected(false);							//Reset check boxes
+
+				chckbxNewCheckBox_3.setSelected(false); // Reset check boxes
 				chckbxNewCheckBox_2.setSelected(false);
 				FirewallRule r = null;
 				try {
 					r = new FirewallRule();
 				} catch (SocketException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
-				
-				if(chBox2){
-					r.myVector.add("iptables -A INPUT -i eth0 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT");
+
+				if (chBox2) {
+					r.myVector.add("-A INPUT -i eth0 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT");
 					chBox2 = false;
 				}
-				if(chBox3){
-					r.myVector.add("iptables -A OUTPUT -o eth0 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT");
+				if (chBox3) {
+					r.myVector.add("-A OUTPUT -o eth0 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT");
 					chBox3 = false;
 				}
-				
+
 				try {
-					addRule(e, r);
+					addRule(e, r);						// Call addRule method to send new rules to Servlet.
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}										//Call addRUle method to send new rules to servlet.
-				
-				
-			}
-		});
-		panel_16.add(btnNewButton_4, BorderLayout.EAST);
-	
+				} 
 
-		panel_5 = new JPanel();
-		panel_5.setMinimumSize(new Dimension(10, 8));
-		panel_7.add(panel_5);
-		panel_5.setLayout(new GridLayout(1, 2, 0, 0));
-
-		panel_15 = new JPanel();
-		panel_15.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		panel_5.add(panel_15);
-		panel_15.setLayout(new BorderLayout(0, 0));
-
-		lblAllowHttphttpsTraffic = new JLabel("Allow http/https traffic incoming", SwingConstants.CENTER);
-		panel_15.add(lblAllowHttphttpsTraffic);
-		lblAllowHttphttpsTraffic.setFont(new Font("Dialog", Font.BOLD, 18));
-
-		panel_17 = new JPanel();
-		panel_17.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Choose", TitledBorder.LEADING,
-				TitledBorder.TOP, null, new Color(51, 51, 51)));
-		panel_5.add(panel_17);
-		panel_17.setLayout(new BorderLayout(0, 0));
-
-		btnAdd = new JButton(img);
-		panel_17.add(btnAdd, BorderLayout.EAST);
-
-		panel_31 = new JPanel();
-		panel_17.add(panel_31, BorderLayout.CENTER);
-
-		chckbxNewCheckBox = new JCheckBox("Http");
-		panel_31.add(chckbxNewCheckBox);
-		chckbxNewCheckBox.setFont(new Font("Dialog", Font.BOLD, 18));
-
-		chckbxNewCheckBox_1 = new JCheckBox("Https");
-		panel_31.add(chckbxNewCheckBox_1);
-		chckbxNewCheckBox_1.setFont(new Font("Dialog", Font.BOLD, 18));
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
 			}
 		});
 
 		panel_26 = new JPanel();
-		panel_7.add(panel_26);
-		panel_26.setLayout(new GridLayout(0, 2, 0, 0));
-		
+		panel_5.add(panel_26);
+		panel_26.setLayout(new BorderLayout(0, 0));
+
 		panel_29 = new JPanel();
-		panel_29.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panel_29.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEADING,
+				TitledBorder.TOP, null, new Color(51, 51, 51)));
 		panel_26.add(panel_29);
 		panel_29.setLayout(new BorderLayout(0, 0));
-		
-		lblAllowhttphttpsTrafficOutgoing = new JLabel("Allow Http/Https traffic outgoing", SwingConstants.CENTER);
-		panel_29.add(lblAllowhttphttpsTrafficOutgoing);
-		lblAllowhttphttpsTrafficOutgoing.setFont(new Font("FreeSerif", Font.BOLD, 22));
-		
+
 		panel_28 = new JPanel();
-		panel_28.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Choose", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panel_28.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Rule", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		panel_26.add(panel_28);
 		panel_28.setLayout(new BorderLayout(0, 0));
-		
+
 		panel_27 = new JPanel();
 		panel_28.add(panel_27);
+		panel_27.setLayout(new GridLayout(2, 1, 0, 0));
 		
+		panel_14 = new JPanel();
+		panel_27.add(panel_14);
+
+		lblAllowhttphttpsTrafficOutgoing = new JLabel("Allow Http/Https traffic outgoing", SwingConstants.CENTER);
+		panel_14.add(lblAllowhttphttpsTrafficOutgoing);
+		lblAllowhttphttpsTrafficOutgoing.setFont(new Font("FreeSerif", Font.BOLD, 22));
+
+		panel_16 = new JPanel();
+		panel_27.add(panel_16);
+
 		chckbxNewCheckBox_7 = new JCheckBox("Http");
+		panel_16.add(chckbxNewCheckBox_7);
 		chckbxNewCheckBox_7.setFont(new Font("FreeSerif", Font.BOLD, 22));
-		panel_27.add(chckbxNewCheckBox_7);
-		
+
 		chckbxNewCheckBox_6 = new JCheckBox("Https");
-		panel_27.add(chckbxNewCheckBox_6);
+		panel_16.add(chckbxNewCheckBox_6);
 		chckbxNewCheckBox_6.setFont(new Font("FreeSerif", Font.BOLD, 22));
 
-		btnAdd_1 = new JButton(img);
-		panel_28.add(btnAdd_1, BorderLayout.EAST);
+		btnAdd_1 = new JButton((Icon) null);
+		btnAdd_1.setText("Press To Implement");
+		btnAdd_1.setPreferredSize(new Dimension(171, 25));
+		panel_28.add(btnAdd_1, BorderLayout.SOUTH);
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FirewallRule r = null;
+				try {
+					r = new FirewallRule();
+				} catch (SocketException e2) {
+					e2.printStackTrace();
+				}
+
+				r.myVector.add("-I INPUT -p tcp --dport " + textField_2.getText() +" -j ACCEPT");				//Create Rule to block specified port
+
+				try {
+					addRule(e, r); // Call addRule method to send new rules to Servlet.
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				textField_2.setText("");
+			}
+		});
 
 		panel_8 = new JPanel(new GridLayout(1, 2));
 		panel_8.setPreferredSize(new Dimension(0, 20));
@@ -813,6 +853,18 @@ public class Applet extends JApplet {
 		btnNewButton_2.setFont(new Font("Dialog", Font.BOLD, 18));
 		panel_8.add(btnNewButton_2);
 		btnNewButton_2.setEnabled(false);
+
+		panel_30 = new JPanel();
+		panel_2.add(panel_30, BorderLayout.NORTH);
+		panel_30.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		panel_30.setLayout(new BorderLayout(0, 0));
+
+		lblFirewall_1 = new JLabel("Firewall Configuration", SwingConstants.CENTER);
+		lblFirewall_1.setOpaque(true);
+		lblFirewall_1.setBackground(Color.DARK_GRAY);
+		lblFirewall_1.setForeground(Color.RED);
+		lblFirewall_1.setFont(new Font("Dialog", Font.BOLD, 26));
+		panel_30.add(lblFirewall_1, BorderLayout.CENTER);
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				try {
@@ -892,9 +944,8 @@ public class Applet extends JApplet {
 	 */
 	private void deleteRule(ActionEvent evt) throws IOException {
 
-		//URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallDeleteRule");
-		 //URL link = new URL( getCodeBase() + "/FirewallDeleteRule" );
-		 URL link = new URL("http://localhost:8080/FirewallDeleteRule");
+		URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallDeleteRule");
+		//URL link = new URL("http://localhost:8080/FirewallDeleteRule");
 		HttpURLConnection urlconnection = (HttpURLConnection) link.openConnection();
 		urlconnection.setDoOutput(true);
 		urlconnection.setDoInput(true);
@@ -912,16 +963,16 @@ public class Applet extends JApplet {
 			ObjectOutputStream oos = new ObjectOutputStream(urlconnection.getOutputStream());
 			rule = (String) table.getValueAt(row, 1);
 			FirewallRule r = new FirewallRule(rule);
-			oos.writeObject(r); // send the object
+			oos.writeObject(r); 															// send the object
 			oos.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(urlconnection.getInputStream());
-			int count = ois.readInt(); // read back the number of rows deleted
+			int count = ois.readInt(); 														// read back the number of rows deleted
 			oos.close();
 			ois.close();
 
 			DefaultTableModel tm = (DefaultTableModel) table.getModel();
-			tm.removeRow(row); // remove the row from the screen
+			tm.removeRow(row); 																// remove the row from the screen
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -947,8 +998,8 @@ public class Applet extends JApplet {
 
 		try {
 
-			//URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallViewRules");
-			URL link = new URL("http://localhost:8080/FirewallViewRules");
+			URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallViewRules");
+			//URL link = new URL("http://localhost:8080/FirewallViewRules");
 			// URL link = new URL( getCodeBase() + "/firewallViewRules");
 			HttpURLConnection urlconnection = (HttpURLConnection) link.openConnection();
 
@@ -990,15 +1041,10 @@ public class Applet extends JApplet {
 	private void addRule(java.awt.event.ActionEvent evt, FirewallRule r) throws IOException {
 		Integer count = null;
 		DefaultTableModel tm = (DefaultTableModel) table.getModel();
-		
-		System.out.println("Size of vector: " + r.myVector.size());
-		for(int i = 0 ; i <  r.myVector.size(); i++){
-			System.out.println(r.myVector.get(i));
-		}
-		
+
 		try {
-			//URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallAddRule");
-			URL link = new URL("http://localhost:8080/FirewallRuleAdd");
+			URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallAddRule");
+			//URL link = new URL("http://localhost:8080/FirewallAddRule");
 			HttpURLConnection urlconnection = (HttpURLConnection) link.openConnection();
 
 			urlconnection.setDoOutput(true);
@@ -1010,8 +1056,7 @@ public class Applet extends JApplet {
 			urlconnection.setRequestProperty("Content-Type", "application/octet-stream");
 
 			ObjectOutputStream oos = new ObjectOutputStream(urlconnection.getOutputStream());
-			//String newRule = text.getText();
-			//r = new FirewallRule("put text area here");
+	
 			oos.writeObject(r);
 			oos.flush();
 
@@ -1023,8 +1068,11 @@ public class Applet extends JApplet {
 		} catch (Exception ex) {
 			setMessageLabel("Unable to process request " + ex.toString());
 		} finally {
-			Object[] row = { tm.getRowCount(), r.getRule() };
-			tm.addRow(row);
+			for(int i =0; i< r.myVector.size(); i++){
+				Object[] row = { tm.getRowCount(), r.myVector.get(i) };
+				tm.addRow(row);
+			}
+
 			if (count.compareTo(0) >= 0)
 				setMessageLabel("Rule added");
 			else
@@ -1032,22 +1080,20 @@ public class Applet extends JApplet {
 		}
 
 	}
-	
-	
+
 	/**
 	 * viewInterfaces
 	 * 
 	 * View the interfaces no firewall machine
 	 * 
 	 * @param evt
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException
 	 */
 	private void viewInterfaces(java.awt.event.ActionEvent evt) throws IOException, ClassNotFoundException {
 		FirewallRule r = null;
 		try {
-			// URL("http://192.168.122.112:8080/firewallservlet/firewallViewRules");
-			URL link = new URL("http://localhost:8080/FirewallViewInterfaces");
-			// URL link = new URL( getCodeBase() + "/firewallViewRules");
+			URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallViewInterfaces");
+			//URL link = new URL("http://localhost:8080/FirewallViewInterfaces");
 			HttpURLConnection urlconnection = (HttpURLConnection) link.openConnection();
 
 			urlconnection.setDoOutput(true);
@@ -1058,19 +1104,17 @@ public class Applet extends JApplet {
 			ObjectOutputStream oos = new ObjectOutputStream(urlconnection.getOutputStream());
 			ObjectInputStream ois = new ObjectInputStream(urlconnection.getInputStream());
 
-
 			r = (FirewallRule) ois.readObject();
 			System.out.println(r.Interfaces.get(0));
 			ois.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			
-				displayInterfaces(r);
+
+			displayInterfaces(r);
 		}
 
 	}
-
 
 	/**
 	 * setMessageLabel
@@ -1082,28 +1126,31 @@ public class Applet extends JApplet {
 	 */
 	public void setMessageLabel(String msg) {
 
-		SwingUtilities.invokeLater(new Runnable() { // inner class to ensure GUI													// updates properly
+		SwingUtilities.invokeLater(new Runnable() { // inner class to ensure GUI
+													// // updates properly
 			public void run() {
 				setMessageLabel.setText(msg);
 			}
 		});
 
 	}
-	
+
 	public void displayInterfaces(FirewallRule r) throws SocketException {
 
-		SwingUtilities.invokeLater(new Runnable() { // inner class to ensure GUI													// updates properly
+		SwingUtilities.invokeLater(new Runnable() { // inner class to ensure GUI
+													// // updates properly
 			public void run() {
-							
-				for (int i =0; i < r.Interfaces.size(); i++) {
-			        	textArea.append(r.Interfaces.get(i));
-			        }
-			        textArea.append("\n");
+
+				for (int i = 0; i < r.Interfaces.size(); i++) {
+					textArea.append(r.Interfaces.get(i));
+					textArea_1.append(r.Interfaces.get(i));
+				}
+				textArea.append("\n");
+				textArea_1.append("\n");
 			}
 		});
 
 	}
-	
 
 	// Method to clear the rule table of any data.
 	public void clearResults() {
