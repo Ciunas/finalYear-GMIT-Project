@@ -1,23 +1,17 @@
 package servlet;
 
 import firewallObject.FirewallRule;
-
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.util.Collections;
 import java.util.Enumeration;
 
-/**
- * Created by ciunas on 2/8/17.
- */
-@WebServlet(urlPatterns = {"/FirewallViewInterfaces"})
+
 public class FirewallViewInterfaces extends HttpServlet {
 
 
@@ -45,14 +39,12 @@ public class FirewallViewInterfaces extends HttpServlet {
 
         FirewallRule r = new FirewallRule();
         for (NetworkInterface netint : Collections.list(nets)) {
-            r.Interfaces.add("Display name: \n" + netint.getDisplayName());
-            r.Interfaces.add("Name: \n" + netint.getName());
+            r.Interfaces.add("\nName: \n" + netint.getName() + "\n");
             Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
             for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-                r.Interfaces.add("InetAddress: \n" + inetAddress);
+                r.Interfaces.add("InetAddress: \n" + inetAddress + "\n");
             }
         }
-
 
         oos.writeObject(r);
         oos.flush();
@@ -60,16 +52,6 @@ public class FirewallViewInterfaces extends HttpServlet {
 
     }
 
-
-    static void displayInterfaces(NetworkInterface netint) throws SocketException {
-        System.out.println("Display name: \n" + netint.getDisplayName());
-        System.out.println("Name: \n" + netint.getName());
-        Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
-        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-            System.out.println("InetAddress: \n" + inetAddress);
-        }
-        System.out.println();
-    }
 
 
     /**
@@ -110,7 +92,7 @@ public class FirewallViewInterfaces extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "View Firewall Interfaces.";
+        return "List all Firewall Interfaces.";
     }// </editor-fold>
 
 }

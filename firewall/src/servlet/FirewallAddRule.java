@@ -34,23 +34,23 @@ public class FirewallAddRule extends HttpServlet {
 		ObjectInputStream inputFromApplet = new ObjectInputStream(in);
 		OutputStream outstr = response.getOutputStream();
 		ObjectOutputStream oos = new ObjectOutputStream(outstr);
-		String rule = null;
-
+		
 		FirewallRule r = (FirewallRule) inputFromApplet.readObject();
-		rule = r.getRule();
-
-		String[] cmd = { "/bin/bash", "-c", "echo \"password\" | sudo -S /sbin/iptables " + rule };
-		Process pb = Runtime.getRuntime().exec(cmd);
-		try {
-			pb.waitFor();
-			oos.writeInt(0);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			oos.writeInt(-1);
+		
+		for(int i = 0; i < r.myVector.size(); i++){
+        	
+			String[] cmd = { "/bin/bash", "-c", "echo \"password\" | sudo -S /sbin/iptables "
+					 + r.myVector.get(i) };
+			Process pb = Runtime.getRuntime().exec(cmd);
+			try {
+				pb.waitFor();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				}
 		}
+		oos.writeInt(0);
 		oos.flush();
 		oos.close();
-
 	}
 
 	/**
