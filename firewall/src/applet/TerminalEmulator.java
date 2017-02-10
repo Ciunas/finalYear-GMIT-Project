@@ -18,6 +18,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.text.DefaultCaret;
+
 import firewallObject.FirewallRule;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -57,6 +59,8 @@ public class TerminalEmulator extends JDialog {
 	        textArea.setFont(new Font("Bitstream Charter", Font.PLAIN, 18));
 	        textArea.setForeground(Color.GREEN);
 	        textArea.setBackground(Color.DARK_GRAY);
+	        DefaultCaret caret = (DefaultCaret)textArea.getCaret();
+	        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 	        scrollPane.setViewportView(textArea);
 	        
 	        textField = new JTextField();
@@ -80,7 +84,7 @@ public class TerminalEmulator extends JDialog {
 					} catch (SocketException e2) {
 						e2.printStackTrace();
 					}
-	            	r.setRule(textField.getText());
+	            	r.setCommand(textField.getText());
 	            	try {
 						terminalEmulate(e, r);
 					} catch (IOException e1) {
@@ -102,13 +106,10 @@ public class TerminalEmulator extends JDialog {
 			SwingUtilities.invokeLater(new Runnable() { // inner class to ensure GUI
 														// // updates properly
 				public void run() {
-
+					System.out.println("Here1: " +  r.myVector.size());
 					for (int i = 0; i < r.myVector.size(); i++) {
-						textArea.append(r.myVector.get(i));
-						textArea.append(r.myVector.get(i));
+						textArea.append(r.myVector.get(i) + "\n");
 					}
-					textArea.append("\n");
-					textArea.append("\n");
 				}
 			});
 
@@ -125,8 +126,8 @@ public class TerminalEmulator extends JDialog {
 		private void terminalEmulate(java.awt.event.ActionEvent evt, FirewallRule r) throws IOException {
 			
 			try {
-				URL link = new URL("http://192.168.122.112:8080/firewallservlet/firewallAddRule");
-				//URL link = new URL("http://localhost:8080/FirewallAddRule");
+				URL link = new URL("http://192.168.122.112:8080/firewallservlet/terminalEmulator");
+				//URL link = new URL("http://localhost:8080/TerminalEmulator");
 				HttpURLConnection urlconnection = (HttpURLConnection) link.openConnection();
 
 				urlconnection.setDoOutput(true);
@@ -144,9 +145,9 @@ public class TerminalEmulator extends JDialog {
 
 				ObjectInputStream ois = new ObjectInputStream(urlconnection.getInputStream());
 				
-				r = (FirewallRule) ois.readObject();
+				FirewallRule r1 = (FirewallRule) ois.readObject();
 				
-				displayTerminal(r);
+				displayTerminal(r1);
 				oos.close();
 				ois.close();
 
