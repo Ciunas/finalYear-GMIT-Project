@@ -10,6 +10,7 @@ public class FirewallRule implements Serializable {
 
     private static final long serialVersionUID = 1L;
     String rule = "";					// Full rule
+    String command = "";					// Full rule
     boolean end = false;
     public Vector<String> myVector= new Vector<String>();
     public List<String> Interfaces = new ArrayList<String>();
@@ -59,5 +60,13 @@ public class FirewallRule implements Serializable {
     public FirewallRule() throws SocketException {
         super();
     }
+
+	public String getCommand() {
+		return command;
+	}
+
+	public void setCommand(String command) {
+		this.command = command;
+	}
 
 }
