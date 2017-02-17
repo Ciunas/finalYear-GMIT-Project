@@ -48,7 +48,7 @@ public class DataBaseAccess implements DataAccess {
 
 		String url = "jdbc:mysql://192.168.122.228:3306/IMSUsers?autoReconnect=true&useSSL=false"; //URL to connect to database.	
         Class.forName(driver);
-        connection = DriverManager.getConnection(url, "ciunas", "1");
+        connection = DriverManager.getConnection(url, "username", "password");
         connection.setAutoCommit(false);
 	}
 	
