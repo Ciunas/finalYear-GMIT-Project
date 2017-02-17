@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,6 +21,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
+import javax.swing.JRadioButton;
+import javax.swing.JCheckBox;
 
 
 public class LogInScreen extends JDialog {
@@ -36,28 +40,42 @@ public class LogInScreen extends JDialog {
     private JLabel lblNewLabel_3;
     private JTextField userName;
     private JPasswordField passwordField;
+    private DataAccess database;
+	protected boolean chBox;
 	
 	/**
 	 * Create the dialog.
 	 */
 	public LogInScreen(Frame parent) {
         super(parent, "Login", true);
+        
+        // create database connection
+        try {
+            database = new DataBaseAccess();
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+            System.exit(1);
+        }
+
+
         setResizable(false);
         setLocation(new Point(450, 400));
         setPreferredSize(new Dimension(400, 200));
         JPanel panel = new JPanel();
-  
+        // reference to database access object
+   
  
         btnLogin = new JButton("Login"); 
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (authenticate(getUsername(), getPassword())) {
-//                    JOptionPane.showMessageDialog(PasswordFrame.this,
-//                            getUsername() + "! You have successfully logged in.",
-//                            "Login",
-//                            JOptionPane.INFORMATION_MESSAGE);
-                    succeeded = true;
-                    dispose();
+            	
+            	IMS_User user = new IMS_User(getUsername(),getPassword() );
+            	
+                if ( database.newUser(user) ) {
+                	succeeded = true;
+                    dispose(); 
+
                 } else {
                     JOptionPane.showMessageDialog(LogInScreen.this,
                             "Invalid username or password",
@@ -117,6 +135,24 @@ public class LogInScreen extends JDialog {
         lblNewLabel.setIcon(new ImageIcon(LogInScreen.class.getResource("/resources/Apps-Messaging-Metro-icon.png")));
         lblNewLabel.setBounds(250, 12, 128, 121);
         panel.add(lblNewLabel);
+        
+        JCheckBox rdbtnNewUser = new JCheckBox("Create New User");
+        rdbtnNewUser.setBounds(44, 134, 149, 23);
+        rdbtnNewUser.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				btnLogin.setText("New User");
+				if(chBox == true){
+						chBox = false;
+						btnLogin.setText("Login");
+				}
+				else{
+					chBox = true;
+					btnLogin.setText("New User");
+				}
+					
+			}
+		});
+        panel.add(rdbtnNewUser);
         getContentPane().add(bp, BorderLayout.PAGE_END);
  
         pack();
@@ -139,5 +175,4 @@ public class LogInScreen extends JDialog {
         }
         return false;
     }
-
 }
