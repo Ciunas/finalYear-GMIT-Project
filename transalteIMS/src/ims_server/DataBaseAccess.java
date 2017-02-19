@@ -1,9 +1,11 @@
-package transalteIMS;
+package ims_server;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import transalteIMS.IMS_User;
 
 /**
  * @author ciunas
@@ -48,7 +50,7 @@ public class DataBaseAccess implements DataAccess {
 
 		String url = "jdbc:mysql://192.168.122.228:3306/IMSUsers?autoReconnect=true&useSSL=false"; //URL to connect to database.	
         Class.forName(driver);
-        connection = DriverManager.getConnection(url, "username", "password");
+        connection = DriverManager.getConnection(url, "ciunas", "1");
         connection.setAutoCommit(false);
 	}
 	

@@ -1,4 +1,6 @@
-package transalteIMS;
+package ims_server;
+
+import transalteIMS.IMS_User;
 
 public interface DataAccess {
     

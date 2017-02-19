@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,6 +23,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
+
+import ims_server.DataAccess;
+import ims_server.DataBaseAccess;
+
 import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
 
@@ -46,17 +52,17 @@ public class LogInScreen extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public LogInScreen(Frame parent) {
+	public LogInScreen(Frame parent, DataInputStream input, DataOutputStream output) {
         super(parent, "Login", true);
         
-        // create database connection
-        try {
-            database = new DataBaseAccess();
-        }
-        catch (Exception exception) {
-            exception.printStackTrace();
-            System.exit(1);
-        }
+//        // create database connection
+//        try {
+//            database = new DataBaseAccess();
+//        }
+//        catch (Exception exception) {
+//            exception.printStackTrace();
+//            System.exit(1);
+//        }
 
 
         setResizable(false);
@@ -70,9 +76,9 @@ public class LogInScreen extends JDialog {
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	
-            	IMS_User user = new IMS_User(getUsername(),getPassword() );
+//            	IMS_User user = new IMS_User(getUsername(),getPassword() );
             	
-                if ( database.newUser(user) ) {
+                if ( true ) {
                 	succeeded = true;
                     dispose(); 
 
