@@ -1,9 +1,10 @@
-package transalteIMS;
+package ims_client;
 
 import java.awt.EventQueue;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 import javax.swing.JFrame;
@@ -13,11 +14,11 @@ import java.awt.BorderLayout;
 
 public class IMS_Client {
 
-    private Socket connection;
-    private DataInputStream input;
-    private DataOutputStream output;
+    private Socket clinetSocket;
 	private JFrame frame;
 	private String hostname = "localhost";
+	private BufferedReader bReader;
+	private PrintWriter dataOut;
 
 	/**
 	 * Launch the application.
@@ -43,23 +44,19 @@ public class IMS_Client {
 		try {
 
 			// make connection
-			connection = new Socket(hostname , 1234);
+			clinetSocket = new Socket(hostname , 1234);
 
 			// get streams
-			input = new DataInputStream(connection.getInputStream());
-			output = new DataOutputStream(connection.getOutputStream());
+			bReader = new BufferedReader(new InputStreamReader(clinetSocket.getInputStream()));
+			dataOut = new PrintWriter(clinetSocket.getOutputStream());
 		}
-
-		// catch problems setting up connection and streams
 		catch (IOException ioException) {
-			// clientLogger.warning("Client Stream error" + " IOExcepton"+
-			// ioException);
 			ioException.printStackTrace();
 		}
 		
 		JFrame frame = new JFrame();
 		LogInScreen pframe = null;
-		pframe = new LogInScreen(frame, input, output);
+		pframe = new LogInScreen(frame, bReader, dataOut);
 		pframe.setVisible(true);
 
 		initialize();

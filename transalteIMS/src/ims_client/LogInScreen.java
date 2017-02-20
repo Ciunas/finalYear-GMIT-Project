@@ -1,4 +1,4 @@
-package transalteIMS;
+package ims_client;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -10,9 +10,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -23,11 +26,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
-
-import ims_server.DataAccess;
-import ims_server.DataBaseAccess;
-
-import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
 
 
@@ -46,39 +44,29 @@ public class LogInScreen extends JDialog {
     private JLabel lblNewLabel_3;
     private JTextField userName;
     private JPasswordField passwordField;
-    private DataAccess database;
 	protected boolean chBox;
+	public String name = null;
+	public String password = null;
+	public List<String> labels = new ArrayList<String>();
 	
 	/**
 	 * Create the dialog.
 	 */
-	public LogInScreen(Frame parent, DataInputStream input, DataOutputStream output) {
+	public LogInScreen(Frame parent, BufferedReader bReader, PrintWriter dataOut) {
         super(parent, "Login", true);
         
-//        // create database connection
-//        try {
-//            database = new DataBaseAccess();
-//        }
-//        catch (Exception exception) {
-//            exception.printStackTrace();
-//            System.exit(1);
-//        }
-
-
         setResizable(false);
         setLocation(new Point(450, 400));
         setPreferredSize(new Dimension(400, 200));
         JPanel panel = new JPanel();
-        // reference to database access object
    
  
         btnLogin = new JButton("Login"); 
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	
-//            	IMS_User user = new IMS_User(getUsername(),getPassword() );
             	
-                if ( true ) {
+                if ( authenticate(bReader, dataOut)) {
                 	succeeded = true;
                     dispose(); 
 
@@ -93,6 +81,8 @@ public class LogInScreen extends JDialog {
  
                 }
             }
+
+		
         });
         
         btnCancel = new JButton("Cancel");
@@ -163,7 +153,37 @@ public class LogInScreen extends JDialog {
  
         pack();
 	}
-    public String getUsername() {
+	
+	
+	
+	private boolean authenticate(BufferedReader bReader, PrintWriter dataOut) {
+		
+		dataOut.println("Start Authentication");
+		
+		
+//		getUsername()
+//		getPassword()
+		
+		return false;
+	}
+	
+	
+    public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public List<String> getLabels() {
+		return labels;
+	}
+	public void setLabels(List<String> labels) {
+		this.labels = labels;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getUsername() {
         return userName.getText().trim();
     }
  

@@ -6,35 +6,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 
-import transalteIMS.IMS_User;
+import ims_user.IMS_User;
 
 public class IMS_Server_ThreadBuilder  implements Runnable{
 
 	
 	
-	private Socket clinetSocket = null;
-	// Streams from the Client and Server
-	private InputStream fromClient = null;
-	private OutputStream toClient = null;
-    private DataAccess database;
+	private Socket serverSocket = null;
 	String[] tokens = null;
 	BufferedReader bReader = null;
-	DataOutputStream dataOut = null;
+	PrintWriter dataOut = null;
 
 	// Bind to client socket.
 	public IMS_Server_ThreadBuilder(Socket socket) {
 		super();
-		this.clinetSocket = socket;
+		this.serverSocket = socket;
 		try {
 
-			fromClient = clinetSocket.getInputStream();
-			toClient = clinetSocket.getOutputStream();
-
-			bReader = new BufferedReader(new InputStreamReader(fromClient));
-			dataOut = new DataOutputStream(toClient);
+			bReader = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+			dataOut = new PrintWriter(serverSocket.getOutputStream());
 
 		} catch (SocketException se) {
 			se.printStackTrace();
@@ -46,9 +40,20 @@ public class IMS_Server_ThreadBuilder  implements Runnable{
 	@Override
 	public void run() {
 		
+		UserNew_Authenticate ua = new UserNew_Authenticate();
 		
-		//IMS_User user = new IMS_User(getUsername(),getPassword() );
-//      // create database connection
+		IMS_User user = ua.getCredentials(bReader, dataOut);
+		
+
+//		try {
+//			database = new DataBaseAccess();
+//		} catch (Exception exception) {
+//			exception.printStackTrace();
+//			System.exit(1);
+//		}
+
+		// IMS_User user = new IMS_User(getUsername(),getPassword() );
+		//     // create database connection
 //      try {
 //          database = new DataBaseAccess();
 //      }
