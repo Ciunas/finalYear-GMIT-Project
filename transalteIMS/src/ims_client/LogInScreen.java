@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,7 @@ import java.awt.event.ItemListener;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +50,7 @@ public class LogInScreen extends JDialog {
 	public String name = null;
 	public String password = null;
 	public List<String> labels = new ArrayList<String>();
+	private boolean authent  = false;
 	
 	/**
 	 * Create the dialog.
@@ -66,20 +69,28 @@ public class LogInScreen extends JDialog {
             public void actionPerformed(ActionEvent e) {
             	
             	
-                if ( authenticate(bReader, dataOut)) {
-                	succeeded = true;
-                    dispose(); 
+                try {
+					if ( authenticate(bReader, dataOut)) {
+						succeeded = true;
+						setName( getUsername() );
+						setPassword(getPassword());
+					    dispose(); 
 
-                } else {
-                    JOptionPane.showMessageDialog(LogInScreen.this,
-                            "Invalid username or password",
-                            "Login",
-                            JOptionPane.ERROR_MESSAGE);
-                    userName.setText("");
-                    passwordField.setText("");
-                    succeeded = false;
+					} else {
+					    JOptionPane.showMessageDialog(LogInScreen.this,
+					            "Invalid username or password",
+					            "Login",
+					            JOptionPane.ERROR_MESSAGE);
+					    userName.setText("");
+					    passwordField.setText("");
+					    succeeded = false;
  
-                }
+					}
+				} catch (HeadlessException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
             }
 
 		
@@ -156,15 +167,28 @@ public class LogInScreen extends JDialog {
 	
 	
 	
-	private boolean authenticate(BufferedReader bReader, PrintWriter dataOut) {
-		
-		dataOut.println("Start Authentication");
+	private boolean authenticate(BufferedReader bReader, PrintWriter dataOut) throws IOException {
 		
 		
-//		getUsername()
-//		getPassword()
-		
-		return false;
+		while(authent == false){
+			String  temp;
+			dataOut.println("Start Authentication");
+			dataOut.flush();
+			if((temp = bReader.readLine()).compareTo("Authentication started") == 0){
+				System.out.println(getUsername());
+				dataOut.println(getUsername());
+				dataOut.println(getPassword());
+				if(chBox == true)
+					dataOut.println("New");
+				else
+					dataOut.println("Not New");
+				dataOut.println("Data Sent");
+				dataOut.flush();
+				authent = true;
+			}	
+		}
+				
+		return true;
 	}
 	
 	
@@ -195,10 +219,4 @@ public class LogInScreen extends JDialog {
         return succeeded;
     }
     
-    public boolean authenticate(String username, String password) {
-        if (username.equals("1") && password.equals("1")) {
-            return true;
-        }
-        return false;
-    }
 }
