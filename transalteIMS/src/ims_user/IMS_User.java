@@ -1,10 +1,16 @@
 package ims_user;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IMS_User {
+public class IMS_User implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private String launguage;
 
 	private String name;
@@ -52,6 +58,11 @@ public class IMS_User {
 
 	public List<String> getLabels() {
 		return labels;
+	}
+	
+	public String getLabel(int a ){
+		
+		return labels.get(a);
 	}
 
 

@@ -20,6 +20,7 @@ public class DataBaseAccess implements DataAccess {
 	// reference to prepared statement for locating entry
 	private PreparedStatement sqlInsertUser;
 	private PreparedStatement sqlReturnUser;
+	private PreparedStatement sqlReturnLabels;
 
 	/**
 	 * DataBaseAccess
@@ -35,6 +36,8 @@ public class DataBaseAccess implements DataAccess {
 		sqlInsertUser = connection.prepareStatement("INSERT INTO `users`(`userName`,`launguage`, `password`, `salt`) VALUES ( ? , ? , ?, ?)");
 		
 		sqlReturnUser = connection.prepareStatement("SELECT * FROM `users` WHERE userName = ( ? )");
+		
+		sqlReturnLabels = connection.prepareStatement("SELECT * FROM `translations` WHERE launguage = ( ? )");
 
 	}
 
@@ -47,9 +50,8 @@ public class DataBaseAccess implements DataAccess {
 	 * @throws Exception
 	 */
 	private void connect() throws Exception {
+		
 		String driver = "com.mysql.jdbc.Driver";
-	        //String url = "jdbc:mysql://localhost:3306/IMSUsers?autoReconnect=true&useSSL=false";
-
 		String url = "jdbc:mysql://192.168.122.228:3306/IMSUsers?autoReconnect=true&useSSL=false"; //URL to connect to database.	
         Class.forName(driver);
         connection = DriverManager.getConnection(url, "ciunas", "1");
@@ -112,7 +114,6 @@ public class DataBaseAccess implements DataAccess {
 		
 		try {
 
-			int result;
 			// Search for user with username
 			sqlReturnUser.setString(1, user.getName());
 
@@ -127,6 +128,26 @@ public class DataBaseAccess implements DataAccess {
 				userReturned.setPassword(resultSet.getBytes(4));
 				userReturned.setSalt(resultSet.getBytes(5));
 			}
+			
+			// Search for launguage labels
+			System.out.println(userReturned.getLaunguage());
+			sqlReturnLabels.setString(1, userReturned.getLaunguage());
+
+			ResultSet resultSet1 = sqlReturnLabels.executeQuery();
+
+			if (!resultSet1.next())
+				return null;
+			else {
+				userReturned.getLabels().add(resultSet1.getString(1));
+				userReturned.getLabels().add(resultSet1.getString(2));
+				userReturned.getLabels().add(resultSet1.getString(3));
+				userReturned.getLabels().add(resultSet1.getString(4));
+				userReturned.getLabels().add(resultSet1.getString(5));
+				userReturned.getLabels().add(resultSet1.getString(6));
+				userReturned.getLabels().add(resultSet1.getString(7));
+				userReturned.getLabels().add(resultSet1.getString(8));
+				userReturned.getLabels().add(resultSet1.getString(9));
+			}
 
 		} // catch SQLException
 		catch (SQLException sqlException) {
@@ -137,7 +158,7 @@ public class DataBaseAccess implements DataAccess {
 	}
 	
 	
-	
+  
 	
 	
 	
@@ -147,6 +168,7 @@ public class DataBaseAccess implements DataAccess {
         try {
         	sqlInsertUser.close();
         	sqlReturnUser.close();
+        	sqlReturnLabels.close();
             connection.close();
         } 
 
@@ -162,10 +184,6 @@ public class DataBaseAccess implements DataAccess {
         close();
     }
 
-//	@Override
-//	public boolean newPerson(IMS_User person) {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
+
 
 }

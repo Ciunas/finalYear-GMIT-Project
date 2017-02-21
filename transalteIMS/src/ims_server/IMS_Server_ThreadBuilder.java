@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -22,6 +24,8 @@ public class IMS_Server_ThreadBuilder  implements Runnable{
 	String[] tokens = null;
 	BufferedReader bReader = null;
 	PrintWriter dataOut = null;
+	ObjectInputStream in = null;
+	ObjectOutputStream out  = null;
 
 	// Bind to client socket.
 	public IMS_Server_ThreadBuilder(Socket socket) {
@@ -31,6 +35,10 @@ public class IMS_Server_ThreadBuilder  implements Runnable{
 
 			bReader = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
 			dataOut = new PrintWriter(serverSocket.getOutputStream());
+			
+			out = new ObjectOutputStream(serverSocket.getOutputStream());
+			in = new ObjectInputStream(serverSocket.getInputStream());
+
 
 		} catch (SocketException se) {
 			se.printStackTrace();
@@ -46,7 +54,13 @@ public class IMS_Server_ThreadBuilder  implements Runnable{
 		
 		System.out.println("getting creadiantiels");
 		try {
+			
 			IMS_User user = ua.getCredentials(bReader, dataOut);
+			out.writeObject(user);
+			out.flush();
+			out.close();
+			in.close();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
@@ -58,24 +72,7 @@ public class IMS_Server_ThreadBuilder  implements Runnable{
 		}
 		
 
-//		try {
-//			database = new DataBaseAccess();
-//		} catch (Exception exception) {
-//			exception.printStackTrace();
-//			System.exit(1);
-//		}
 
-		// IMS_User user = new IMS_User(getUsername(),getPassword() );
-		//     // create database connection
-//      try {
-//          database = new DataBaseAccess();
-//      }
-//      catch (Exception exception) {
-//          exception.printStackTrace();
-//          System.exit(1);
-//      }
-		
-		//database.newUser(user)
 		
 	}
 
