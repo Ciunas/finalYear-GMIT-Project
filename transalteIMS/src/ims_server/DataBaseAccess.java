@@ -3,9 +3,10 @@ package ims_server;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import transalteIMS.IMS_User;
+import ims_user.IMS_User;
 
 /**
  * @author ciunas
@@ -31,12 +32,13 @@ public class DataBaseAccess implements DataAccess {
 
 		connect(); // connect to addressbook database
 
-		sqlInsertUser = connection.prepareStatement("INSERT INTO `users`(`userName`, `password`) VALUES ( ? , ? )");
+		sqlInsertUser = connection.prepareStatement("INSERT INTO `users`(`userName`, `password`, `launguage`) VALUES ( ? , ? , ?)");
 		
-		//sqlReturnUser = connection.prepareStatement("SELECT MAX(personID) FROM users");
+		sqlReturnUser = connection.prepareStatement("SELECT * FROM `users` WHERE userName = ( ? )");
 
 	}
 
+	
 	/**
 	 * connect.
 	 * 
@@ -71,6 +73,7 @@ public class DataBaseAccess implements DataAccess {
 			// insert name and password in DB
 			sqlInsertUser.setString(1, user.getName());
 			sqlInsertUser.setString(2, user.getPassword());
+			sqlInsertUser.setString(3, user.getLaunguage());
 			result = sqlInsertUser.executeUpdate();
 
 			if (result == 0) { // if insert fails, rollback and discontinue
@@ -95,91 +98,40 @@ public class DataBaseAccess implements DataAccess {
 	}
 	
 	
-	
-	
-	
-	
-	
-//	
-//    // Delete an entry. Method returns boolean indicating
-//    // success or failure.
-//    public boolean deleteUser()
-//            throws DataAccessException {
-//        // delete a person from database
-//        try {
-//            int result;
-//
-//            // delete address from addresses table
-//            sqlDeleteAddress.setInt(1, person.getPersonID());
-//            result = sqlDeleteAddress.executeUpdate();
-//
-//            // if delete fails, rollback and discontinue
-//            if (result == 0) {
-//                connection.rollback(); // rollback delete
-//                return false;          // delete unsuccessful
-//            }
-//
-//            // delete phone number from phoneNumbers table
-//            sqlDeletePhone.setInt(1, person.getPersonID());
-//            result = sqlDeletePhone.executeUpdate();
-//
-//            // if delete fails, rollback and discontinue
-//            if (result == 0) {
-//                connection.rollback(); // rollback delete
-//                return false;          // delete unsuccessful
-//            }
-//
-//            // delete email address from emailAddresses table
-//            sqlDeleteEmail.setInt(1, person.getPersonID());
-//            result = sqlDeleteEmail.executeUpdate();
-//
-//            // if delete fails, rollback and discontinue
-//            if (result == 0) {
-//                connection.rollback(); // rollback delete
-//                return false;          // delete unsuccessful
-//            }
-//
-//            // delete name from names table
-//            sqlDeleteName.setInt(1, person.getPersonID());
-//            result = sqlDeleteName.executeUpdate();
-//
-//            // if delete fails, rollback and discontinue
-//            if (result == 0) {
-//                connection.rollback(); // rollback delete
-//                return false;          // delete unsuccessful
-//            }
-//
-//            connection.commit();   // commit delete
-//            System.out.println("commited to database");
-//            return true;           // delete successful
-//        }  // end try
-//
-//        // detect problems updating database
-//        catch (SQLException sqlException) {
-//            // rollback transaction
-//            try {
-//                System.out.println("connection roolbacked");
-//                connection.rollback(); // rollback update
-//                return false;          // update unsuccessful
-//            }
-//
-//            // handle exception rolling back transaction
-//            catch (SQLException exception) {
-//               
-//            }
-//        }
-//    }  // end method deletePerson
-//	
-//	
-//	
-//	
-//	
-//	
-//	
-	
-	
-	
-	
+    /**
+	 * newUser
+	 * 
+	 * @return
+	 */
+	public IMS_User returnUser(IMS_User user) {
+
+		IMS_User userReturned = new IMS_User();
+		
+		try {
+
+			int result;
+			// Search for user with username
+			sqlReturnUser.setString(1, user.getName());
+
+			ResultSet resultSet = sqlReturnUser.executeQuery();
+
+			if (!resultSet.next())
+				return null;
+			else {
+
+				userReturned.setName(resultSet.getString(1));
+				userReturned.setPassword(resultSet.getString(2));
+				userReturned.setLaunguage(resultSet.getString(4));
+
+			}
+
+		} // catch SQLException
+		catch (SQLException sqlException) {
+			return null;
+		}	
+		
+		return userReturned;
+	}
 	
 	
 	
@@ -188,30 +140,18 @@ public class DataBaseAccess implements DataAccess {
 	
 	   // method to close statements and database connection
     public void close() {
-        // close database connection
+    	
         try {
         	sqlInsertUser.close();
-//            sqlPersonID.close();
-//            sqlInsertName.close();
-//            sqlInsertAddress.close();
-//            sqlInsertPhone.close();
-//            sqlInsertEmail.close();
-//            sqlUpdateName.close();
-//            sqlUpdateAddress.close();
-//            sqlUpdatePhone.close();
-//            sqlUpdateEmail.close();
-//            sqlDeleteName.close();
-//            sqlDeleteAddress.close();
-//            sqlDeletePhone.close();
-//            sqlDeleteEmail.close();
+        	sqlReturnUser.close();
             connection.close();
-        }  // end try
+        } 
 
         // detect problems closing statements and connection
         catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
-    }  // end method close
+    }
     
     // Method to clean up database connection. Provided in case
     // CloudscapeDataAccess object is garbage collected.

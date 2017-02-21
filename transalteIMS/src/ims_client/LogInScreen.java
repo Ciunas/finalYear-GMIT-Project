@@ -29,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 
 
 public class LogInScreen extends JDialog {
@@ -51,10 +52,14 @@ public class LogInScreen extends JDialog {
 	public String password = null;
 	public List<String> labels = new ArrayList<String>();
 	private boolean authent  = false;
+	private String[] launguage = { "English", "German", "Spanish",
+		      "French", "Polish"};
+	private JComboBox comboBox;
 	
 	/**
 	 * Create the dialog.
 	 */
+	@SuppressWarnings("rawtypes")
 	public LogInScreen(Frame parent, BufferedReader bReader, PrintWriter dataOut) {
         super(parent, "Login", true);
         
@@ -117,7 +122,7 @@ public class LogInScreen extends JDialog {
         
         panel_1 = new JPanel();
         panel_1.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-        panel_1.setBounds(12, 66, 205, 55);
+        panel_1.setBounds(12, 51, 205, 55);
         panel.add(panel_1);
         panel_1.setLayout(new GridLayout(2, 2, 0, 0));
         
@@ -135,7 +140,7 @@ public class LogInScreen extends JDialog {
         
         lblNewLabel_1 = new JLabel("Lgin to IMS", SwingConstants.CENTER);
         lblNewLabel_1.setFont(new Font("Dialog", Font.BOLD, 12));
-        lblNewLabel_1.setBounds(51, 24, 128, 30);
+        lblNewLabel_1.setBounds(55, 9, 128, 30);
         panel.add(lblNewLabel_1);
         
         JLabel lblNewLabel = new JLabel("");
@@ -143,8 +148,8 @@ public class LogInScreen extends JDialog {
         lblNewLabel.setBounds(250, 12, 128, 121);
         panel.add(lblNewLabel);
         
-        JCheckBox rdbtnNewUser = new JCheckBox("Create New User");
-        rdbtnNewUser.setBounds(44, 134, 149, 23);
+        JCheckBox rdbtnNewUser = new JCheckBox("New User");
+        rdbtnNewUser.setBounds(12, 119, 99, 23);
         rdbtnNewUser.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				btnLogin.setText("New User");
@@ -160,6 +165,10 @@ public class LogInScreen extends JDialog {
 			}
 		});
         panel.add(rdbtnNewUser);
+        
+        comboBox = new JComboBox(launguage);
+        comboBox.setBounds(118, 118, 99, 24);
+        panel.add(comboBox);
         getContentPane().add(bp, BorderLayout.PAGE_END);
  
         pack();
@@ -178,6 +187,7 @@ public class LogInScreen extends JDialog {
 				System.out.println(getUsername());
 				dataOut.println(getUsername());
 				dataOut.println(getPassword());
+				dataOut.println(String.valueOf(comboBox.getSelectedItem()));
 				if(chBox == true)
 					dataOut.println("New");
 				else
@@ -218,5 +228,4 @@ public class LogInScreen extends JDialog {
     public boolean isSucceeded() {
         return succeeded;
     }
-    
 }

@@ -1,30 +1,17 @@
 package ims_server;
 
-import transalteIMS.IMS_User;
+import ims_user.IMS_User;
 
 public interface DataAccess {
     
-	   // Locate specified person by last name. Return 
-	   // AddressBookEntry containing information.
-	   //public ArrayList<AddressBookEntry> findPerson(String lastName);
-	   
-	   // Update information for specified person.
-	   // Return boolean indicating success or failure.
-	   //public boolean savePerson(AddressBookEntry person)
+	// Return details as an User object
+	public IMS_User returnUser(IMS_User user);
 
-	   // Insert a new person. Return boolean indicating 
-	   // success or failure.
-	   public boolean newUser(IMS_User person);
-	      
-	   // Delete specified person. Return boolean indicating if 
-	   // success or failure.
-//	   public boolean deletePerson(
-//	           AddressBookEntry person) throws DataAccessException;
-	      
-	   // close data source connection
-	   public void close();
+	// Insert a new Usser. Return boolean indicating
+	// success or failure.
+	public boolean newUser(IMS_User user);
 
-	   // close data source connection
-	   //public int calculateEntries()throws SQLException;
+	// close data source connection
+	public void close();		
 
-	}  // end interface AddressBookDataAccess
+	} 
