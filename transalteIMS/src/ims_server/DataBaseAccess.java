@@ -32,7 +32,7 @@ public class DataBaseAccess implements DataAccess {
 
 		connect(); // connect to addressbook database
 
-		sqlInsertUser = connection.prepareStatement("INSERT INTO `users`(`userName`, `password`, `launguage`) VALUES ( ? , ? , ?)");
+		sqlInsertUser = connection.prepareStatement("INSERT INTO `users`(`userName`,`launguage`, `password`, `salt`) VALUES ( ? , ? , ?, ?)");
 		
 		sqlReturnUser = connection.prepareStatement("SELECT * FROM `users` WHERE userName = ( ? )");
 
@@ -69,11 +69,14 @@ public class DataBaseAccess implements DataAccess {
 
 		try {
 
-			int result;
-			// insert name and password in DB
+			
+			int result;			
+			// Insert name, launguage, and password in DB
 			sqlInsertUser.setString(1, user.getName());
-			sqlInsertUser.setString(2, user.getPassword());
-			sqlInsertUser.setString(3, user.getLaunguage());
+			sqlInsertUser.setString(2, user.getLaunguage());
+			sqlInsertUser.setBytes(3, user.getPassword());
+			sqlInsertUser.setBytes(4, user.getSalt());
+			
 			result = sqlInsertUser.executeUpdate();
 
 			if (result == 0) { // if insert fails, rollback and discontinue
@@ -119,10 +122,10 @@ public class DataBaseAccess implements DataAccess {
 				return null;
 			else {
 
-				userReturned.setName(resultSet.getString(1));
-				userReturned.setPassword(resultSet.getString(2));
-				userReturned.setLaunguage(resultSet.getString(4));
-
+				userReturned.setName(resultSet.getString(2));
+				userReturned.setLaunguage(resultSet.getString(3));
+				userReturned.setPassword(resultSet.getBytes(4));
+				userReturned.setSalt(resultSet.getBytes(5));
 			}
 
 		} // catch SQLException

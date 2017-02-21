@@ -9,6 +9,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import ims_user.IMS_User;
 
@@ -42,7 +44,18 @@ public class IMS_Server_ThreadBuilder  implements Runnable{
 		
 		UserNew_Authenticate ua = new UserNew_Authenticate();
 		
-		IMS_User user = ua.getCredentials(bReader, dataOut);
+		System.out.println("getting creadiantiels");
+		try {
+			IMS_User user = ua.getCredentials(bReader, dataOut);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 
 //		try {

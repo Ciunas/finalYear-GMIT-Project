@@ -178,27 +178,27 @@ public class LogInScreen extends JDialog {
 	
 	private boolean authenticate(BufferedReader bReader, PrintWriter dataOut) throws IOException {
 		
-		
-		while(authent == false){
-			String  temp;
-			dataOut.println("Start Authentication");
+			
+		String temp;
+		dataOut.println("Start Authentication");
+		dataOut.flush();
+		if ((temp = bReader.readLine()).compareTo("Authentication started") == 0) {
+			System.out.println(getUsername());
+			dataOut.println(getUsername());
+			dataOut.println(getPassword());
+			dataOut.println(String.valueOf(comboBox.getSelectedItem()));
+			if (chBox == true)
+				dataOut.println("New");
+			else
+				dataOut.println("Not New");
+			dataOut.println("Data Sent");
 			dataOut.flush();
-			if((temp = bReader.readLine()).compareTo("Authentication started") == 0){
-				System.out.println(getUsername());
-				dataOut.println(getUsername());
-				dataOut.println(getPassword());
-				dataOut.println(String.valueOf(comboBox.getSelectedItem()));
-				if(chBox == true)
-					dataOut.println("New");
-				else
-					dataOut.println("Not New");
-				dataOut.println("Data Sent");
-				dataOut.flush();
-				authent = true;
-			}	
 		}
-				
-		return true;
+		if ((temp = bReader.readLine()).compareTo("Success") == 0) {
+			return true;
+		} else
+			return false;
+
 	}
 	
 	

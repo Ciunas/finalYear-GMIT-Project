@@ -3,6 +3,8 @@ package ims_server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import ims_user.IMS_User;
 
@@ -14,16 +16,18 @@ public class UserNew_Authenticate {
 	private String password;
 	private String newNotnew;
 	private String launguage;
+	private boolean passwordCheck = false;
 
 	public UserNew_Authenticate() {
 
 	}
 
-	public IMS_User getCredentials(BufferedReader bReader, PrintWriter dataOut) throws IOException {
+	public IMS_User getCredentials(BufferedReader bReader, PrintWriter dataOut) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
 
 		
 		String temp;
+		IMS_User userReturned = new IMS_User();
 		
 		while (authent == false) {
 
@@ -37,28 +41,53 @@ public class UserNew_Authenticate {
 				newNotnew = bReader.readLine();
 
 				if ((temp = bReader.readLine()).compareTo("Data Sent") == 0) {
-					authent = true;
 					System.out.println("User authenticated, username: " + userName + " Password: " + password
 							+ " New or not new: " + newNotnew + " Launguage: " + launguage);
 				}
 			} else {
 				temp = bReader.readLine();
 			}
-		}
-		IMS_User userCreate = new IMS_User(userName, password, launguage);
-		IMS_User userReturned = new IMS_User();
-		// create database connection
-		try {
-			database = new DataBaseAccess();
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			System.exit(1);
-		}
-		if (newNotnew.compareTo("New") == 0) {
 
-			database.newUser(userCreate);
-		} else
-			userReturned = database.returnUser(userCreate);
+			// Create encrypted password
+
+			PasswordEncryptionService pes = new PasswordEncryptionService();
+
+			// create database connection
+			try {
+				database = new DataBaseAccess();
+			} catch (Exception exception) {
+				exception.printStackTrace();
+				System.exit(1);
+			}
+
+			if (newNotnew.compareTo("New") == 0) {
+
+				// Create salt and encrypted password.
+				byte[] salt = pes.generateSalt();
+				byte[] encryptPassword = pes.getEncryptedPassword(password, salt);
+
+				IMS_User userCreate = new IMS_User(userName, encryptPassword, launguage, salt);
+
+				database.newUser(userCreate);
+			} else {
+
+				IMS_User userCreate = new IMS_User(userName);
+				userReturned = database.returnUser(userCreate);
+
+				if (pes.authenticate(password, userReturned.getPassword(), userReturned.getSalt())) {
+					System.out.println("Password correct");
+					dataOut.println("Success");
+					dataOut.flush();
+					authent = true;
+					// System.out.println(userReturned.getPassword().length);
+					// System.out.println(userReturned.getSalt().length);
+				} else {
+					dataOut.println("Failure");
+					dataOut.flush();
+					System.out.println("Password wrong");
+				}
+			}
+		}
 
 		return userReturned;
 	}

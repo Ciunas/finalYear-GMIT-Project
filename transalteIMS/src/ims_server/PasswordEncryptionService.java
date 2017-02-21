@@ -1,4 +1,4 @@
-package ims_client;
+package ims_server;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
