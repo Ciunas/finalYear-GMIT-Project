@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IMS_User implements Serializable{
+
 	
 	/**
 	 * 

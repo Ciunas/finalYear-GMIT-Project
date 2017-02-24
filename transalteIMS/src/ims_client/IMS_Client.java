@@ -28,8 +28,7 @@ public class IMS_Client {
 	private BufferedReader bReader;
 	private PrintWriter dataOut;
 	ObjectInputStream in = null;
-	ObjectOutputStream out  = null;
-	private JLabel label1;
+	ObjectOutputStream out  = null; 
 	private JLabel label;
 
 	/**
@@ -70,17 +69,17 @@ public class IMS_Client {
 			ioException.printStackTrace();
 		}
 		
-		//JFrame frame = new JFrame();
 		LogInScreen pframe = null;
-		pframe = new LogInScreen(frame, bReader, dataOut);
-		pframe.setVisible(true);
+		//pframe = new LogInScreen(frame, bReader, dataOut);
+		//pframe.setVisible(true);
 		
 		if(pframe.isCancel())
 			System.exit(0);
 
-		IMS_User user = new IMS_User();
+		IMS_User user = new IMS_User("Ciunas");
 		
-		user = getUserObject();
+		
+		//user = getUserObject();
 		in.close();
 		out.close();
 		System.out.println("UserName: " + user.getName() + " User Launguage: "+ user.getLaunguage() + " Size of ArryayList: " + user.getLabel(2));
@@ -92,7 +91,7 @@ public class IMS_Client {
 
 	
 	/**
-	 * Sends a IMS_User Object to the client application after use authenticated.
+	 * Sends a IMS_User Object to the client application after user authenticated.
 	 * @return IMS_User
 	 * @throws ClassNotFoundException
 	 * @throws IOException
@@ -110,13 +109,13 @@ public class IMS_Client {
 	 * @param IMS_User
 	 */
 	private void initialize( IMS_User user ) {
-		frame = new JFrame();
+		
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 451, 710);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		JLabel lblInstantMessaging = new JLabel("Instant Messaging", SwingConstants.CENTER);
-		
+		frame.getContentPane().add(lblInstantMessaging, BorderLayout.NORTH);
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new BorderLayout(0, 0));
@@ -127,7 +126,7 @@ public class IMS_Client {
 
 		
 		
-		frame.getContentPane().add(lblInstantMessaging, BorderLayout.NORTH);
+		
 	}
 
 }

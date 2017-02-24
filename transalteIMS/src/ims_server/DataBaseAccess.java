@@ -138,6 +138,7 @@ public class DataBaseAccess implements DataAccess {
 			if (!resultSet1.next())
 				return null;
 			else {
+				
 				userReturned.getLabels().add(resultSet1.getString(1));
 				userReturned.getLabels().add(resultSet1.getString(2));
 				userReturned.getLabels().add(resultSet1.getString(3));
@@ -149,7 +150,7 @@ public class DataBaseAccess implements DataAccess {
 				userReturned.getLabels().add(resultSet1.getString(9));
 			}
 
-		} // catch SQLException
+		} 
 		catch (SQLException sqlException) {
 			return null;
 		}	
