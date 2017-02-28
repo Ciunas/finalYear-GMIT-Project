@@ -21,6 +21,7 @@ public class DataBaseAccess implements DataAccess {
 	private PreparedStatement sqlInsertUser;
 	private PreparedStatement sqlReturnUser;
 	private PreparedStatement sqlReturnLabels;
+	private PreparedStatement sqlUpdateStatusIp;
 
 	/**
 	 * DataBaseAccess
@@ -33,13 +34,15 @@ public class DataBaseAccess implements DataAccess {
 
 		connect(); // connect to addressbook database
 
-		sqlInsertUser = connection.prepareStatement("INSERT INTO `users`(`userName`,`launguage`, `password`, `salt`) VALUES ( ? , ? , ?, ?)");
+		sqlInsertUser = connection.prepareStatement("INSERT INTO `users`(`userName`,`launguage`, `password`, `salt`) VALUES ( ? , ? , ?, ?, ?, ? )");
+		
+		sqlUpdateStatusIp = connection.prepareStatement("UPDATE `users` SET status = ( ? ), ip = ( ? ) WHERE userName = ( ? )");
 		
 		sqlReturnUser = connection.prepareStatement("SELECT * FROM `users` WHERE userName = ( ? )");
 		
 		sqlReturnLabels = connection.prepareStatement("SELECT * FROM `translations` WHERE launguage = ( ? )");
 
-	}
+	} 
 
 	
 	/**
@@ -73,11 +76,13 @@ public class DataBaseAccess implements DataAccess {
 
 			
 			int result;			
-			// Insert name, launguage, and password in DB
+			// Insert name, launguage, password, status and IP in DB
 			sqlInsertUser.setString(1, user.getName());
 			sqlInsertUser.setString(2, user.getLaunguage());
 			sqlInsertUser.setBytes(3, user.getPassword());
 			sqlInsertUser.setBytes(4, user.getSalt());
+			sqlInsertUser.setInt(5, user.getStatus());
+			sqlInsertUser.setString(6, user.getIp());
 			
 			result = sqlInsertUser.executeUpdate();
 
@@ -113,6 +118,25 @@ public class DataBaseAccess implements DataAccess {
 		IMS_User userReturned = new IMS_User();
 		
 		try {
+			
+			
+			
+			int result;			
+			// Insert name, launguage, password, status and IP in DB
+			sqlUpdateStatusIp.setInt(1, user.getStatus());
+			sqlUpdateStatusIp.setString(2, user.getIp());
+			sqlUpdateStatusIp.setString(3, user.getName());
+			
+			result = sqlUpdateStatusIp.executeUpdate();
+
+			if (result == 0) { // if insert fails, rollback and discontinue
+				connection.rollback(); // rollback insert
+				System.out.println("failure updateing data");
+
+			}
+			
+			
+			
 
 			// Search for user with username
 			sqlReturnUser.setString(1, user.getName());
@@ -127,6 +151,8 @@ public class DataBaseAccess implements DataAccess {
 				userReturned.setLaunguage(resultSet.getString(3));
 				userReturned.setPassword(resultSet.getBytes(4));
 				userReturned.setSalt(resultSet.getBytes(5));
+				userReturned.setStatus(resultSet.getInt(6));
+				userReturned.setIp(resultSet.getString(7));
 			}
 			
 			// Search for launguage labels
@@ -170,6 +196,7 @@ public class DataBaseAccess implements DataAccess {
         	sqlInsertUser.close();
         	sqlReturnUser.close();
         	sqlReturnLabels.close();
+        	sqlUpdateStatusIp.close();
             connection.close();
         } 
 

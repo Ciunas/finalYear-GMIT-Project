@@ -26,7 +26,7 @@ import org.java_websocket.handshake.ServerHandshake;
 
 public class ChatClientThread extends JFrame implements ActionListener {
 	
-	private static final long serialVersionUID = -6056260699202978657L;
+	private static final long serialVersionUID = 1L;
 
 	private final JTextField uriField;
 	private final JButton connect;

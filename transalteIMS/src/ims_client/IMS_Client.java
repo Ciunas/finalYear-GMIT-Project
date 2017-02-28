@@ -70,16 +70,16 @@ public class IMS_Client {
 		}
 		
 		LogInScreen pframe = null;
-		//pframe = new LogInScreen(frame, bReader, dataOut);
-		//pframe.setVisible(true);
+		pframe = new LogInScreen(frame, bReader, dataOut);
+		pframe.setVisible(true);
 		
 		if(pframe.isCancel())
 			System.exit(0);
 
-		IMS_User user = new IMS_User("Ciunas");
+		IMS_User user = new IMS_User();
 		
 		
-		//user = getUserObject();
+		user = getUserObject();
 		in.close();
 		out.close();
 		System.out.println("UserName: " + user.getName() + " User Launguage: "+ user.getLaunguage() + " Size of ArryayList: " + user.getLabel(2));

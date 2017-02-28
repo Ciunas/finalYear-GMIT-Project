@@ -13,27 +13,57 @@ public class IMS_User implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private String launguage;
-
 	private String name;
 	private byte[] password;
 	private byte[] salt;
 	private List<String> labels = new ArrayList<String>();
+	private int status;
+	private String ip;
 	
 	
-	public IMS_User(String name, byte[] password, String launguage, byte[] salt) {
+	
+	public IMS_User(String name, byte[] password, String launguage, byte[] salt, int status, String ip) {
 		super();
 		this.name = name;
 		this.password = password;
 		this.launguage = launguage;
 		this.salt = salt;
+		this.ip = ip;
+		this.status = status;
+	}
+	
+	public IMS_User(String name, int status, String ip) {
+		super();
+		this.name = name;
+		this.status = status;
+		this.ip = ip;
+	}
+	
+	
+	public IMS_User(String name) {
+		this.name = name;
 	}
 
 	
 	//Getter and setters
 	
-	public IMS_User(String name) {
-		super();
-		this.name = name;
+	public int getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+
+	public String getIp() {
+		return ip;
+	}
+
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
 
@@ -61,6 +91,7 @@ public class IMS_User implements Serializable{
 		return labels;
 	}
 	
+	
 	public String getLabel(int a ){
 		
 		return labels.get(a);
@@ -74,15 +105,23 @@ public class IMS_User implements Serializable{
 	public IMS_User() {
 	}
 
+
+
 	public String getName() {
 		return name;
 	}
+	
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	
 	public byte[] getPassword() {
 		return password;
 	}
+	
+	
 	public void setPassword(byte[] password) {
 		this.password = password;
 	}

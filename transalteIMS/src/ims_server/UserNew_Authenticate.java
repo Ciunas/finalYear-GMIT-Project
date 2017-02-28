@@ -3,6 +3,7 @@ package ims_server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
@@ -16,8 +17,9 @@ public class UserNew_Authenticate {
 	private String password;
 	private String newNotnew;
 	private String launguage;
-	private boolean passwordCheck = false;
-
+	private String tempIP;
+	String temp;
+	
 	public UserNew_Authenticate() {
 
 	}
@@ -26,7 +28,7 @@ public class UserNew_Authenticate {
 
 
 		
-		String temp;
+
 		IMS_User userReturned = new IMS_User();
 		
 		while (authent == false) {
@@ -38,11 +40,12 @@ public class UserNew_Authenticate {
 				userName = bReader.readLine();
 				password = bReader.readLine();
 				launguage = bReader.readLine();
+				tempIP = bReader.readLine();
 				newNotnew = bReader.readLine();
 
 				if ((temp = bReader.readLine()).compareTo("Data Sent") == 0) {
 					System.out.println("User authenticated, username: " + userName + " Password: " + password
-							+ " New or not new: " + newNotnew + " Launguage: " + launguage);
+							+ " New or not new: " + newNotnew + " Launguage: " + launguage + " IP: " + tempIP );
 				}
 			} else {
 				temp = bReader.readLine();
@@ -66,12 +69,13 @@ public class UserNew_Authenticate {
 				byte[] salt = pes.generateSalt();
 				byte[] encryptPassword = pes.getEncryptedPassword(password, salt);
 
-				IMS_User userCreate = new IMS_User(userName, encryptPassword, launguage, salt);
+				
+				IMS_User userCreate = new IMS_User(userName, encryptPassword, launguage, salt, 0, tempIP);
 
 				database.newUser(userCreate);
 			} else {
 
-				IMS_User userCreate = new IMS_User(userName);
+				IMS_User userCreate = new IMS_User(userName, 1, tempIP );
 				userReturned = database.returnUser(userCreate);
 
 				if (pes.authenticate(password, userReturned.getPassword(), userReturned.getSalt())) {

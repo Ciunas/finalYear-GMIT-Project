@@ -14,6 +14,7 @@ import java.awt.event.ItemListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -53,6 +54,7 @@ public class LogInScreen extends JDialog {
 	public String name = null;
 	public String password = null;
 	public List<String> labels = new ArrayList<String>();
+	public InetAddress ip;
 
 	private String[] launguage = { "English", "German", "Spanish", "French", "Polish" };
 	@SuppressWarnings("rawtypes")
@@ -189,6 +191,8 @@ public class LogInScreen extends JDialog {
 	private boolean authenticate(BufferedReader bReader, PrintWriter dataOut) throws IOException {
 
 		String temp;
+	    ip = InetAddress.getLocalHost();
+	    
 		dataOut.println("Start Authentication");
 		dataOut.flush();
 		if ((temp = bReader.readLine()).compareTo("Authentication started") == 0) {
@@ -196,6 +200,7 @@ public class LogInScreen extends JDialog {
 			dataOut.println(getUsername());
 			dataOut.println(getPassword());
 			dataOut.println(String.valueOf(comboBox.getSelectedItem()));
+			dataOut.println(ip.getHostAddress());
 			if (chBox == true)
 				dataOut.println("New");
 			else
