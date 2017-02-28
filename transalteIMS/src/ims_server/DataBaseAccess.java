@@ -22,6 +22,7 @@ public class DataBaseAccess implements DataAccess {
 	private PreparedStatement sqlReturnUser;
 	private PreparedStatement sqlReturnLabels;
 	private PreparedStatement sqlUpdateStatusIp;
+	private PreparedStatement sqlReturnOnlineUser;
 
 	/**
 	 * DataBaseAccess
@@ -41,9 +42,10 @@ public class DataBaseAccess implements DataAccess {
 		sqlReturnUser = connection.prepareStatement("SELECT * FROM `users` WHERE userName = ( ? )");
 		
 		sqlReturnLabels = connection.prepareStatement("SELECT * FROM `translations` WHERE launguage = ( ? )");
+		
+		sqlReturnOnlineUser = connection.prepareStatement("SELECT `userName`, `ip` FROM `users` WHERE status = ( ? )");
 
 	} 
-
 	
 	/**
 	 * connect.
@@ -115,14 +117,12 @@ public class DataBaseAccess implements DataAccess {
 	 */
 	public IMS_User returnUser(IMS_User user) {
 
-		IMS_User userReturned = new IMS_User();
+		IMS_User userReturned;
 		
 		try {
-			
-			
-			
+				
+			//Insert new IP and Change status of User to active.
 			int result;			
-			// Insert name, launguage, password, status and IP in DB
 			sqlUpdateStatusIp.setInt(1, user.getStatus());
 			sqlUpdateStatusIp.setString(2, user.getIp());
 			sqlUpdateStatusIp.setString(3, user.getName());
@@ -133,12 +133,14 @@ public class DataBaseAccess implements DataAccess {
 				connection.rollback(); // rollback insert
 				System.out.println("failure updateing data");
 
+			}else{
+	            connection.commit();   // commit update
 			}
 			
 			
-			
+			userReturned  =  returnOnlineUser(user);
 
-			// Search for user with username
+			// Search for user with username and get details;
 			sqlReturnUser.setString(1, user.getName());
 
 			ResultSet resultSet = sqlReturnUser.executeQuery();
@@ -146,7 +148,8 @@ public class DataBaseAccess implements DataAccess {
 			if (!resultSet.next())
 				return null;
 			else {
-
+				
+				// get name, launguage, password, status and IP in DB
 				userReturned.setName(resultSet.getString(2));
 				userReturned.setLaunguage(resultSet.getString(3));
 				userReturned.setPassword(resultSet.getBytes(4));
@@ -175,6 +178,7 @@ public class DataBaseAccess implements DataAccess {
 				userReturned.getLabels().add(resultSet1.getString(8));
 				userReturned.getLabels().add(resultSet1.getString(9));
 			}
+			
 
 		} 
 		catch (SQLException sqlException) {
@@ -184,6 +188,45 @@ public class DataBaseAccess implements DataAccess {
 		return userReturned;
 	}
 	
+	
+	   /**
+		 * newUser
+		 * 
+		 * @return
+		 */
+		public IMS_User returnOnlineUser(IMS_User user) {
+
+//			int i = 0;
+			IMS_User userReturned = new IMS_User();
+			
+			try {
+						
+				
+				// Search for launguage labels
+				System.out.println("Return Online users");
+				sqlReturnOnlineUser.setInt(1, 1);
+				ResultSet resultSet2 = sqlReturnOnlineUser.executeQuery();
+
+				if (!resultSet2.next())
+					return null;
+				else {
+					
+				     do {
+				    	 System.out.println(resultSet2.getString(2));
+				    		userReturned.getOnlineUsers().add(resultSet2.getString(1));
+							userReturned.getOnlineUsers().add(resultSet2.getString(2));
+							//i+=2;
+		                } while (resultSet2.next());
+									
+				}
+
+			} 
+			catch (SQLException sqlException) {
+				return null;
+			}	
+			
+			return userReturned;
+		}
 	
   
 	
@@ -197,6 +240,7 @@ public class DataBaseAccess implements DataAccess {
         	sqlReturnUser.close();
         	sqlReturnLabels.close();
         	sqlUpdateStatusIp.close();
+        	sqlReturnOnlineUser.close();
             connection.close();
         } 
 

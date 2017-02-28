@@ -16,7 +16,8 @@ public class IMS_User implements Serializable{
 	private String name;
 	private byte[] password;
 	private byte[] salt;
-	private List<String> labels = new ArrayList<String>();
+	public List<String> labels = new ArrayList<String>();
+	public List<String> onlineUsers = new ArrayList<String>();
 	private int status;
 	private String ip;
 	
@@ -101,6 +102,25 @@ public class IMS_User implements Serializable{
 	public void setLabels(List<String> labels) {
 		this.labels = labels;
 	}
+	
+	
+	public List<String> getOnlineUsers() {
+		return onlineUsers;
+	}
+	
+	
+	public String getOnlineUsers(int a ){
+		
+		return onlineUsers.get(a);
+	}
+
+
+	public void setOnlineUsers(List<String> labels) {
+		this.onlineUsers = labels;
+	}
+	
+	
+	
 	
 	public IMS_User() {
 	}

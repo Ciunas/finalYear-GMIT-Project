@@ -73,6 +73,7 @@ public class UserNew_Authenticate {
 				IMS_User userCreate = new IMS_User(userName, encryptPassword, launguage, salt, 0, tempIP);
 
 				database.newUser(userCreate);
+				
 			} else {
 
 				IMS_User userCreate = new IMS_User(userName, 1, tempIP );

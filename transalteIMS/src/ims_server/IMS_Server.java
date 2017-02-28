@@ -10,7 +10,7 @@ public class IMS_Server {
 	    	
 	        ServerSocket serverSocket = null;
 	        boolean proxyRunnig = true;
-	        int port = 1234;	
+	        int port = 1235;	
 	     
 	        try {
 	            serverSocket = new ServerSocket(port);
