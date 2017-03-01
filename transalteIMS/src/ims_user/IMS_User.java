@@ -23,7 +23,7 @@ public class IMS_User implements Serializable{
 	
 	
 	
-	public IMS_User(String name, byte[] password, String launguage, byte[] salt, int status, String ip) {
+	public IMS_User(String name, String launguage, byte[] password, byte[] salt, int status, String ip) {
 		super();
 		this.name = name;
 		this.password = password;

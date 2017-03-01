@@ -70,27 +70,47 @@ public class UserNew_Authenticate {
 				byte[] encryptPassword = pes.getEncryptedPassword(password, salt);
 
 				
-				IMS_User userCreate = new IMS_User(userName, encryptPassword, launguage, salt, 0, tempIP);
+				IMS_User userCreate = new IMS_User(userName, launguage, encryptPassword, salt, 1, tempIP);
 
-				database.newUser(userCreate);
+				if(database.newUser(userCreate) != false){
+					dataOut.println("Success");
+					dataOut.flush();
+					userReturned = database.returnUser(userCreate);
+					authent = true;
+				}else{
+					dataOut.println("Failure");
+					dataOut.flush();
+					System.out.println("No User");
+				}
+		
 				
 			} else {
 
-				IMS_User userCreate = new IMS_User(userName, 1, tempIP );
-				userReturned = database.returnUser(userCreate);
+				System.out.println(userName);
+				IMS_User userCreate = new IMS_User(userName, 1, tempIP);
+				System.out.println(userCreate.getName());
 
-				if (pes.authenticate(password, userReturned.getPassword(), userReturned.getSalt())) {
-					System.out.println("Password correct");
-					dataOut.println("Success");
-					dataOut.flush();
-					authent = true;
-					// System.out.println(userReturned.getPassword().length);
-					// System.out.println(userReturned.getSalt().length);
-				} else {
+				if ((userReturned = database.returnUser(userCreate)) != null) {
+
+					if (pes.authenticate(password, userReturned.getPassword(), userReturned.getSalt())) {
+						System.out.println("Password correct");
+						System.out.println(userReturned.getLaunguage());
+						dataOut.println("Success");
+						dataOut.flush();
+						authent = true;
+						// System.out.println(userReturned.getPassword().length);
+						// System.out.println(userReturned.getSalt().length);
+					} else {
+						dataOut.println("Failure");
+						dataOut.flush();
+						System.out.println("Password wrong");
+					}
+				} else{
 					dataOut.println("Failure");
 					dataOut.flush();
-					System.out.println("Password wrong");
+					System.out.println("No User");
 				}
+					
 			}
 		}
 

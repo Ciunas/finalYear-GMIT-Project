@@ -23,6 +23,7 @@ public class DataBaseAccess implements DataAccess {
 	private PreparedStatement sqlReturnLabels;
 	private PreparedStatement sqlUpdateStatusIp;
 	private PreparedStatement sqlReturnOnlineUser;
+	private PreparedStatement sqlReturnIfUserExists;
 
 	/**
 	 * DataBaseAccess
@@ -35,7 +36,7 @@ public class DataBaseAccess implements DataAccess {
 
 		connect(); // connect to addressbook database
 
-		sqlInsertUser = connection.prepareStatement("INSERT INTO `users`(`userName`,`launguage`, `password`, `salt`) VALUES ( ? , ? , ?, ?, ?, ? )");
+		sqlInsertUser = connection.prepareStatement("INSERT INTO `users`(`userName`,`launguage`, `password`, `salt`, `status`, `ip`) VALUES ( ? , ? , ?, ?, ?, ? )");
 		
 		sqlUpdateStatusIp = connection.prepareStatement("UPDATE `users` SET status = ( ? ), ip = ( ? ) WHERE userName = ( ? )");
 		
@@ -45,6 +46,7 @@ public class DataBaseAccess implements DataAccess {
 		
 		sqlReturnOnlineUser = connection.prepareStatement("SELECT `userName`, `ip` FROM `users` WHERE status = ( ? )");
 
+		sqlReturnIfUserExists = connection.prepareStatement("SELECT `userName` FROM `users` WHERE `userName` = ( ? )");
 	} 
 	
 	/**
@@ -76,6 +78,16 @@ public class DataBaseAccess implements DataAccess {
 
 		try {
 
+			
+			sqlReturnIfUserExists.setString(1, user.getName());
+			ResultSet resultSets = sqlReturnIfUserExists.executeQuery();
+
+			if (!resultSets.next())
+				System.out.println("User Does not exist");
+			else {
+			
+				return false;
+			}
 			
 			int result;			
 			// Insert name, launguage, password, status and IP in DB
@@ -120,6 +132,16 @@ public class DataBaseAccess implements DataAccess {
 		IMS_User userReturned;
 		
 		try {
+			
+			sqlReturnIfUserExists.setString(1, user.getName());
+			ResultSet resultSets = sqlReturnIfUserExists.executeQuery();
+
+			if (!resultSets.next())
+				return null;
+			else {
+				System.out.println("User exists");
+				
+			}
 				
 			//Insert new IP and Change status of User to active.
 			int result;			
@@ -177,6 +199,7 @@ public class DataBaseAccess implements DataAccess {
 				userReturned.getLabels().add(resultSet1.getString(7));
 				userReturned.getLabels().add(resultSet1.getString(8));
 				userReturned.getLabels().add(resultSet1.getString(9));
+				userReturned.getLabels().add(resultSet1.getString(10));
 			}
 			
 
@@ -196,7 +219,6 @@ public class DataBaseAccess implements DataAccess {
 		 */
 		public IMS_User returnOnlineUser(IMS_User user) {
 
-//			int i = 0;
 			IMS_User userReturned = new IMS_User();
 			
 			try {
@@ -215,7 +237,6 @@ public class DataBaseAccess implements DataAccess {
 				    	 System.out.println(resultSet2.getString(2));
 				    		userReturned.getOnlineUsers().add(resultSet2.getString(1));
 							userReturned.getOnlineUsers().add(resultSet2.getString(2));
-							//i+=2;
 		                } while (resultSet2.next());
 									
 				}

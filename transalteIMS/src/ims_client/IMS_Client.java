@@ -27,6 +27,7 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 /**
  * @author ciunas
@@ -35,7 +36,7 @@ import java.awt.event.ActionEvent;
 public class IMS_Client {
 
     private Socket clinetSocket;
-	private JFrame frame;
+	private JFrame frmInstantMessaginService;
 	private String hostname = "localhost";
 	private BufferedReader bReader;
 	private PrintWriter dataOut;
@@ -43,9 +44,10 @@ public class IMS_Client {
 	ObjectOutputStream out  = null;
 	private JTable table;
 	DefaultTableModel tableModel;
-	
-    private String[] columns = new String[] {	//headers for the table
-         "Name", "IP" };
+	private JLabel lblNewLabel;
+	private JScrollPane scrollPane;
+	private JPanel panel;
+	private JLabel lblLoggedInAs;
 
 	/**
 	 * Launch the application.
@@ -55,7 +57,7 @@ public class IMS_Client {
 			public void run() {
 				try {
 					IMS_Client window = new IMS_Client();
-					window.frame.setVisible(true);
+					window.frmInstantMessaginService.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace(); 
 					}
@@ -71,10 +73,11 @@ public class IMS_Client {
 	 */
 	public IMS_Client() throws ClassNotFoundException, IOException {
 
+		IMS_User user = new IMS_User();
 		try {
 
 			// make connection
-			clinetSocket = new Socket(hostname , 1235);
+			clinetSocket = new Socket(hostname , 1230);
 			// get streams
 			bReader = new BufferedReader(new InputStreamReader(clinetSocket.getInputStream()));
 			dataOut = new PrintWriter(clinetSocket.getOutputStream());			
@@ -86,13 +89,12 @@ public class IMS_Client {
 		}
 		
 		LogInScreen pframe = null;
-		pframe = new LogInScreen(frame, bReader, dataOut);
+		pframe = new LogInScreen(frmInstantMessaginService, bReader, dataOut);
 		pframe.setVisible(true);
 		
 		if(pframe.isCancel())
 			System.exit(0);
-
-		IMS_User user = new IMS_User();
+	
 		
 		
 		user = getUserObject();
@@ -128,20 +130,24 @@ public class IMS_Client {
 	 */
 	private void initialize( IMS_User user ) {
 		
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 350, 424);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
-		JLabel lblInstantMessaging = new JLabel("Instant Messaging", SwingConstants.CENTER);
-		frame.getContentPane().add(lblInstantMessaging, BorderLayout.NORTH);
-		JPanel panel = new JPanel();
-		frame.getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new MigLayout("", "[grow]", "[grow][grow][grow][grow][grow]"));
+		frmInstantMessaginService = new JFrame();
+
+		frmInstantMessaginService.setBounds(100, 100, 372, 356);
+		frmInstantMessaginService.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
+		panel = new JPanel();
+		frmInstantMessaginService.getContentPane().add(panel, BorderLayout.CENTER);
+		panel.setLayout(new MigLayout("", "[grow]", "[grow][grow][][][][grow]"));
 		
-		JScrollPane scrollPane = new JScrollPane();
-		panel.add(scrollPane, "cell 0 0 1 4,grow");
+		lblLoggedInAs = new JLabel(user.getLabel(7) + " " + user.getName());
+		panel.add(lblLoggedInAs, "cell 0 0 1 2");
+		
+		scrollPane = new JScrollPane();
+		panel.add(scrollPane, "cell 0 2,grow");
 	
      
+		
+	    String[] columns = new String[] {	//headers for the table
+	    		user.getLabel(3),user.getLabel(8), "IP" };
         
         //create my table using table modeel so rows does not need to be specified
         tableModel = new DefaultTableModel(columns, 0);      // The 0 argument is number rows.
@@ -152,7 +158,7 @@ public class IMS_Client {
 		for (int i = 0; i < user.onlineUsers.size(); i+=2) {
 			
 			
-			Object[] objs = {user.getOnlineUsers(i), user.getOnlineUsers(i+1) };
+			Object[] objs = { i+1,user.getOnlineUsers(i), user.getOnlineUsers(i+1) };
 
 			tableModel.addRow(objs);
 		}
@@ -161,14 +167,13 @@ public class IMS_Client {
 		
 		scrollPane.setViewportView(table);
 		
-		JLabel lblUsersOnline = new JLabel("Users Online:");
-		scrollPane.setColumnHeaderView(lblUsersOnline);
-		
 		JPanel panel_1 = new JPanel();
-		panel.add(panel_1, "cell 0 4,grow");
-		panel_1.setLayout(new MigLayout("", "[grow][grow][grow][grow][grow]", "[grow]"));
+		panel.add(panel_1, "cell 0 5,grow");
+		panel_1.setLayout(new MigLayout("", "[grow][][grow]", "[grow]"));
 		
-		JButton btnConnect = new JButton("Connect:");
+		frmInstantMessaginService.setTitle(user.getLabel(9));
+		
+		JButton btnConnect = new JButton(user.getLabel(2)); 
 		btnConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -179,9 +184,14 @@ public class IMS_Client {
 				System.out.println(ip);
 			}
 		});
-		panel_1.add(btnConnect, "cell 3 0");
-
+		panel_1.add(btnConnect, "cell 1 0");
 		
+		lblNewLabel = new JLabel(user.getLabel(4) + " Ciunas Bennet");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel.setFont(new Font("Cantarell", Font.BOLD, 12));
+		frmInstantMessaginService.getContentPane().add(lblNewLabel, BorderLayout.SOUTH);
+
+
 		
 		
 	}
