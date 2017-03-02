@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import ims_server.IMS_Server_ThreadBuilder;
 import ims_user.IMS_User;
 
 import java.awt.BorderLayout;
@@ -28,6 +29,7 @@ import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import javax.swing.border.MatteBorder;
 
 /**
  * @author ciunas
@@ -48,6 +50,7 @@ public class IMS_Client {
 	private JScrollPane scrollPane;
 	private JPanel panel;
 	private JLabel lblLoggedInAs;
+	private JPanel panel_2;
 
 	/**
 	 * Launch the application.
@@ -74,34 +77,34 @@ public class IMS_Client {
 	public IMS_Client() throws ClassNotFoundException, IOException {
 
 		IMS_User user = new IMS_User();
-		try {
-
-			// make connection
-			clinetSocket = new Socket(hostname , 1230);
-			// get streams
-			bReader = new BufferedReader(new InputStreamReader(clinetSocket.getInputStream()));
-			dataOut = new PrintWriter(clinetSocket.getOutputStream());			
-			in = new ObjectInputStream(clinetSocket.getInputStream());
-			out = new ObjectOutputStream(clinetSocket.getOutputStream());
-		}
-		catch (IOException ioException) {
-			ioException.printStackTrace();
-		}
-		
-		LogInScreen pframe = null;
-		pframe = new LogInScreen(frmInstantMessaginService, bReader, dataOut);
-		pframe.setVisible(true);
-		
-		if(pframe.isCancel())
-			System.exit(0);
-	
-		
-		
-		user = getUserObject();
-		in.close();
-		out.close();
-		System.out.println("UserName: " + user.getName() + " User Launguage: "+ user.getLaunguage() + " Size of ArryayList: " 
-		+ user.labels.size() );
+//		try {
+//
+//			// make connection
+//			clinetSocket = new Socket(hostname , 1234);
+//			// get streams
+//			bReader = new BufferedReader(new InputStreamReader(clinetSocket.getInputStream()));
+//			dataOut = new PrintWriter(clinetSocket.getOutputStream());			
+//			in = new ObjectInputStream(clinetSocket.getInputStream());
+//			out = new ObjectOutputStream(clinetSocket.getOutputStream());
+//		}
+//		catch (IOException ioException) {
+//			ioException.printStackTrace();
+//		}
+//		
+//		LogInScreen pframe = null;
+//		pframe = new LogInScreen(frmInstantMessaginService, bReader, dataOut);
+//		pframe.setVisible(true);
+//		
+//		if(pframe.isCancel())
+//			System.exit(0);
+//	
+//		
+//		
+//		user = getUserObject();
+//		in.close();
+//		out.close();
+//		System.out.println("UserName: " + user.getName() + " User Launguage: "+ user.getLaunguage() + " Size of ArryayList: " 
+//		+ user.labels.size() );
 		
 		initialize(user);
 
@@ -136,13 +139,18 @@ public class IMS_Client {
 		frmInstantMessaginService.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		panel = new JPanel();
 		frmInstantMessaginService.getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new MigLayout("", "[grow]", "[grow][grow][][][][grow]"));
+		panel.setLayout(new MigLayout("", "[grow]", "[grow][][grow]"));
+		
+		panel_2 = new JPanel();
+		panel_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		panel.add(panel_2, "cell 0 0,grow");
+		panel_2.setLayout(new MigLayout("", "[grow]", "[grow][grow]"));
 		
 		lblLoggedInAs = new JLabel(user.getLabel(7) + " " + user.getName());
-		panel.add(lblLoggedInAs, "cell 0 0 1 2");
+		panel_2.add(lblLoggedInAs, "cell 0 0 1 2");
 		
 		scrollPane = new JScrollPane();
-		panel.add(scrollPane, "cell 0 2,grow");
+		panel.add(scrollPane, "cell 0 1,grow");
 	
      
 		
@@ -168,7 +176,7 @@ public class IMS_Client {
 		scrollPane.setViewportView(table);
 		
 		JPanel panel_1 = new JPanel();
-		panel.add(panel_1, "cell 0 5,grow");
+		panel.add(panel_1, "cell 0 2,grow");
 		panel_1.setLayout(new MigLayout("", "[grow][][grow]", "[grow]"));
 		
 		frmInstantMessaginService.setTitle(user.getLabel(9));
@@ -180,15 +188,22 @@ public class IMS_Client {
 				int selectedRowIndex = table.getSelectedRow();
 				String  name = (String) table.getModel().getValueAt(selectedRowIndex, 0);
 				String  ip = (String) table.getModel().getValueAt(selectedRowIndex, 1);
-				System.out.println(name);
-				System.out.println(ip);
+				
+//				IMS_Client_ConnectThread cThreadframe = null;
+//				cThreadframe = new IMS_Client_ConnectThread(name, ip);
+//				cThreadframe.setVisible(true);
+				
+				IMS_Client_ConnectThread cThreadframe = new IMS_Client_ConnectThread(name, ip);
+		        new Thread(cThreadframe).start();
+//				System.out.println(name);
+//				System.out.println(ip);
 			}
 		});
 		panel_1.add(btnConnect, "cell 1 0");
 		
-		lblNewLabel = new JLabel(user.getLabel(4) + " Ciunas Bennet");
+		lblNewLabel = new JLabel("<dynamic> Ciunas Bennett");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel.setFont(new Font("Cantarell", Font.BOLD, 12));
+		lblNewLabel.setFont(new Font("Cantarell", Font.BOLD | Font.ITALIC, 12));
 		frmInstantMessaginService.getContentPane().add(lblNewLabel, BorderLayout.SOUTH);
 
 

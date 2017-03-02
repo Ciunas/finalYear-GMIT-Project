@@ -38,6 +38,7 @@ public class ChatClientThread extends JFrame implements ActionListener {
 
 	public ChatClientThread( String defaultlocation ) {
 		super( "WebSocket Chat Client" );
+		
 		Container c = getContentPane();
 		GridLayout layout = new GridLayout();
 		layout.setColumns( 1 );
@@ -76,6 +77,7 @@ public class ChatClientThread extends JFrame implements ActionListener {
 		setSize( d );
 
 		addWindowListener( new java.awt.event.WindowAdapter() {
+			
 			@Override
 			public void windowClosing( WindowEvent e ) {
 				if( cc != null ) {
@@ -92,6 +94,7 @@ public class ChatClientThread extends JFrame implements ActionListener {
 	public void actionPerformed( ActionEvent e ) {
 
 		if( e.getSource() == chatField ) {
+			
 			if( cc != null ) {
 				cc.send( chatField.getText() );
 				chatField.setText( "" );
