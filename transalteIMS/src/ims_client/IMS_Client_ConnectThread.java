@@ -1,7 +1,6 @@
 package ims_client;
 
 
-
 import java.awt.BorderLayout;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -29,11 +28,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import javax.swing.JTextPane;
 
-/**
- * @author ciunas
- *
- */
-public class IMS_Client_WebSockConnectThread extends JFrame implements Runnable {
+public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 
 	/**
 	 * 
@@ -58,24 +53,12 @@ public class IMS_Client_WebSockConnectThread extends JFrame implements Runnable 
 	 * 
 	 */
 
-	public IMS_Client_WebSockConnectThread(String name, String ip) {
+	public IMS_Client_ConnectThread(String name, String ip) {
 		this.name = name;
 		this.ip = ip;
 		initialize();
 	}
 
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					IMS_Client_ConnectThread window = new IMS_Client_ConnectThread("Paul", "ws://localhost:8887");
-//					window.frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	 }
 	/**
 	 *  
 	 */
@@ -83,7 +66,7 @@ public class IMS_Client_WebSockConnectThread extends JFrame implements Runnable 
 
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setBounds(100, 100, 502, 617);
+		frame.setBounds(100, 100, 454, 574);
 		frame.getContentPane().setLayout(new BorderLayout());
 
 		JPanel panel_2 = new JPanel();
@@ -95,6 +78,7 @@ public class IMS_Client_WebSockConnectThread extends JFrame implements Runnable 
 			panel_2.add(scrollPane_1, "cell 0 0 1 4,grow");
 			{
 				textPane = new JTextPane();
+				textPane.setBackground(Color.LIGHT_GRAY);
 				textPane.setFont(new Font("Dialog", Font.BOLD, 14));
 
 				doc = textPane.getStyledDocument();
@@ -126,7 +110,7 @@ public class IMS_Client_WebSockConnectThread extends JFrame implements Runnable 
 			panel_2.add(panel_3, "cell 0 5,grow");
 			{
 
-				JButton btnNewButton = new JButton("New button");
+				JButton btnNewButton = new JButton("Quit");
 				btnNewButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (wsc != null) {
@@ -229,12 +213,21 @@ public class IMS_Client_WebSockConnectThread extends JFrame implements Runnable 
 		}
 	}
 
-
+	
 	/**
 	 * message that is read from text field, sent to websocket using swingutilities,
 	 * then GUI is updated using left formatting
 	 */
 	void sentMessage() {
+		
+		Message user = new Message();
+
+		user.setName(name);
+		user.setMessage(txtTypeAMessage.getText());
+		
+		JsonEncode jec = new JsonEncode(user);
+		String messageCreate = jec.encodeToString();
+		
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -242,9 +235,8 @@ public class IMS_Client_WebSockConnectThread extends JFrame implements Runnable 
 				try {
 					
 					if (wsc != null) {						//check websocket is still connected
-						wsc.send(txtTypeAMessage.getText());
-					}
-					
+						wsc.send(messageCreate);
+					}	
 					doc.setParagraphAttributes(doc.getLength(), 1, left, false);
 					doc.insertString(doc.getLength(), "\nYou:\n" + txtTypeAMessage.getText() + "\n", left);
 					txtTypeAMessage.setText("");
