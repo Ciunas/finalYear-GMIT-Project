@@ -1,36 +1,32 @@
 package ims_client;
 
-
-
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import net.miginfocom.swing.MigLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-import org.jdesktop.swingx.prompt.PromptSupport;
-import org.java_websocket.WebSocketImpl;
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.handshake.ServerHandshake;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.event.ActionListener;
-import java.net.URI;
-import java.net.URISyntaxException;
-import javax.swing.JTextPane;
 
-public class IMS_Client_ConnectThread extends JFrame implements Runnable {
+import org.java_websocket.client.WebSocketClient;
+import org.jdesktop.swingx.prompt.PromptSupport;
+
+import net.miginfocom.swing.MigLayout;
+
+public class IMS_Client_WebSockServerThread {
+
 
 	/**
 	 * 
@@ -49,30 +45,7 @@ public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 	private JScrollPane scrollPane_1;
 	private JScrollPane scrollPane_2;
 
-	/**
-	 * Launch the application.
-	 * 
-	 * 
-	 */
-
-	public IMS_Client_ConnectThread(String name, String ip) {
-		this.name = name;
-		this.ip = ip;
-		initialize();
-	}
-
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					IMS_Client_ConnectThread window = new IMS_Client_ConnectThread("Paul", "ws://localhost:8887");
-//					window.frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	 }
+	
 	/**
 	 *  
 	 */
@@ -154,79 +127,9 @@ public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 	}
 
 	/**
-	 * 
+	 * message that is read from text field, sent to websocket using swingutilities,
+	 * then GUI is updated using left formatting
 	 */
-	@Override
-	public void run() {
-
-		WebSocketImpl.DEBUG = true;
-		connectWebCocket();
-		while (run = true) {
-
-		}
-		
-	}
-
-	void connectWebCocket() {
-
-		try {
-
-			wsc = new WebSocketClient(new URI(ip)) {
-
-				@Override
-				public void onMessage(String message) {
-
-					recievedMessage(message);
-				}
-
-				@Override
-				public void onOpen(ServerHandshake handshake) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							JOptionPane.showMessageDialog(frame, "You are connected to", name,
-									JOptionPane.YES_NO_CANCEL_OPTION);
-						}
-					});
-				}
-
-				@Override
-				public void onClose(int code, String reason, boolean remote) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							JOptionPane.showMessageDialog(frame, "You have been disconnected", "Error",
-									JOptionPane.WARNING_MESSAGE);
-							run = false;
-							System.exit(0);
-							
-						}
-					});
-				}
-
-				@Override
-				public void onError(Exception ex) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							JOptionPane.showMessageDialog(frame, "Exception", "Error", JOptionPane.ERROR_MESSAGE);
-						}
-					});
-
-					ex.printStackTrace();
-				}
-			};
-			
-			wsc.connect();						//connect to the websocket that is specified by variable "ip"
-			
-		} catch (URISyntaxException ex) {
-
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					JOptionPane.showMessageDialog(frame, "Exception", "URIError", JOptionPane.ERROR_MESSAGE);
-				}
-			});
-		}
-	}
-
-	// Sent message, and update GUI
 	void sentMessage() {
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -249,7 +152,11 @@ public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 		});
 	}
 
-	// Recieved message, update GUI
+	/**
+	 *  Sends the recieved message to GUI and updates using right formatting.
+	 *  
+	 * @param message (read through websocket)
+	 */
 	void recievedMessage(String message) {
 
 		SwingUtilities.invokeLater(new Runnable() {
