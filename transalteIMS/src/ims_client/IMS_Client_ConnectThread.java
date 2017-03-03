@@ -1,5 +1,7 @@
 package ims_client;
 
+
+
 import java.awt.BorderLayout;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -15,11 +17,11 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import org.jdesktop.swingx.prompt.PromptSupport;
 import org.java_websocket.WebSocketImpl;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -42,7 +44,7 @@ public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 	private WebSocketClient wsc;
 	private boolean run;
 	private JFrame frame;
-	private JTextField textField;
+	private JTextField txtTypeAMessage;
 	private JTextPane textPane;
 	private JScrollPane scrollPane_1;
 	private JScrollPane scrollPane_2;
@@ -50,20 +52,8 @@ public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 	/**
 	 * Launch the application.
 	 * 
-	 * @wbp.parser.entryPoint
+	 * 
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					IMS_Client_ConnectThread window = new IMS_Client_ConnectThread("ham", "test");
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	public IMS_Client_ConnectThread(String name, String ip) {
 		this.name = name;
@@ -71,24 +61,38 @@ public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 		initialize();
 	}
 
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					IMS_Client_ConnectThread window = new IMS_Client_ConnectThread("Paul", "ws://localhost:8887");
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	 }
+	/**
+	 *  
+	 */
 	private void initialize() {
 
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setBounds(100, 100, 372, 356);
+		frame.setBounds(100, 100, 502, 617);
 		frame.getContentPane().setLayout(new BorderLayout());
 
 		JPanel panel_2 = new JPanel();
 
 		frame.getContentPane().add(panel_2, BorderLayout.CENTER);
-		panel_2.setLayout(new MigLayout("", "[grow]", "[grow][grow][grow][grow][grow][]"));
+		panel_2.setLayout(new MigLayout("", "[grow]", "[grow][grow][grow][grow][50px][]"));
 		{
-			textPane = new JTextPane();
-			scrollPane_1 = new JScrollPane(textPane);
+			scrollPane_1 = new JScrollPane();
 			panel_2.add(scrollPane_1, "cell 0 0 1 4,grow");
 			{
 				textPane = new JTextPane();
-				textPane.setFont(new Font("Dialog", Font.BOLD, 16));
+				textPane.setFont(new Font("Dialog", Font.BOLD, 14));
 
 				doc = textPane.getStyledDocument();
 
@@ -105,30 +109,35 @@ public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 			scrollPane_2 = new JScrollPane();
 			panel_2.add(scrollPane_2, "cell 0 4,grow");
 			{
-				textField = new JTextField();
-				textField.setColumns(10);
-				scrollPane_2.setViewportView(textField);
+				txtTypeAMessage = new JTextField();
+				PromptSupport.setPrompt ("Enter Message here", txtTypeAMessage);
+				txtTypeAMessage.setFont(new Font("Dialog", Font.BOLD, 14));
+				txtTypeAMessage.setColumns(10);
+				scrollPane_2.setViewportView(txtTypeAMessage);
 
 			}
 
 			JPanel panel_3 = new JPanel();
+			
+			//Disconnect from  websocket
 			panel_2.add(panel_3, "cell 0 5,grow");
 			{
 
 				JButton btnNewButton = new JButton("New button");
 				btnNewButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-
-						sentMessage();
+						if (wsc != null) {
+							wsc.close();
+							sentMessage();
+						}
 
 					}
 				});
 				panel_3.add(btnNewButton);
-				JButton button = new JButton("New button");
-				panel_3.add(button);
 			}
 		}
 
+		//Send message using the "Enter" button that is in JTextField.
 		Action action = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 
@@ -136,27 +145,26 @@ public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 			public void actionPerformed(ActionEvent e) {
 
 				sentMessage();
+				
 			}
 		};
-		textField.addActionListener(action);
+		txtTypeAMessage.addActionListener(action);
 
 		frame.setVisible(true);
 	}
 
 	/**
-	 * @wbp.parser.entryPoint
+	 * 
 	 */
 	@Override
 	public void run() {
 
-		// cThreadframe.setVisible(true);
-		// initialize();
-
 		WebSocketImpl.DEBUG = true;
+		connectWebCocket();
 		while (run = true) {
 
 		}
-		// this.dispose();
+		
 	}
 
 	void connectWebCocket() {
@@ -169,70 +177,70 @@ public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 				public void onMessage(String message) {
 
 					recievedMessage(message);
-					// ta.append( "got: " + message + "\n" );
-					// ta.setCaretPosition( ta.getDocument().getLength() );
 				}
 
 				@Override
 				public void onOpen(ServerHandshake handshake) {
-
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							JOptionPane.showMessageDialog(new Frame(), "You are connected to", name,
+							JOptionPane.showMessageDialog(frame, "You are connected to", name,
 									JOptionPane.YES_NO_CANCEL_OPTION);
-							// stop();
 						}
 					});
-					// ta.append("You are connected to ChatServer: " + getURI()
-					// + "\n");
-					// ta.setCaretPosition(ta.getDocument().getLength());
 				}
 
 				@Override
 				public void onClose(int code, String reason, boolean remote) {
-					// ta.append("You have been disconnected from: " + getURI()
-					// + "; Code: " + code + " " + reason + "\n");
-					// ta.setCaretPosition(ta.getDocument().getLength());
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							JOptionPane.showMessageDialog(new Frame(), "You have been disconnected", "Error",
+							JOptionPane.showMessageDialog(frame, "You have been disconnected", "Error",
 									JOptionPane.WARNING_MESSAGE);
-							// stop();
+							run = false;
+							System.exit(0);
+							
 						}
 					});
 				}
 
 				@Override
 				public void onError(Exception ex) {
-
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							JOptionPane.showMessageDialog(new Frame(), "Exception", "Error", JOptionPane.ERROR_MESSAGE);
-							// stop();
+							JOptionPane.showMessageDialog(frame, "Exception", "Error", JOptionPane.ERROR_MESSAGE);
 						}
 					});
 
 					ex.printStackTrace();
 				}
 			};
-			wsc.connect();
+			
+			wsc.connect();						//connect to the websocket that is specified by variable "ip"
+			
 		} catch (URISyntaxException ex) {
 
-			// ta.append(uriField.getText() + " is not a valid WebSocket
-			// URI\n");
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					JOptionPane.showMessageDialog(frame, "Exception", "URIError", JOptionPane.ERROR_MESSAGE);
+				}
+			});
 		}
 	}
 
-	// Sent message, update GUI
+	// Sent message, and update GUI
 	void sentMessage() {
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				try {
+					
+					if (wsc != null) {						//check websocket is still connected
+						wsc.send(txtTypeAMessage.getText());
+					}
+					
 					doc.setParagraphAttributes(doc.getLength(), 1, left, false);
-					doc.insertString(doc.getLength(), "\nYou: \n" + textField.getText() + "\n", left);
-					textField.setText("");
+					doc.insertString(doc.getLength(), "\nYou:\n" + txtTypeAMessage.getText() + "\n", left);
+					txtTypeAMessage.setText("");
 				} catch (Exception e1) {
 					System.out.println(e1);
 				}
@@ -242,7 +250,7 @@ public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 	}
 
 	// Recieved message, update GUI
-	void recievedMessage(String name1) {
+	void recievedMessage(String message) {
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -250,8 +258,7 @@ public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 
 				try {
 					doc.setParagraphAttributes(doc.getLength(), 1, right, false);
-					doc.insertString(doc.getLength(), "\n" + name1 + ": \n" + textField.getText() + "\n", right);
-					textField.setText("");
+					doc.insertString(doc.getLength(), "\n" + name + ": \n" + message + "\n", right);
 				} catch (BadLocationException e1) {
 					e1.printStackTrace();
 				}
