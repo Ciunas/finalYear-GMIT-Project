@@ -1,32 +1,29 @@
 package ims_client;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import net.miginfocom.swing.MigLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-
-import org.java_websocket.client.WebSocketClient;
 import org.jdesktop.swingx.prompt.PromptSupport;
+import org.java_websocket.WebSocket; 
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.Color;
+import java.awt.event.ActionListener;
+import javax.swing.JTextPane;
 
-import net.miginfocom.swing.MigLayout;
-
-public class IMS_Client_WebSockServerThread {
-
+public class IMS_Server_ConnectThreadGUI extends JFrame implements Runnable {
 
 	/**
 	 * 
@@ -35,17 +32,28 @@ public class IMS_Client_WebSockServerThread {
 	private StyledDocument doc;
 	private SimpleAttributeSet left;
 	private SimpleAttributeSet right;
-	private String name;
+	private String name = null;
 	private String ip;
-	private WebSocketClient wsc;
-	private boolean run;
+	private boolean run = true;
 	private JFrame frame;
 	private JTextField txtTypeAMessage;
 	private JTextPane textPane;
 	private JScrollPane scrollPane_1;
 	private JScrollPane scrollPane_2;
+	private WebSocket ws;
 
 	
+
+	/**
+	 * Launch the application.
+	 * 
+	 * 
+	 */
+	public IMS_Server_ConnectThreadGUI( WebSocket conn ) {
+		this.ws = conn;
+		initialize();
+	}
+
 	/**
 	 *  
 	 */
@@ -53,7 +61,7 @@ public class IMS_Client_WebSockServerThread {
 
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setBounds(100, 100, 502, 617);
+		frame.setBounds(100, 100, 454, 574);
 		frame.getContentPane().setLayout(new BorderLayout());
 
 		JPanel panel_2 = new JPanel();
@@ -65,6 +73,7 @@ public class IMS_Client_WebSockServerThread {
 			panel_2.add(scrollPane_1, "cell 0 0 1 4,grow");
 			{
 				textPane = new JTextPane();
+				textPane.setBackground(Color.LIGHT_GRAY);
 				textPane.setFont(new Font("Dialog", Font.BOLD, 14));
 
 				doc = textPane.getStyledDocument();
@@ -96,14 +105,14 @@ public class IMS_Client_WebSockServerThread {
 			panel_2.add(panel_3, "cell 0 5,grow");
 			{
 
-				JButton btnNewButton = new JButton("New button");
+				JButton btnNewButton = new JButton("Quit");
 				btnNewButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (wsc != null) {
-							wsc.close();
-							sentMessage();
-						}
-
+						
+						ws.close();
+						run = false;
+						frame.dispose();
+						
 					}
 				});
 				panel_3.add(btnNewButton);
@@ -127,20 +136,40 @@ public class IMS_Client_WebSockServerThread {
 	}
 
 	/**
+	 * 
+	 */
+	@Override
+	public void run() {
+		while (run == true) {
+			
+		}	
+	}
+
+	
+	/**
 	 * message that is read from text field, sent to websocket using swingutilities,
 	 * then GUI is updated using left formatting
 	 */
 	void sentMessage() {
+		
+		Message user = new Message();
+
+		user.setName(name);
+		user.setMessage(txtTypeAMessage.getText());
+		
+		JsonEncode jec = new JsonEncode(user);
+		String messageCreate = jec.encodeToString();
+		
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				try {
 					
-					if (wsc != null) {						//check websocket is still connected
-						wsc.send(txtTypeAMessage.getText());
+					if (ws != null) {						//check websocket is still connected
+						ws.send(messageCreate);
 					}
-					
+									
 					doc.setParagraphAttributes(doc.getLength(), 1, left, false);
 					doc.insertString(doc.getLength(), "\nYou:\n" + txtTypeAMessage.getText() + "\n", left);
 					txtTypeAMessage.setText("");
@@ -173,5 +202,53 @@ public class IMS_Client_WebSockServerThread {
 			}
 		});
 	}
+	
+	/**
+	 *  Sends the recieved message to GUI and updates using right formatting.
+	 *  
+	 * @param message (read through websocket)
+	 */
+	void closeConnection() {
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				
+				JOptionPane.showMessageDialog(frame, "Connection Closed", "Info", JOptionPane.INFORMATION_MESSAGE);
+				run = false;
+				frame.dispose();				
+			}
+		});
+	}
+
+
+
+
+	//Getters and Setters
+	public String getName() {
+		return name;
+	}
+
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+
+	public WebSocket getWs() {
+		return ws;
+	}
+
+	public boolean isRun() {
+		return run;
+	}
+
+	public void setRun(boolean run) {
+		this.run = run;
+	}
+	
+	
+
 
 }

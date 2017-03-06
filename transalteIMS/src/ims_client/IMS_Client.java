@@ -193,7 +193,7 @@ public class IMS_Client {
 //				cThreadframe = new IMS_Client_ConnectThread(name, ip);
 //				cThreadframe.setVisible(true);
 				
-				IMS_Client_ConnectThread cThreadframe = new IMS_Client_ConnectThread(name, ip);
+				IMS_Client_ConnectThreadGUI cThreadframe = new IMS_Client_ConnectThreadGUI(name, ip);
 		        new Thread(cThreadframe).start();
 //				System.out.println(name);
 //				System.out.println(ip);

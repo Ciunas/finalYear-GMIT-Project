@@ -1,6 +1,5 @@
 package ims_client;
 
-
 import java.awt.BorderLayout;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -17,18 +16,20 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import org.jdesktop.swingx.prompt.PromptSupport;
+
 import org.java_websocket.WebSocketImpl;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.swing.JTextPane;
 
-public class IMS_Client_ConnectThread extends JFrame implements Runnable {
+public class IMS_Client_ConnectThreadGUI extends JFrame implements Runnable {
 
 	/**
 	 * 
@@ -53,7 +54,7 @@ public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 	 * 
 	 */
 
-	public IMS_Client_ConnectThread(String name, String ip) {
+	public IMS_Client_ConnectThreadGUI(String name, String ip) {
 		this.name = name;
 		this.ip = ip;
 		initialize();
@@ -113,10 +114,10 @@ public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 				JButton btnNewButton = new JButton("Quit");
 				btnNewButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (wsc != null) {
+						
 							wsc.close();
-							sentMessage();
-						}
+							//sentMessage();
+						
 
 					}
 				});
@@ -148,7 +149,7 @@ public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 
 		WebSocketImpl.DEBUG = true;
 		connectWebCocket();
-		while (run = true) {
+		while (run == true) {
 
 		}
 		
@@ -236,7 +237,7 @@ public class IMS_Client_ConnectThread extends JFrame implements Runnable {
 					
 					if (wsc != null) {						//check websocket is still connected
 						wsc.send(messageCreate);
-					}	
+					}					
 					doc.setParagraphAttributes(doc.getLength(), 1, left, false);
 					doc.insertString(doc.getLength(), "\nYou:\n" + txtTypeAMessage.getText() + "\n", left);
 					txtTypeAMessage.setText("");
