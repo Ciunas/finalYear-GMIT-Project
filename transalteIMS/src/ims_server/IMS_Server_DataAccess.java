@@ -2,7 +2,7 @@ package ims_server;
 
 import ims_user.IMS_User;
 
-public interface DataAccess {
+public interface IMS_Server_DataAccess {
     
 	// Return details as an User object
 	public IMS_User returnUser(IMS_User user);

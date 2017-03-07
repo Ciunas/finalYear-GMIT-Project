@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.java_websocket.WebSocket;
 
-public class Message {
+public class IMS_Client_Message {
 	
 	
 	private String name;

@@ -7,12 +7,12 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-public class JsonEncode {
+public class IMS_Client_JsonEncode {
 
 	private String jsonInString;
-	Message data;
+	IMS_Client_Message data;
 
-	public JsonEncode(Message data) {
+	public IMS_Client_JsonEncode(IMS_Client_Message data) {
 		this.data = data;
 
 	}

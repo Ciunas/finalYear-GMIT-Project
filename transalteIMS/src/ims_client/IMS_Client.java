@@ -11,19 +11,13 @@ import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
-
-import ims_server.IMS_Server_ThreadBuilder;
+import javax.swing.table.DefaultTableModel; 
 import ims_user.IMS_User;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
-
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JSplitPane;
+import javax.swing.JScrollPane; 
 import javax.swing.JButton;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
@@ -77,34 +71,34 @@ public class IMS_Client {
 	public IMS_Client() throws ClassNotFoundException, IOException {
 
 		IMS_User user = new IMS_User();
-//		try {
-//
-//			// make connection
-//			clinetSocket = new Socket(hostname , 1234);
-//			// get streams
-//			bReader = new BufferedReader(new InputStreamReader(clinetSocket.getInputStream()));
-//			dataOut = new PrintWriter(clinetSocket.getOutputStream());			
-//			in = new ObjectInputStream(clinetSocket.getInputStream());
-//			out = new ObjectOutputStream(clinetSocket.getOutputStream());
-//		}
-//		catch (IOException ioException) {
-//			ioException.printStackTrace();
-//		}
-//		
-//		LogInScreen pframe = null;
-//		pframe = new LogInScreen(frmInstantMessaginService, bReader, dataOut);
-//		pframe.setVisible(true);
-//		
-//		if(pframe.isCancel())
-//			System.exit(0);
-//	
-//		
-//		
-//		user = getUserObject();
-//		in.close();
-//		out.close();
-//		System.out.println("UserName: " + user.getName() + " User Launguage: "+ user.getLaunguage() + " Size of ArryayList: " 
-//		+ user.labels.size() );
+		try {
+
+			// make connection
+			clinetSocket = new Socket(hostname , 1234);
+			// get streams
+			bReader = new BufferedReader(new InputStreamReader(clinetSocket.getInputStream()));
+			dataOut = new PrintWriter(clinetSocket.getOutputStream());			
+			in = new ObjectInputStream(clinetSocket.getInputStream());
+			out = new ObjectOutputStream(clinetSocket.getOutputStream());
+		}
+		catch (IOException ioException) {
+			ioException.printStackTrace();
+		}
+		
+		IMS_Client_LogInScreen pframe = null;
+		pframe = new IMS_Client_LogInScreen(frmInstantMessaginService, bReader, dataOut);
+		pframe.setVisible(true);
+		
+		if(pframe.isCancel())
+			System.exit(0);
+	
+		
+		
+		user = getUserObject();
+		in.close();
+		out.close();
+		System.out.println("UserName: " + user.getName() + " User Launguage: "+ user.getLaunguage() + " Size of ArryayList: " 
+		+ user.labels.size() );
 		
 		initialize(user);
 
@@ -189,11 +183,8 @@ public class IMS_Client {
 				String  name = (String) table.getModel().getValueAt(selectedRowIndex, 0);
 				String  ip = (String) table.getModel().getValueAt(selectedRowIndex, 1);
 				
-//				IMS_Client_ConnectThread cThreadframe = null;
-//				cThreadframe = new IMS_Client_ConnectThread(name, ip);
-//				cThreadframe.setVisible(true);
-				
-				IMS_Client_ConnectThreadGUI cThreadframe = new IMS_Client_ConnectThreadGUI(name, ip);
+			  	
+				IMS_Client_ClientConnectThreadGUI cThreadframe = new IMS_Client_ClientConnectThreadGUI("Frank", "ws://localhost:8887");
 		        new Thread(cThreadframe).start();
 //				System.out.println(name);
 //				System.out.println(ip);

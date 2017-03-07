@@ -9,9 +9,9 @@ import java.security.spec.InvalidKeySpecException;
 
 import ims_user.IMS_User;
 
-public class UserNew_Authenticate {
+public class IMS_Server_UserNew_Authenticate {
 
-	private DataAccess database;
+	private IMS_Server_DataAccess database;
 	private boolean authent = false;
 	private String userName;
 	private String password;
@@ -19,18 +19,16 @@ public class UserNew_Authenticate {
 	private String launguage;
 	private String tempIP;
 	String temp;
-	
-	public UserNew_Authenticate() {
+
+	public IMS_Server_UserNew_Authenticate() {
 
 	}
 
-	public IMS_User getCredentials(BufferedReader bReader, PrintWriter dataOut) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-
-
-		
+	public IMS_User getCredentials(BufferedReader bReader, PrintWriter dataOut)
+			throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
 		IMS_User userReturned = new IMS_User();
-		
+
 		while (authent == false) {
 
 			if ((temp = bReader.readLine()).compareTo("Start Authentication") == 0) {
@@ -45,19 +43,18 @@ public class UserNew_Authenticate {
 
 				if ((temp = bReader.readLine()).compareTo("Data Sent") == 0) {
 					System.out.println("User authenticated, username: " + userName + " Password: " + password
-							+ " New or not new: " + newNotnew + " Launguage: " + launguage + " IP: " + tempIP );
+							+ " New or not new: " + newNotnew + " Launguage: " + launguage + " IP: " + tempIP);
 				}
 			} else {
 				temp = bReader.readLine();
 			}
 
 			// Create encrypted password
+			IMS_Server_PasswordEncryptionService pes = new IMS_Server_PasswordEncryptionService();
 
-			PasswordEncryptionService pes = new PasswordEncryptionService();
-
-			// create database connection
+			// Create database connection
 			try {
-				database = new DataBaseAccess();
+				database = new IMS_Server_DataBaseAccess();
 			} catch (Exception exception) {
 				exception.printStackTrace();
 				System.exit(1);
@@ -69,21 +66,19 @@ public class UserNew_Authenticate {
 				byte[] salt = pes.generateSalt();
 				byte[] encryptPassword = pes.getEncryptedPassword(password, salt);
 
-				
 				IMS_User userCreate = new IMS_User(userName, launguage, encryptPassword, salt, 1, tempIP);
 
-				if(database.newUser(userCreate) != false){
+				if (database.newUser(userCreate) != false) {
 					dataOut.println("Success");
 					dataOut.flush();
 					userReturned = database.returnUser(userCreate);
 					authent = true;
-				}else{
+				} else {
 					dataOut.println("Failure");
 					dataOut.flush();
-					System.out.println("No User");
+					//System.out.println("No User");
 				}
-		
-				
+
 			} else {
 
 				System.out.println(userName);
@@ -97,25 +92,22 @@ public class UserNew_Authenticate {
 						System.out.println(userReturned.getLaunguage());
 						dataOut.println("Success");
 						dataOut.flush();
-						authent = true;
-						// System.out.println(userReturned.getPassword().length);
-						// System.out.println(userReturned.getSalt().length);
+						authent = true; 
 					} else {
 						dataOut.println("Failure");
 						dataOut.flush();
 						System.out.println("Password wrong");
 					}
-				} else{
+				} else {
 					dataOut.println("Failure");
 					dataOut.flush();
 					System.out.println("No User");
 				}
-					
+
 			}
 		}
 
 		return userReturned;
 	}
-	
 
 }

@@ -18,7 +18,7 @@ import javax.swing.SwingUtilities;
 
 public class IMS_Client_ChatServer extends WebSocketServer {
 	
-	List<IMS_Server_ConnectThreadGUI> list = new ArrayList<IMS_Server_ConnectThreadGUI>();
+	List<IMS_Client_ServerConnectThreadGUI> list = new ArrayList<IMS_Client_ServerConnectThreadGUI>();
 	
 
 	public IMS_Client_ChatServer( int port ) throws UnknownHostException {
@@ -33,7 +33,7 @@ public class IMS_Client_ChatServer extends WebSocketServer {
 	public void onOpen( WebSocket conn, ClientHandshake handshake ) {
 
 		
-		IMS_Server_ConnectThreadGUI sThreadframe = new IMS_Server_ConnectThreadGUI( conn ); //associate a websocket with each IMS_Server_ConnectThread object
+		IMS_Client_ServerConnectThreadGUI sThreadframe = new IMS_Client_ServerConnectThreadGUI( conn ); //associate a websocket with each IMS_Server_ConnectThread object
 		new Thread(sThreadframe).start();
 		list.add(sThreadframe);	
 		//this.reply( "new connection: " + handshake.getResourceDescriptor() );
@@ -46,9 +46,9 @@ public class IMS_Client_ChatServer extends WebSocketServer {
 		System.out.println(list.size());
 		System.out.println("Closing connection");
 		int i = 0;
-		List<IMS_Server_ConnectThreadGUI> list1 = new ArrayList<IMS_Server_ConnectThreadGUI>(list);
+		List<IMS_Client_ServerConnectThreadGUI> list1 = new ArrayList<IMS_Client_ServerConnectThreadGUI>(list);
 		
-		for (IMS_Server_ConnectThreadGUI serverThread : list1) {
+		for (IMS_Client_ServerConnectThreadGUI serverThread : list1) {
 			
 			if (serverThread.getWs() == conn) {
 
@@ -119,13 +119,13 @@ public class IMS_Client_ChatServer extends WebSocketServer {
 			@Override
 			public void run() {
 
-				JsonDecode jdc = new JsonDecode(message);
+				IMS_Client_JsonDecode jdc = new IMS_Client_JsonDecode(message);
 				
-				Message messageObject = jdc.decodeFormString();
+				IMS_Client_Message messageObject = jdc.decodeFormString();
 				
 				messageObject.setConn(conn);
 								
-				for (IMS_Server_ConnectThreadGUI serverThread : list) {
+				for (IMS_Client_ServerConnectThreadGUI serverThread : list) {
 
 					if (serverThread.getWs() == messageObject.getConn()) {
 						

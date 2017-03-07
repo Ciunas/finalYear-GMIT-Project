@@ -34,7 +34,7 @@ import javax.swing.JComboBox;
  * @author ciunas
  *
  */
-public class LogInScreen extends JDialog {
+public class IMS_Client_LogInScreen extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JButton btnLogin;
@@ -72,7 +72,7 @@ public class LogInScreen extends JDialog {
 	 * @param PrintWriter
 	 */
 	@SuppressWarnings("rawtypes")
-	public LogInScreen(Frame parent, BufferedReader bReader, PrintWriter dataOut) {
+	public IMS_Client_LogInScreen(Frame parent, BufferedReader bReader, PrintWriter dataOut) {
 		super(parent, "Login", true);
 
 		setResizable(false);
@@ -92,7 +92,7 @@ public class LogInScreen extends JDialog {
 						dispose();
 
 					} else {
-						JOptionPane.showMessageDialog(LogInScreen.this, "Invalid username or password", "Login",
+						JOptionPane.showMessageDialog(IMS_Client_LogInScreen.this, "Invalid username or password", "Login",
 								JOptionPane.ERROR_MESSAGE);
 						userName.setText("");
 						passwordField.setText("");
@@ -150,7 +150,7 @@ public class LogInScreen extends JDialog {
 		panel.add(lblNewLabel_1);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(LogInScreen.class.getResource("/resources/Apps-Messaging-Metro-icon.png")));
+		lblNewLabel.setIcon(new ImageIcon(IMS_Client_LogInScreen.class.getResource("/resources/Apps-Messaging-Metro-icon.png")));
 		lblNewLabel.setBounds(250, 12, 128, 121);
 		panel.add(lblNewLabel);
 

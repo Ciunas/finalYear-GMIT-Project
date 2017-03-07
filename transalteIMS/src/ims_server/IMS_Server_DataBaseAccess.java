@@ -12,7 +12,7 @@ import ims_user.IMS_User;
  * @author ciunas
  *
  */
-public class DataBaseAccess implements DataAccess {
+public class IMS_Server_DataBaseAccess implements IMS_Server_DataAccess {
 
 	// reference to database connection
 	private Connection connection;
@@ -32,7 +32,7 @@ public class DataBaseAccess implements DataAccess {
 	 * 
 	 * @throws Exception
 	 */
-	public DataBaseAccess() throws Exception {
+	public IMS_Server_DataBaseAccess() throws Exception {
 
 		connect(); // connect to addressbook database
 

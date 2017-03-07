@@ -23,7 +23,7 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import javax.swing.JTextPane;
 
-public class IMS_Server_ConnectThreadGUI extends JFrame implements Runnable {
+public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnable {
 
 	/**
 	 * 
@@ -49,7 +49,7 @@ public class IMS_Server_ConnectThreadGUI extends JFrame implements Runnable {
 	 * 
 	 * 
 	 */
-	public IMS_Server_ConnectThreadGUI( WebSocket conn ) {
+	public IMS_Client_ServerConnectThreadGUI( WebSocket conn ) {
 		this.ws = conn;
 		initialize();
 	}
@@ -152,12 +152,12 @@ public class IMS_Server_ConnectThreadGUI extends JFrame implements Runnable {
 	 */
 	void sentMessage() {
 		
-		Message user = new Message();
+		IMS_Client_Message user = new IMS_Client_Message();
 
 		user.setName(name);
 		user.setMessage(txtTypeAMessage.getText());
 		
-		JsonEncode jec = new JsonEncode(user);
+		IMS_Client_JsonEncode jec = new IMS_Client_JsonEncode(user);
 		String messageCreate = jec.encodeToString();
 		
 
