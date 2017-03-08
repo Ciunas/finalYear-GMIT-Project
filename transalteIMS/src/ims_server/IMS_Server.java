@@ -3,6 +3,10 @@ package ims_server;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+/**
+ * @author ciunas
+ *
+ */
 public class IMS_Server {
 
 	
@@ -10,7 +14,7 @@ public class IMS_Server {
 	    	
 	        ServerSocket serverSocket = null;
 	        boolean proxyRunnig = true;
-	        int port = 1234;	
+	        int port = 1237;	
 	     
 	        try {
 	            serverSocket = new ServerSocket(port);

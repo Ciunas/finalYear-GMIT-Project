@@ -29,6 +29,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import javax.swing.JTextPane;
 
+/**
+ * @author ciunas
+ *
+ */
 public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnable {
 
 	/**
@@ -245,7 +249,10 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 					System.out.println(e1);
 				}
 
-			}
+				/**
+				 * @author ciunas
+				 *
+				 */}
 		});
 	}
 

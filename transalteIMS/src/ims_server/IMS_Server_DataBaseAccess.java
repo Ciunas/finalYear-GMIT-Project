@@ -24,6 +24,7 @@ public class IMS_Server_DataBaseAccess implements IMS_Server_DataAccess {
 	private PreparedStatement sqlUpdateStatusIp;
 	private PreparedStatement sqlReturnOnlineUser;
 	private PreparedStatement sqlReturnIfUserExists;
+	private PreparedStatement sqlChangeStatus;
 
 	/**
 	 * DataBaseAccess
@@ -47,6 +48,8 @@ public class IMS_Server_DataBaseAccess implements IMS_Server_DataAccess {
 		sqlReturnOnlineUser = connection.prepareStatement("SELECT `userName`, `ip` FROM `users` WHERE status = ( ? )");
 
 		sqlReturnIfUserExists = connection.prepareStatement("SELECT `userName` FROM `users` WHERE `userName` = ( ? )");
+		
+		sqlChangeStatus = connection.prepareStatement("UPDATE `users` SET status = ( ? ) WHERE userName = ( ? )");
 	} 
 	
 	/**
@@ -68,12 +71,56 @@ public class IMS_Server_DataBaseAccess implements IMS_Server_DataAccess {
 	
 	
 	
-	
-    /**
-	 * newUser
-	 * 
-	 * @return
+
+	/* (non-Javadoc)
+	 * @see ims_server.IMS_Server_DataAccess#changeStatus(ims_user.IMS_User)
 	 */
+	@Override
+	public boolean changeStatus(String username, int status ) {
+		
+		//Insert new IP and Change status of User to active.
+		int result = 0;	
+		
+		try {
+			sqlChangeStatus.setInt(1, status);
+			sqlChangeStatus.setString(2, username);
+			
+			result = sqlChangeStatus.executeUpdate();
+			
+			if (result == 0) { // if insert fails, rollback and discontinue
+				try {
+					connection.rollback();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} // rollback insert
+				System.out.println("failure updateing data");
+
+			}else{
+	            connection.commit();   // commit update
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	
+		
+		
+		
+		
+		return true;
+	}
+
+	
+	
+   
+	/* (non-Javadoc)
+	 * @see ims_server.IMS_Server_DataAccess#newUser(ims_user.IMS_User)
+	 */
+	@Override
 	public boolean newUser(IMS_User user) {
 
 		try {
@@ -122,11 +169,11 @@ public class IMS_Server_DataBaseAccess implements IMS_Server_DataAccess {
 	}
 	
 	
-    /**
-	 * newUser
-	 * 
-	 * @return
+ 
+	/* (non-Javadoc)
+	 * @see ims_server.IMS_Server_DataAccess#returnUser(ims_user.IMS_User)
 	 */
+	@Override
 	public IMS_User returnUser(IMS_User user) {
 
 		IMS_User userReturned;
@@ -212,11 +259,10 @@ public class IMS_Server_DataBaseAccess implements IMS_Server_DataAccess {
 	}
 	
 	
-	   /**
-		 * newUser
-		 * 
-		 * @return
+		/* (non-Javadoc)
+		 * @see ims_server.IMS_Server_DataAccess#returnOnlineUser(ims_user.IMS_User)
 		 */
+		@Override
 		public IMS_User returnOnlineUser(IMS_User user) {
 
 			IMS_User userReturned = new IMS_User();
@@ -252,15 +298,17 @@ public class IMS_Server_DataBaseAccess implements IMS_Server_DataAccess {
   
 	
 	
-	
-	   // method to close statements and database connection
-    public void close() {
-    	
-        try {
-        	sqlInsertUser.close();
-        	sqlReturnUser.close();
-        	sqlReturnLabels.close();
-        	sqlUpdateStatusIp.close();
+	/* (non-Javadoc)
+	 * @see ims_server.IMS_Server_DataAccess#close()
+	 */
+	@Override
+	public void close() {
+
+		try {
+			sqlInsertUser.close();
+			sqlReturnUser.close();
+			sqlReturnLabels.close();
+	      	sqlUpdateStatusIp.close();
         	sqlReturnOnlineUser.close();
             connection.close();
         } 

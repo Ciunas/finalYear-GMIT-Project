@@ -4,6 +4,11 @@ import java.util.List;
 
 import org.java_websocket.WebSocket;
 
+/**
+ * @author ciunas
+ *
+ */
+
 public class IMS_Client_Message {
 	
 	

@@ -23,6 +23,11 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import javax.swing.JTextPane;
 
+/**
+ * @author ciunas
+ *
+ */
+
 public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnable {
 
 	/**

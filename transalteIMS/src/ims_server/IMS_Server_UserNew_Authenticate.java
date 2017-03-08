@@ -106,7 +106,7 @@ public class IMS_Server_UserNew_Authenticate {
 
 			}
 		}
-
+		database.close();
 		return userReturned;
 	}
 

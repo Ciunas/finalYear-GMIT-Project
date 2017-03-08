@@ -1,9 +1,5 @@
 package ims_client;
 
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList; 
@@ -14,12 +10,21 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer; 
 import javax.swing.SwingUtilities; 
 
-
-
-public class IMS_Client_ChatServer extends WebSocketServer {
+/**
+ * @author ciunas
+ *
+ */
+public class IMS_Client_ChatServer extends WebSocketServer  {
 	
+	private int portNumber;
 	List<IMS_Client_ServerConnectThreadGUI> list = new ArrayList<IMS_Client_ServerConnectThreadGUI>();
+	private boolean run = true;
 	
+	public IMS_Client_ChatServer( int port , String st) throws UnknownHostException{
+		
+		this.portNumber =  port;
+	
+	}
 
 	public IMS_Client_ChatServer( int port ) throws UnknownHostException {
 		super( new InetSocketAddress( port ) );
@@ -64,40 +69,38 @@ public class IMS_Client_ChatServer extends WebSocketServer {
 	@Override
 	public void onMessage( WebSocket conn, String message ) {
 		
-		
-		recievedMessage( message, conn);
-		
-		
-		
+		recievedMessage( message, conn);	
 	}
 	
 
 
-	public static void main( String[] args ) throws InterruptedException , IOException {
-		WebSocketImpl.DEBUG = true;
-		int port = 8887; // 843 flash policy port
-		try {
-			port = Integer.parseInt( args[ 0 ] );
-		} catch ( Exception ex ) {
-		}
-		IMS_Client_ChatServer s = new IMS_Client_ChatServer( port );
-		s.start();
-		System.out.println( "ChatServer started on port: " + s.getPort() );
 
-		BufferedReader sysin = new BufferedReader( new InputStreamReader( System.in ) );
-		while ( true ) {
-//			String in = sysin.readLine();
-//			s.reply( in );
-//			if( in.equals( "exit" ) ) {
-//				s.stop();
-//				break;
-//			} else if( in.equals( "restart" ) ) {
-//				s.stop();
-//				s.start();
-//				break;
-//			}
-		}
-	}
+//	public static void main( String[] args ) throws InterruptedException , IOException {
+//		WebSocketImpl.DEBUG = true;
+//		int port = 8887; // 843 flash policy port
+//		try {
+//			port = Integer.parseInt( args[ 0 ] );
+//		} catch ( Exception ex ) {
+//		}
+//		IMS_Client_ChatServer s = new IMS_Client_ChatServer( port );
+//		s.start();
+//		System.out.println( "ChatServer started on port: " + s.getPort() );
+//
+//		//BufferedReader sysin = new BufferedReader( new InputStreamReader( System.in ) );
+//		while ( true ) {
+////			String in = sysin.readLine();
+////			s.reply( in );
+////			if( in.equals( "exit" ) ) {
+////				s.stop();
+////				break;
+////			} else if( in.equals( "restart" ) ) {
+////				s.stop();
+////				s.start();
+////				break;
+////			}
+//		}
+//	}
+	
 	
 	@Override
 	public void onError( WebSocket conn, Exception ex ) {
@@ -140,12 +143,4 @@ public class IMS_Client_ChatServer extends WebSocketServer {
 		});
 	}
 
-//	public void reply( String text ) {
-//		Collection<WebSocket> con = connections();
-//		synchronized ( con ) {
-//			for( WebSocket c : con ) {
-//				c.send( text );
-//			}
-//		}
-//	}
 }

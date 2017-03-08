@@ -4,6 +4,10 @@ import java.io.IOException;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+/**
+ * @author ciunas
+ *
+ */
 public class IMS_Client_JsonDecode {
 
 	private IMS_Client_Message message = null;

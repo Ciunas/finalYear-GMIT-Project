@@ -34,6 +34,7 @@ import javax.swing.JComboBox;
  * @author ciunas
  *
  */
+
 public class IMS_Client_LogInScreen extends JDialog {
 
 	private static final long serialVersionUID = 1L;
