@@ -14,6 +14,9 @@ import java.net.SocketException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import ims_user.IMS_User;
 
 public class IMS_Server_ThreadBuilder implements Runnable {
@@ -53,6 +56,7 @@ public class IMS_Server_ThreadBuilder implements Runnable {
 	 */
 	@Override
 	public void run() {
+		
 
 		IMS_Server_UserNew_Authenticate ua = new IMS_Server_UserNew_Authenticate();
 

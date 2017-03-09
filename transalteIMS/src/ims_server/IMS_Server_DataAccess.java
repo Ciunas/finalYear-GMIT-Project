@@ -6,7 +6,7 @@ public interface IMS_Server_DataAccess {
     
 	
 	/**
-	 * retunrns a user object from a database
+	 * returns a user object from a database
 	 * @param user only containes username and password
 	 * @return a user object containg all paramaters that are applicable(name, launguage, ip, status, translated labels)
 	 */

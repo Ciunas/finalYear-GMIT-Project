@@ -16,18 +16,26 @@ public class IMS_Client_JsonEncode {
 	private String jsonInString;
 	IMS_Client_Message data;
 
+	/**
+	 * used to set local IMS_Clinet object.
+	 * @param data IMS_User Object
+	 */
 	public IMS_Client_JsonEncode(IMS_Client_Message data) {
 		this.data = data;
 
 	}
 
+	/**
+	 * generates a Objectmapper and enocdes IMS_Clinet message object into a string
+	 * @return the string of the message object
+	 */
 	public String encodeToString() {
+		
 		ObjectMapper mapper = new ObjectMapper();
 
 		try {
 
 			jsonInString = mapper.writeValueAsString(data);
-			//System.out.println(jsonInString);
 
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();

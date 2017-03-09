@@ -18,7 +18,11 @@ public class IMS_Client_JsonDecode {
 		this.jsonInString = jsonInString;
 	}
 
-	// Convert string to a message JSON Object.
+
+	/**
+	 * Convert string to a Message JSON Object.
+	 * @return IMS_CLient_message Object from decoded string
+	 */
 	public IMS_Client_Message decodeFormString() {
 
 		ObjectMapper mapper = new ObjectMapper();

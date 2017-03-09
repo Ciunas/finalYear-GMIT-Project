@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 
 import ims_server.IMS_Server_DataAccess;
@@ -43,7 +45,7 @@ public class IMS_Client {
 	private IMS_Server_DataAccess database;
 	private Socket clinetSocket;
 	private JFrame frmInstantMessaginService;
-	private String hostname = "localhost";
+	private String hostname = "192.168.122.228";
 	private BufferedReader bReader;
 	private PrintWriter dataOut;
 	ObjectInputStream in = null;
@@ -64,6 +66,26 @@ public class IMS_Client {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				try {
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+					 //UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.mint.MintLookAndFeel");
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.luna.LunaLookAndFeel");
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
+					//UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.fast.FastLookAndFeel");
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.bernstein.BernsteinLookAndFeel");
+					 UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (UnsupportedLookAndFeelException e) {
+					e.printStackTrace();
+				}
 				try {
 					IMS_Client window = new IMS_Client();
 					window.frmInstantMessaginService.setVisible(true);
@@ -86,7 +108,7 @@ public class IMS_Client {
 		try {
 
 			// make connection
-			clinetSocket = new Socket(hostname, 1236);
+			clinetSocket = new Socket(hostname, 1234);
 			// get streams
 			bReader = new BufferedReader(new InputStreamReader(clinetSocket.getInputStream()));
 			dataOut = new PrintWriter(clinetSocket.getOutputStream());

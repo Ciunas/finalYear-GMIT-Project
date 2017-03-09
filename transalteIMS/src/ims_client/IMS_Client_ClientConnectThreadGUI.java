@@ -33,6 +33,7 @@ import javax.swing.JTextPane;
  * @author ciunas
  *
  */
+
 public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnable {
 
 	/**
@@ -55,9 +56,7 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 	/**
 	 * Launch the application.
 	 * 
-	 * 
 	 */
-
 	public IMS_Client_ClientConnectThreadGUI(String name, String ip) {
 		this.name = name;
 		this.ip = ip;
@@ -65,7 +64,7 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 	}
 
 	/**
-	 *  
+	 * initialise the Jframe and all its components
 	 */
 	private void initialize() {
 
@@ -102,7 +101,7 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 			panel_2.add(scrollPane_2, "cell 0 4,grow");
 			{
 				txtTypeAMessage = new JTextField();
-				PromptSupport.setPrompt ("Enter Message here", txtTypeAMessage);
+				PromptSupport.setPrompt("Enter Message here", txtTypeAMessage);
 				txtTypeAMessage.setFont(new Font("Dialog", Font.BOLD, 14));
 				txtTypeAMessage.setColumns(10);
 				scrollPane_2.setViewportView(txtTypeAMessage);
@@ -110,18 +109,17 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 			}
 
 			JPanel panel_3 = new JPanel();
-			
-			//Disconnect from  websocket
+
+			// Disconnect from websocket
 			panel_2.add(panel_3, "cell 0 5,grow");
 			{
 
 				JButton btnNewButton = new JButton("Quit");
 				btnNewButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						
-							wsc.close();
-							//sentMessage();
-						
+
+						wsc.close();
+						// sentMessage();
 
 					}
 				});
@@ -129,7 +127,7 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 			}
 		}
 
-		//Send message using the "Enter" button that is in JTextField.
+		// Send message using the "Enter" button that is in JTextField.
 		Action action = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 
@@ -137,7 +135,7 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 			public void actionPerformed(ActionEvent e) {
 
 				sentMessage();
-				
+
 			}
 		};
 		txtTypeAMessage.addActionListener(action);
@@ -146,7 +144,7 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 	}
 
 	/**
-	 * 
+	 * run
 	 */
 	@Override
 	public void run() {
@@ -156,9 +154,13 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 		while (run == true) {
 
 		}
-		
+
 	}
 
+	/**
+	 * creates the websocket connection, listens for any change in state and
+	 * posts to swingutilites with any messages.
+	 */
 	void connectWebCocket() {
 
 		try {
@@ -189,7 +191,7 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 									JOptionPane.WARNING_MESSAGE);
 							run = false;
 							System.exit(0);
-							
+
 						}
 					});
 				}
@@ -205,9 +207,10 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 					ex.printStackTrace();
 				}
 			};
-			
-			wsc.connect();						//connect to the websocket that is specified by variable "ip"
-			
+
+			wsc.connect(); // connect to the websocket that is specified by
+							// variable "ip"
+
 		} catch (URISyntaxException ex) {
 
 			SwingUtilities.invokeLater(new Runnable() {
@@ -218,30 +221,28 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 		}
 	}
 
-	
 	/**
-	 * message that is read from text field, sent to websocket using swingutilities,
-	 * then GUI is updated using left formatting
+	 * message that is read from text field, sent to websocket using
+	 * swingutilities, then GUI is updated using left formatting
 	 */
 	void sentMessage() {
-		
+
 		IMS_Client_Message user = new IMS_Client_Message();
 
 		user.setName(name);
 		user.setMessage(txtTypeAMessage.getText());
-		
+
 		IMS_Client_JsonEncode jec = new IMS_Client_JsonEncode(user);
 		String messageCreate = jec.encodeToString();
-		
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					
-					if (wsc != null) {						//check websocket is still connected
+
+					if (wsc != null) { // check websocket is still connected
 						wsc.send(messageCreate);
-					}					
+					}
 					doc.setParagraphAttributes(doc.getLength(), 1, left, false);
 					doc.insertString(doc.getLength(), "\nYou:\n" + txtTypeAMessage.getText() + "\n", left);
 					txtTypeAMessage.setText("");
@@ -252,16 +253,22 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 				/**
 				 * @author ciunas
 				 *
-				 */}
+				 */
+			}
 		});
 	}
 
 	/**
-	 *  Sends the recieved message to GUI and updates using right formatting.
-	 *  
-	 * @param message (read through websocket)
+	 * Sends the recieved message to the GUI and updates using right formatting.
+	 * 
+	 * @param message
+	 *            (read through websocket)
 	 */
 	void recievedMessage(String message) {
+
+		IMS_Client_JsonDecode jdc = new IMS_Client_JsonDecode(message);
+
+		IMS_Client_Message messageObject = jdc.decodeFormString();
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -269,7 +276,7 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 
 				try {
 					doc.setParagraphAttributes(doc.getLength(), 1, right, false);
-					doc.insertString(doc.getLength(), "\n" + name + ": \n" + message + "\n", right);
+					doc.insertString(doc.getLength(), "\n" + name + ": \n" + messageObject.getMessage() + "\n", right);
 				} catch (BadLocationException e1) {
 					e1.printStackTrace();
 				}

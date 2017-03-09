@@ -11,6 +11,8 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -20,6 +22,7 @@ import org.java_websocket.WebSocket;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import javax.swing.JTextPane;
 
@@ -50,17 +53,41 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 	
 
 	/**
-	 * Launch the application.
-	 * 
+	 * Used to Launch the application.
 	 * 
 	 */
-	public IMS_Client_ServerConnectThreadGUI( WebSocket conn ) {
+	public IMS_Client_ServerConnectThreadGUI(WebSocket conn) {
 		this.ws = conn;
-		initialize();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+
+				try {
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.mint.MintLookAndFeel");
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.luna.LunaLookAndFeel");
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.fast.FastLookAndFeel");
+					// UIManager.setLookAndFeel("com.jtattoo.plaf.bernstein.BernsteinLookAndFeel");
+					UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (UnsupportedLookAndFeelException e) {
+					e.printStackTrace();
+				}
+				initialize();
+			}
+		});
 	}
 
 	/**
-	 *  
+	 *  initialise JFrame and alll its components
 	 */
 	private void initialize() {
 
@@ -141,10 +168,11 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 	}
 
 	/**
-	 * 
+	 * run
 	 */
 	@Override
 	public void run() {
+	
 		while (run == true) {
 			
 		}	
