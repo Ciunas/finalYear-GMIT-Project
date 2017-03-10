@@ -15,18 +15,14 @@ import javax.swing.SwingUtilities;
  */
 public class IMS_Client_ChatServer extends WebSocketServer {
 
-	private int portNumber;
 	List<IMS_Client_ServerConnectThreadGUI> list = new ArrayList<IMS_Client_ServerConnectThreadGUI>();
 	private boolean run = true;
+	String launguage = null;
 
-	public IMS_Client_ChatServer(int port, String st) throws UnknownHostException {
 
-		this.portNumber = port;
-
-	}
-
-	public IMS_Client_ChatServer(int port) throws UnknownHostException {
+	public IMS_Client_ChatServer(int port, String launguage) throws UnknownHostException {
 		super(new InetSocketAddress(port));
+		this.launguage = launguage;
 	}
 
 	public IMS_Client_ChatServer(InetSocketAddress address) {
@@ -102,6 +98,8 @@ public class IMS_Client_ChatServer extends WebSocketServer {
 
 						if (serverThread.getName() == null) {
 							serverThread.setName(messageObject.getName());
+							serverThread.setConnectedLaunguage(messageObject.getLaunguage());
+							serverThread.setLaunguage(launguage);
 						}
 						System.out.println(messageObject.getMessage());
 						serverThread.recievedMessage(messageObject.getMessage()); // Send message  to correct thread.

@@ -17,6 +17,9 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
+import ims_translate.Language;
+import ims_translate.Translate;
+
 import org.java_websocket.WebSocketImpl;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -43,8 +46,10 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 	private StyledDocument doc;
 	private SimpleAttributeSet left;
 	private SimpleAttributeSet right;
+	private String myName;
 	private String name;
 	private String ip;
+	private String launguage;
 	private WebSocketClient wsc;
 	private boolean run;
 	private JFrame frame;
@@ -52,14 +57,17 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 	private JTextPane textPane;
 	private JScrollPane scrollPane_1;
 	private JScrollPane scrollPane_2;
+	private Object translatedText;
 
 	/**
 	 * Launch the application.
 	 * 
 	 */
-	public IMS_Client_ClientConnectThreadGUI(String name, String ip) {
+	public IMS_Client_ClientConnectThreadGUI(String myName, String name, String ip, String launguage ) {
+		this.myName = myName;
 		this.name = name;
 		this.ip = ip;
+		this.launguage = launguage;
 		initialize();
 	}
 
@@ -82,6 +90,7 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 			panel_2.add(scrollPane_1, "cell 0 0 1 4,grow");
 			{
 				textPane = new JTextPane();
+				textPane.setEditable(false);
 				textPane.setBackground(Color.LIGHT_GRAY);
 				textPane.setFont(new Font("Dialog", Font.BOLD, 14));
 
@@ -229,8 +238,9 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 
 		IMS_Client_Message user = new IMS_Client_Message();
 
-		user.setName(name);
+		user.setName(myName);
 		user.setMessage(txtTypeAMessage.getText());
+		user.setLaunguage(launguage);
 
 		IMS_Client_JsonEncode jec = new IMS_Client_JsonEncode(user);
 		String messageCreate = jec.encodeToString();
@@ -249,11 +259,6 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 				} catch (Exception e1) {
 					System.out.println(e1);
 				}
-
-				/**
-				 * @author ciunas
-				 *
-				 */
 			}
 		});
 	}
@@ -269,6 +274,13 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 		IMS_Client_JsonDecode jdc = new IMS_Client_JsonDecode(message);
 
 		IMS_Client_Message messageObject = jdc.decodeFormString();
+		
+		try {
+			translatedText = Translate.execute( messageObject.getMessage() , Language.fromString(messageObject.getLaunguage()) , Language.fromString(launguage) );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -276,7 +288,7 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 
 				try {
 					doc.setParagraphAttributes(doc.getLength(), 1, right, false);
-					doc.insertString(doc.getLength(), "\n" + name + ": \n" + messageObject.getMessage() + "\n", right);
+					doc.insertString(doc.getLength(), "\n" + messageObject.getName() + ": \n" + translatedText + "\n", right);
 				} catch (BadLocationException e1) {
 					e1.printStackTrace();
 				}

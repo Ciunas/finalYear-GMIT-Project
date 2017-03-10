@@ -59,7 +59,7 @@ public class IMS_Client {
 	private JPanel panel_2;
 	private JPanel panel_3;
 	private JButton btnNewButton;
-
+	private String name;
 	/**
 	 * Launch the application.
 	 */
@@ -189,14 +189,16 @@ public class IMS_Client {
 
 		JButton btnConnect = new JButton(user.getLabel(2));
 		btnConnect.addActionListener(new ActionListener() {
+
+
 			public void actionPerformed(ActionEvent arg0) {
 
 				int selectedRowIndex = table.getSelectedRow();
-				String name = (String) table.getModel().getValueAt(selectedRowIndex, 0);
-				String ip = (String) table.getModel().getValueAt(selectedRowIndex, 1);
-
-				IMS_Client_ClientConnectThreadGUI cThreadframe = new IMS_Client_ClientConnectThreadGUI("Frank",
-						"ws://localhost:8887");
+				name = (String) table.getModel().getValueAt(selectedRowIndex, 1);
+				String ip = (String) table.getModel().getValueAt(selectedRowIndex, 2);
+				System.out.println(user.getLaunguage());
+				IMS_Client_ClientConnectThreadGUI cThreadframe = new IMS_Client_ClientConnectThreadGUI(user.getName(), name ,
+						"ws://"+ ip + ":8887", user.getLaunguage());
 				new Thread(cThreadframe).start();
 			}
 		});
@@ -223,7 +225,7 @@ public class IMS_Client {
 			}
 		});
 
-		startWebsocketServer();
+		startWebsocketServer( 8887, user.getLaunguage());
 
 		frmInstantMessaginService.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
@@ -264,9 +266,9 @@ public class IMS_Client {
 	 * 
 	 * @throws UnknownHostException
 	 */
-	private void startWebsocketServer() throws UnknownHostException {
+	private void startWebsocketServer(int port, String launguage) throws UnknownHostException {
 
-		new Thread(new IMS_Client_ChatServer(8887)).start();
+		new Thread(new IMS_Client_ChatServer(port, launguage)).start();
 
 	}
 

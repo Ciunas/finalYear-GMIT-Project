@@ -18,6 +18,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import org.jdesktop.swingx.prompt.PromptSupport;
+import ims_translate.Language;
+import ims_translate.Translate;
 import org.java_websocket.WebSocket; 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -41,6 +43,8 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 	private SimpleAttributeSet left;
 	private SimpleAttributeSet right;
 	private String name = null;
+	private String launguage = null;
+	private String connectedLaunguage = null;
 	private String ip;
 	private boolean run = true;
 	private JFrame frame;
@@ -49,6 +53,7 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 	private JScrollPane scrollPane_1;
 	private JScrollPane scrollPane_2;
 	private WebSocket ws;
+	private String translatedText;
 
 	
 
@@ -105,15 +110,13 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 			panel_2.add(scrollPane_1, "cell 0 0 1 4,grow");
 			{
 				textPane = new JTextPane();
+				textPane.setEditable(false);
 				textPane.setBackground(Color.LIGHT_GRAY);
 				textPane.setFont(new Font("Dialog", Font.BOLD, 14));
-
 				doc = textPane.getStyledDocument();
-
 				left = new SimpleAttributeSet();
 				StyleConstants.setAlignment(left, StyleConstants.ALIGN_LEFT);
 				StyleConstants.setForeground(left, Color.RED);
-
 				right = new SimpleAttributeSet();
 				StyleConstants.setAlignment(right, StyleConstants.ALIGN_RIGHT);
 				StyleConstants.setForeground(right, Color.BLUE);
@@ -143,8 +146,7 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 						
 						ws.close();
 						run = false;
-						frame.dispose();
-						
+						frame.dispose();					
 					}
 				});
 				panel_3.add(btnNewButton);
@@ -188,6 +190,7 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 		IMS_Client_Message user = new IMS_Client_Message();
 
 		user.setName(name);
+		user.setLaunguage(launguage);
 		user.setMessage(txtTypeAMessage.getText());
 		
 		IMS_Client_JsonEncode jec = new IMS_Client_JsonEncode(user);
@@ -220,6 +223,12 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 	 * @param message (read through websocket)
 	 */
 	void recievedMessage(String message) {
+		
+		try {
+			translatedText = Translate.execute( message , Language.fromString(connectedLaunguage) , Language.fromString(launguage) );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -227,7 +236,7 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 
 				try {
 					doc.setParagraphAttributes(doc.getLength(), 1, right, false);
-					doc.insertString(doc.getLength(), "\n" + name + ": \n" + message + "\n", right);
+					doc.insertString(doc.getLength(), "\n" + name + ": \n" + translatedText + "\n", right);
 				} catch (BadLocationException e1) {
 					e1.printStackTrace();
 				}
@@ -262,7 +271,21 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 		return name;
 	}
 
+	public String getConnectedLaunguage() {
+		return connectedLaunguage;
+	}
 
+	public void setConnectedLaunguage(String connectedLaunguage) {
+		this.connectedLaunguage = connectedLaunguage;
+	}
+
+	public String getLaunguage() {
+		return launguage;
+	}
+
+	public void setLaunguage(String launguage) {
+		this.launguage = launguage;
+	}
 
 	public void setName(String name) {
 		this.name = name;
