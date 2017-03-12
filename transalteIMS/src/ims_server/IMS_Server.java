@@ -26,7 +26,9 @@ public class IMS_Server {
 		} catch (IOException e) {
 			System.exit(-1);
 		}
-
+		
+		new Thread(new IMS_Server_PushUpdate(8888)).start();			//Starts the websocket push server. Port 8888
+		
 		while (proxyRunnig) {
 
 			IMS_Server_ThreadBuilder thread = new IMS_Server_ThreadBuilder(serverSocket.accept());

@@ -16,7 +16,6 @@ import javax.swing.SwingUtilities;
 public class IMS_Client_ChatServer extends WebSocketServer {
 
 	List<IMS_Client_ServerConnectThreadGUI> list = new ArrayList<IMS_Client_ServerConnectThreadGUI>();
-	private boolean run = true;
 	String launguage = null;
 
 

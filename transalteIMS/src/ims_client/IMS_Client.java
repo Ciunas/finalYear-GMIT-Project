@@ -166,18 +166,13 @@ public class IMS_Client {
 		String[] columns = new String[] { // headers for the table
 				user.getLabel(3), user.getLabel(8), "IP" };
 
-		// create my table using table modeel so rows does not need to be
+		// create my table using table model so rows does not need to be
 		// specified
 		tableModel = new DefaultTableModel(columns, 0); // The 0 argument is
 														// number rows.
 		table = new JTable(tableModel);
 
-		for (int i = 0; i < user.onlineUsers.size(); i += 2) {
-
-			Object[] objs = { i + 1, user.getOnlineUsers(i), user.getOnlineUsers(i + 1) };
-
-			tableModel.addRow(objs);
-		}
+		
 
 		scrollPane.setViewportView(table);
 
@@ -286,6 +281,13 @@ public class IMS_Client {
 				// Create database connection
 				try {
 					database = new IMS_Server_DataBaseAccess();
+
+					for (int i = 0; i < user.onlineUsers.size(); i += 2) {
+
+						Object[] objs = { i + 1, user.getOnlineUsers(i), user.getOnlineUsers(i + 1) };
+
+						tableModel.addRow(objs);
+					}
 				} catch (Exception exception) {
 					exception.printStackTrace();
 					System.exit(1);
@@ -307,7 +309,7 @@ public class IMS_Client {
 	 * Not yet implemented will update users online in real time when done.
 	 * 
 	 */
-	void updateOnlineUsers() {
+	void pushUpdates() {
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
