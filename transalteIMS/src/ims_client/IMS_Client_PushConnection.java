@@ -3,16 +3,14 @@ package ims_client;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.text.BadLocationException;
-
+import javax.swing.table.DefaultTableModel; 
 import org.java_websocket.WebSocketImpl;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
-import ims_translate.Language;
-import ims_translate.Translate;
+import ims_user.IMS_User;
+
 
 /**
  * @author ciunas
@@ -21,9 +19,22 @@ import ims_translate.Translate;
 
 public class IMS_Client_PushConnection implements Runnable{
 	
-	private boolean run;
-	private WebSocketClient wsc;
 
+
+	private boolean run = true;
+	private String name;
+	private WebSocketClient wsc;
+	private String ip;
+	private DefaultTableModel table;
+	
+	public IMS_Client_PushConnection(boolean run,  String ip, DefaultTableModel table, String name) {
+		super();
+		this.name = name;
+		this.run = run; 
+		this.ip = ip;
+		this.table = table;
+	}
+	
 	/**
 	 * run
 	 */
@@ -35,7 +46,6 @@ public class IMS_Client_PushConnection implements Runnable{
 		while (run == true) {
 
 		}
-
 	}
 
 	/**
@@ -48,43 +58,26 @@ public class IMS_Client_PushConnection implements Runnable{
 
 			wsc = new WebSocketClient(new URI(ip)) {
 
+				
+
 				@Override
 				public void onMessage(String message) {
-
-					recievedMessage(message);
+					
+					recievedMessage(message);				
 				}
 
 				@Override
 				public void onOpen(ServerHandshake handshake) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							JOptionPane.showMessageDialog(frame, "You are connected to", name,
-									JOptionPane.YES_NO_CANCEL_OPTION);
-						}
-					});
+
 				}
 
 				@Override
 				public void onClose(int code, String reason, boolean remote) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							JOptionPane.showMessageDialog(frame, "You have been disconnected", "Error",
-									JOptionPane.WARNING_MESSAGE);
-							run = false;
-							System.exit(0);
-
-						}
-					});
+					
 				}
 
 				@Override
 				public void onError(Exception ex) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							JOptionPane.showMessageDialog(frame, "Exception", "Error", JOptionPane.ERROR_MESSAGE);
-						}
-					});
-
 					ex.printStackTrace();
 				}
 			};
@@ -94,45 +87,20 @@ public class IMS_Client_PushConnection implements Runnable{
 
 		} catch (URISyntaxException ex) {
 
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					JOptionPane.showMessageDialog(frame, "Exception", "URIError", JOptionPane.ERROR_MESSAGE);
-				}
-			});
 		}
 	}
 
+	
 	/**
 	 * message that is read from text field, sent to websocket using
 	 * swingutilities, then GUI is updated using left formatting
 	 */
-	void sentMessage() {
+	void sentMessage(String message) {
 
-		IMS_Client_Message user = new IMS_Client_Message();
-
-		user.setName(myName);
-		user.setMessage(txtTypeAMessage.getText());
-		user.setLaunguage(launguage);
-
-		IMS_Client_JsonEncode jec = new IMS_Client_JsonEncode(user);
-		String messageCreate = jec.encodeToString();
-
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-
-					if (wsc != null) { // check websocket is still connected
-						wsc.send(messageCreate);
-					}
-					doc.setParagraphAttributes(doc.getLength(), 1, left, false);
-					doc.insertString(doc.getLength(), "\nYou:\n" + txtTypeAMessage.getText() + "\n", left);
-					txtTypeAMessage.setText("");
-				} catch (Exception e1) {
-					System.out.println(e1);
-				}
-			}
-		});
+		if (wsc != null) { // check websocket is still connected
+			wsc.send(message);
+		}
+	
 	}
 
 	/**
@@ -143,29 +111,33 @@ public class IMS_Client_PushConnection implements Runnable{
 	 */
 	void recievedMessage(String message) {
 
-		IMS_Client_JsonDecode jdc = new IMS_Client_JsonDecode(message);
+		IMS_Clinet_JsonDecodeOnlineUsers jdc = new IMS_Clinet_JsonDecodeOnlineUsers(message);
 
-		IMS_Client_Message messageObject = jdc.decodeFormString();
-		
-		try {
-			translatedText = Translate.execute( messageObject.getMessage() , Language.fromString(messageObject.getLaunguage()) , Language.fromString(launguage) );
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-
+		IMS_User messageObject = jdc.decodeFormString();
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 
-				try {
-					doc.setParagraphAttributes(doc.getLength(), 1, right, false);
-					doc.insertString(doc.getLength(), "\n" + messageObject.getName() + ": \n" + translatedText + "\n", right);
-				} catch (BadLocationException e1) {
-					e1.printStackTrace();
+				table.setRowCount(0);
+				
+				for (int i = 0, j = 0; i < messageObject.onlineUsers.size(); i += 2 , j++) {
+
+					Object[] objs = { j + 1, messageObject.getOnlineUsers(i), messageObject.getOnlineUsers(i + 1) };
+
+					table.addRow(objs);
 				}
 
 			}
 		});
+	}
+	
+	
+	//Getters and Setters
+	public boolean isRun() {
+		return run;
+	}
+
+	public void setRun(boolean run) {
+		this.run = run;
 	}
 }

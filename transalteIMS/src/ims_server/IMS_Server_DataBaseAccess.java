@@ -207,7 +207,7 @@ public class IMS_Server_DataBaseAccess implements IMS_Server_DataAccess {
 			}
 			
 			
-			userReturned  =  returnOnlineUser(user);
+			userReturned  =  returnOnlineUser( );
 
 			// Search for user with username and get details;
 			sqlReturnUser.setString(1, user.getName());
@@ -263,14 +263,13 @@ public class IMS_Server_DataBaseAccess implements IMS_Server_DataAccess {
 		 * @see ims_server.IMS_Server_DataAccess#returnOnlineUser(ims_user.IMS_User)
 		 */
 		@Override
-		public IMS_User returnOnlineUser(IMS_User user) {
+		public IMS_User returnOnlineUser() {
 
 			IMS_User userReturned = new IMS_User();
 			
 			try {
 						
 				
-				// Search for launguage labels
 				System.out.println("Return Online users");
 				sqlReturnOnlineUser.setInt(1, 1);
 				ResultSet resultSet2 = sqlReturnOnlineUser.executeQuery();

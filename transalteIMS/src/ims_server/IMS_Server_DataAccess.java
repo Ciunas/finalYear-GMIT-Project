@@ -40,6 +40,6 @@ public interface IMS_Server_DataAccess {
 	 * @param user object containing name
 	 * @return user object containing a list of all users online
 	 */
-	public IMS_User returnOnlineUser(IMS_User user);		
+	public IMS_User returnOnlineUser( );		
 
 	} 

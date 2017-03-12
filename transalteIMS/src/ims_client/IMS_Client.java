@@ -42,10 +42,9 @@ import java.awt.Dimension;
  */
 public class IMS_Client {
 
-	private IMS_Server_DataAccess database;
 	private Socket clinetSocket;
 	private JFrame frmInstantMessaginService;
-	private String hostname = "192.168.122.228";
+	private String hostname = "localhost";
 	private BufferedReader bReader;
 	private PrintWriter dataOut;
 	ObjectInputStream in = null;
@@ -60,22 +59,16 @@ public class IMS_Client {
 	private JPanel panel_3;
 	private JButton btnNewButton;
 	private String name;
+	private String ip = "localhost";
+	private IMS_Client_PushConnection cThread;
+	private boolean flag = false;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
-					 //UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.mint.MintLookAndFeel");
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.luna.LunaLookAndFeel");
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
-					//UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.fast.FastLookAndFeel");
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.bernstein.BernsteinLookAndFeel");
+				try { 
 					 UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
@@ -103,7 +96,7 @@ public class IMS_Client {
 	 * @throws ClassNotFoundException
 	 */
 	public IMS_Client() throws ClassNotFoundException, IOException {
-
+		IMS_Client_LogInScreen pframe = null;
 		IMS_User user = new IMS_User();
 		try {
 
@@ -114,24 +107,35 @@ public class IMS_Client {
 			dataOut = new PrintWriter(clinetSocket.getOutputStream());
 			in = new ObjectInputStream(clinetSocket.getInputStream());
 			out = new ObjectOutputStream(clinetSocket.getOutputStream());
+			flag = true;
 		} catch (IOException ioException) {
 			ioException.printStackTrace();
+			
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					JOptionPane.showMessageDialog(frmInstantMessaginService, "Exception", "No Server Available", JOptionPane.ERROR_MESSAGE);
+					flag = false;
+				}
+			});
 		}
 
-		IMS_Client_LogInScreen pframe = null;
-		pframe = new IMS_Client_LogInScreen(frmInstantMessaginService, bReader, dataOut);
-		pframe.setVisible(true);
+		if(flag){
+			
+			pframe = new IMS_Client_LogInScreen(frmInstantMessaginService, bReader, dataOut);
+			pframe.setVisible(true);
 
-		if (pframe.isCancel())
-			System.exit(0);
+			if (pframe.isCancel())
+				System.exit(0);
 
-		user = getUserObject();
-		in.close();
-		out.close();
-		System.out.println("UserName: " + user.getName() + " User Launguage: " + user.getLaunguage()
-				+ " Size of ArryayList: " + user.labels.size());
+			user = getUserObject();
+			in.close();
+			out.close();
+			// System.out.println("UserName: " + user.getName() + " User
+			// Launguage: " + user.getLaunguage()
+			// + " Size of ArryayList: " + user.labels.size());
 
-		initialize(user);
+			initialize(user);
+		}
 	}
 
 	/**
@@ -171,9 +175,6 @@ public class IMS_Client {
 		tableModel = new DefaultTableModel(columns, 0); // The 0 argument is
 														// number rows.
 		table = new JTable(tableModel);
-
-		
-
 		scrollPane.setViewportView(table);
 
 		JPanel panel_1 = new JPanel();
@@ -217,6 +218,7 @@ public class IMS_Client {
 			public void actionPerformed(ActionEvent arg0) {
 
 				updateStatus(user.getName(), 0);
+				
 			}
 		});
 
@@ -226,20 +228,18 @@ public class IMS_Client {
 			@Override
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 
-				// Create database connection
-				try {
-					database = new IMS_Server_DataBaseAccess();
-				} catch (Exception exception) {
-					exception.printStackTrace();
-					System.exit(1);
-				}
-				database.changeStatus(user.getName(), 0);
-				database.close();
-
+				cThread.sentMessage( "#" + user.getName() );
+				cThread.setRun(false); 
+							
 			}
 		});
+		
+		cThread = new IMS_Client_PushConnection( true , 
+				"ws://"+ ip + ":8888" , tableModel, user.getName());
+		new Thread(cThread).start();
 	}
 
+	
 	/**
 	 * Sends a IMS_User Object to the client application after user
 	 * authenticated.
@@ -277,30 +277,14 @@ public class IMS_Client {
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-
-				// Create database connection
-				try {
-					database = new IMS_Server_DataBaseAccess();
-
-					for (int i = 0; i < user.onlineUsers.size(); i += 2) {
-
-						Object[] objs = { i + 1, user.getOnlineUsers(i), user.getOnlineUsers(i + 1) };
-
-						tableModel.addRow(objs);
-					}
-				} catch (Exception exception) {
-					exception.printStackTrace();
-					System.exit(1);
-				}
-
+ 
 				if (JOptionPane.showConfirmDialog(frmInstantMessaginService, "Are you sure to close this window?",
 						"Really Closing?", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-					database.changeStatus(name, status);
-					database.close();
+					cThread.sentMessage( "#" + name );
+					cThread.setRun(false); 
 					System.exit(0);
 				}
-
 			}
 		});
 	}

@@ -11,6 +11,7 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -80,7 +81,7 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBounds(100, 100, 454, 574);
 		frame.getContentPane().setLayout(new BorderLayout());
-
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		JPanel panel_2 = new JPanel();
 
 		frame.getContentPane().add(panel_2, BorderLayout.CENTER);
@@ -148,6 +149,15 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 			}
 		};
 		txtTypeAMessage.addActionListener(action);
+		
+		
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				frame.dispose();
+				run = false;							
+			}
+		});
 
 		frame.setVisible(true);
 	}
@@ -196,11 +206,10 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 				public void onClose(int code, String reason, boolean remote) {
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							JOptionPane.showMessageDialog(frame, "You have been disconnected", "Error",
+							JOptionPane.showMessageDialog(frame, "You have terminated call", "Error",
 									JOptionPane.WARNING_MESSAGE);
+							frame.dispose();
 							run = false;
-							System.exit(0);
-
 						}
 					});
 				}

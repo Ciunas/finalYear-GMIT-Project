@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -66,16 +67,7 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 
-				try {
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.mint.MintLookAndFeel");
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.luna.LunaLookAndFeel");
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.fast.FastLookAndFeel");
-					// UIManager.setLookAndFeel("com.jtattoo.plaf.bernstein.BernsteinLookAndFeel");
+				try { 
 					UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
@@ -100,6 +92,7 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBounds(100, 100, 454, 574);
 		frame.getContentPane().setLayout(new BorderLayout());
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		JPanel panel_2 = new JPanel();
 
@@ -165,6 +158,16 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 			}
 		};
 		txtTypeAMessage.addActionListener(action);
+		
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				ws.close();
+				run = false;
+				frame.dispose();							
+			}
+		});
+
 
 		frame.setVisible(true);
 	}
@@ -230,6 +233,7 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 			e.printStackTrace();
 		}
 
+		System.out.println("translating message");
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

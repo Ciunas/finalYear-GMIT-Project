@@ -14,8 +14,11 @@ import java.awt.event.ItemListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -192,8 +195,21 @@ public class IMS_Client_LogInScreen extends JDialog {
 	private boolean authenticate(BufferedReader bReader, PrintWriter dataOut) throws IOException {
 
 		String temp;
-	    ip = InetAddress.getLocalHost();
-	    
+		ip = InetAddress.getLocalHost();
+
+		Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces();
+		while (ifaces.hasMoreElements()) {
+			NetworkInterface iface = ifaces.nextElement();
+			Enumeration<InetAddress> addresses = iface.getInetAddresses();
+
+			while (addresses.hasMoreElements()) {
+				InetAddress addr = addresses.nextElement();
+				if (addr instanceof Inet4Address && !addr.isLoopbackAddress()) {
+					ip = addr;
+				}
+			}
+		}
+    
 		dataOut.println("Start Authentication");
 		dataOut.flush();
 		if ((temp = bReader.readLine()).compareTo("Authentication started") == 0) {
