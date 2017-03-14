@@ -103,15 +103,12 @@ public class IMS_Server_PushUpdate extends WebSocketServer {
 		}
 	}
 	
-	public static void broadcast(String msg) {
-		
-//		for (Session session : userSessions) {
-//			session.getAsyncRemote().sendText(msg);
-//		}
+	public static void broadcast(String message) {
+
 		for (WebSocket serverThread : list) {
 
 			if (serverThread != null) {						//check websocket is still connected
-				serverThread.send(msg);
+				serverThread.send( message );
 			}
 		}
 	}

@@ -42,9 +42,9 @@ import java.awt.Dimension;
  */
 public class IMS_Client {
 
+	private String ip = "192.168.122.228";
 	private Socket clinetSocket;
 	private JFrame frmInstantMessaginService;
-	private String hostname = "localhost";
 	private BufferedReader bReader;
 	private PrintWriter dataOut;
 	ObjectInputStream in = null;
@@ -59,9 +59,9 @@ public class IMS_Client {
 	private JPanel panel_3;
 	private JButton btnNewButton;
 	private String name;
-	private String ip = "localhost";
 	private IMS_Client_PushConnection cThread;
 	private boolean flag = false;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -101,7 +101,7 @@ public class IMS_Client {
 		try {
 
 			// make connection
-			clinetSocket = new Socket(hostname, 1234);
+			clinetSocket = new Socket(ip, 1234);
 			// get streams
 			bReader = new BufferedReader(new InputStreamReader(clinetSocket.getInputStream()));
 			dataOut = new PrintWriter(clinetSocket.getOutputStream());
@@ -222,7 +222,7 @@ public class IMS_Client {
 			}
 		});
 
-		startWebsocketServer( 8887, user.getLaunguage());
+		startWebsocketServer( 8887, user.getLaunguage(), user.getName());
 
 		frmInstantMessaginService.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
@@ -261,9 +261,9 @@ public class IMS_Client {
 	 * 
 	 * @throws UnknownHostException
 	 */
-	private void startWebsocketServer(int port, String launguage) throws UnknownHostException {
+	private void startWebsocketServer(int port, String launguage, String myName) throws UnknownHostException {
 
-		new Thread(new IMS_Client_ChatServer(port, launguage)).start();
+		new Thread(new IMS_Client_ChatServer(port, launguage, myName)).start();
 
 	}
 
@@ -285,20 +285,6 @@ public class IMS_Client {
 					cThread.setRun(false); 
 					System.exit(0);
 				}
-			}
-		});
-	}
-
-	/**
-	 * Not yet implemented will update users online in real time when done.
-	 * 
-	 */
-	void pushUpdates() {
-
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-
 			}
 		});
 	}

@@ -44,6 +44,7 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 	private SimpleAttributeSet left;
 	private SimpleAttributeSet right;
 	private String name = null;
+	private String myName = null;
 	private String launguage = null;
 	private String connectedLaunguage = null;
 	private String ip;
@@ -192,14 +193,15 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 		
 		IMS_Client_Message user = new IMS_Client_Message();
 
-		user.setName(name);
+		user.setName(myName);
 		user.setLaunguage(launguage);
 		user.setMessage(txtTypeAMessage.getText());
 		
 		IMS_Client_JsonEncode jec = new IMS_Client_JsonEncode(user);
 		String messageCreate = jec.encodeToString();
 		
-
+		System.out.println(messageCreate);
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -220,6 +222,7 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 		});
 	}
 
+
 	/**
 	 *  Sends the recieved message to GUI and updates using right formatting.
 	 *  
@@ -227,6 +230,7 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 	 */
 	void recievedMessage(String message) {
 		
+		System.out.println("Message to translate: " + message);
 		try {
 			translatedText = Translate.execute( message , Language.fromString(connectedLaunguage) , Language.fromString(launguage) );
 		} catch (Exception e) {
@@ -234,6 +238,7 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 		}
 
 		System.out.println("translating message");
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -308,7 +313,13 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 		this.run = run;
 	}
 	
-	
+	public String getMyName() {
+		return myName;
+	}
+
+	public void setMyName(String myName) {
+		this.myName = myName;
+	}
 
 
 }

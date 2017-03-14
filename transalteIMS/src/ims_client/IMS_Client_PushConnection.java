@@ -122,9 +122,14 @@ public class IMS_Client_PushConnection implements Runnable{
 				
 				for (int i = 0, j = 0; i < messageObject.onlineUsers.size(); i += 2 , j++) {
 
-					Object[] objs = { j + 1, messageObject.getOnlineUsers(i), messageObject.getOnlineUsers(i + 1) };
-
-					table.addRow(objs);
+					if(messageObject.getOnlineUsers(i).contains(name)){
+						j--;
+					}else{
+						
+						Object[] objs = { j + 1, messageObject.getOnlineUsers(i), messageObject.getOnlineUsers(i + 1) };
+						table.addRow(objs);
+					}
+					
 				}
 
 			}

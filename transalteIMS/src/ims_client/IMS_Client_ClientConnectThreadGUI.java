@@ -253,7 +253,9 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 
 		IMS_Client_JsonEncode jec = new IMS_Client_JsonEncode(user);
 		String messageCreate = jec.encodeToString();
-
+		
+		System.out.println(messageCreate);
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -279,6 +281,7 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 	 *            (read through websocket)
 	 */
 	void recievedMessage(String message) {
+		
 
 		IMS_Client_JsonDecode jdc = new IMS_Client_JsonDecode(message);
 

@@ -3,7 +3,6 @@ package ims_server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
@@ -42,8 +41,8 @@ public class IMS_Server_UserNew_Authenticate {
 				newNotnew = bReader.readLine();
 
 				if ((temp = bReader.readLine()).compareTo("Data Sent") == 0) {
-					System.out.println("User authenticated, username: " + userName + " Password: " + password
-							+ " New or not new: " + newNotnew + " Launguage: " + launguage + " IP: " + tempIP);
+//					System.out.println("User authenticated, username: " + userName + " Password: " + password
+//							+ " New or not new: " + newNotnew + " Launguage: " + launguage + " IP: " + tempIP);
 				}
 			} else {
 				temp = bReader.readLine();
