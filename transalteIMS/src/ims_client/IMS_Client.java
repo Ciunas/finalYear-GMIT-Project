@@ -17,9 +17,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
-
-import ims_server.IMS_Server_DataAccess;
-import ims_server.IMS_Server_DataBaseAccess;
 import ims_user.IMS_User;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,7 +26,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.border.MatteBorder;
@@ -193,8 +189,8 @@ public class IMS_Client {
 				name = (String) table.getModel().getValueAt(selectedRowIndex, 1);
 				String ip = (String) table.getModel().getValueAt(selectedRowIndex, 2);
 				System.out.println(user.getLaunguage());
-				IMS_Client_ClientConnectThreadGUI cThreadframe = new IMS_Client_ClientConnectThreadGUI(user.getName(), name ,
-						"ws://"+ ip + ":8887", user.getLaunguage());
+				IMS_Client_ClientConnectThreadGUI cThreadframe = new IMS_Client_ClientConnectThreadGUI(user, name ,
+						"ws://"+ ip + ":8887");
 				new Thread(cThreadframe).start();
 			}
 		});
@@ -217,12 +213,12 @@ public class IMS_Client {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				updateStatus(user.getName(), 0);
+				updateStatus( 0 , user);
 				
 			}
 		});
 
-		startWebsocketServer( 8887, user.getLaunguage(), user.getName());
+		startWebsocketServer( 8887,user);
 
 		frmInstantMessaginService.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
@@ -261,9 +257,9 @@ public class IMS_Client {
 	 * 
 	 * @throws UnknownHostException
 	 */
-	private void startWebsocketServer(int port, String launguage, String myName) throws UnknownHostException {
+	private void startWebsocketServer(int port,  IMS_User user) throws UnknownHostException {
 
-		new Thread(new IMS_Client_ChatServer(port, launguage, myName)).start();
+		new Thread(new IMS_Client_ChatServer(port, user)).start();
 
 	}
 
@@ -273,15 +269,15 @@ public class IMS_Client {
 	 * @param name of user to chage status of
 	 * @param status new status to change to 
 	 */
-	void updateStatus(String name, int status) {
+	void updateStatus(int status, IMS_User user) {
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
  
-				if (JOptionPane.showConfirmDialog(frmInstantMessaginService, "Are you sure to close this window?",
-						"Really Closing?", JOptionPane.YES_NO_OPTION,
+				if (JOptionPane.showConfirmDialog(frmInstantMessaginService, user.getLabel(12),
+						"", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-					cThread.sentMessage( "#" + name );
+					cThread.sentMessage( "#" + user.getName() );
 					cThread.setRun(false); 
 					System.exit(0);
 				}

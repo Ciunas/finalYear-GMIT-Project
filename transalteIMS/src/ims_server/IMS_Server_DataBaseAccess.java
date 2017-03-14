@@ -247,6 +247,10 @@ public class IMS_Server_DataBaseAccess implements IMS_Server_DataAccess {
 				userReturned.getLabels().add(resultSet1.getString(8));
 				userReturned.getLabels().add(resultSet1.getString(9));
 				userReturned.getLabels().add(resultSet1.getString(10));
+				userReturned.getLabels().add(resultSet1.getString(11));
+				userReturned.getLabels().add(resultSet1.getString(12));
+				userReturned.getLabels().add(resultSet1.getString(13));
+				userReturned.getLabels().add(resultSet1.getString(14));
 			}
 			
 

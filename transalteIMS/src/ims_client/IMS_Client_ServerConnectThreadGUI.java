@@ -21,6 +21,7 @@ import javax.swing.text.StyledDocument;
 import org.jdesktop.swingx.prompt.PromptSupport;
 import ims_translate.Language;
 import ims_translate.Translate;
+import ims_user.IMS_User;
 import org.java_websocket.WebSocket; 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -44,10 +45,8 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 	private SimpleAttributeSet left;
 	private SimpleAttributeSet right;
 	private String name = null;
-	private String myName = null;
-	private String launguage = null;
 	private String connectedLaunguage = null;
-	private String ip;
+	private String translatedText;
 	private boolean run = true;
 	private JFrame frame;
 	private JTextField txtTypeAMessage;
@@ -55,7 +54,7 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 	private JScrollPane scrollPane_1;
 	private JScrollPane scrollPane_2;
 	private WebSocket ws;
-	private String translatedText;
+	private IMS_User  user;
 
 	
 
@@ -63,8 +62,9 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 	 * Used to Launch the application.
 	 * 
 	 */
-	public IMS_Client_ServerConnectThreadGUI(WebSocket conn) {
+	public IMS_Client_ServerConnectThreadGUI(WebSocket conn, IMS_User user) {
 		this.ws = conn;
+		this.user =  user;
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 
@@ -121,7 +121,7 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 			panel_2.add(scrollPane_2, "cell 0 4,grow");
 			{
 				txtTypeAMessage = new JTextField();
-				PromptSupport.setPrompt ("Enter Message here", txtTypeAMessage);
+				PromptSupport.setPrompt (user.getLabel(13), txtTypeAMessage);
 				txtTypeAMessage.setFont(new Font("Dialog", Font.BOLD, 14));
 				txtTypeAMessage.setColumns(10);
 				scrollPane_2.setViewportView(txtTypeAMessage);
@@ -134,7 +134,7 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 			panel_2.add(panel_3, "cell 0 5,grow");
 			{
 
-				JButton btnNewButton = new JButton("Quit");
+				JButton btnNewButton = new JButton(user.getLabel(6));
 				btnNewButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						
@@ -191,13 +191,13 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 	 */
 	void sentMessage() {
 		
-		IMS_Client_Message user = new IMS_Client_Message();
+		IMS_Client_Message messageObject = new IMS_Client_Message();
 
-		user.setName(myName);
-		user.setLaunguage(launguage);
-		user.setMessage(txtTypeAMessage.getText());
+		messageObject.setName(user.getName());
+		messageObject.setLaunguage(user.getLaunguage());
+		messageObject.setMessage(txtTypeAMessage.getText());
 		
-		IMS_Client_JsonEncode jec = new IMS_Client_JsonEncode(user);
+		IMS_Client_JsonEncode jec = new IMS_Client_JsonEncode(messageObject);
 		String messageCreate = jec.encodeToString();
 		
 		System.out.println(messageCreate);
@@ -232,7 +232,7 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 		
 		System.out.println("Message to translate: " + message);
 		try {
-			translatedText = Translate.execute( message , Language.fromString(connectedLaunguage) , Language.fromString(launguage) );
+			translatedText = Translate.execute( message , Language.fromString(connectedLaunguage) , Language.fromString(user.getLaunguage()) );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -265,7 +265,8 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 			@Override
 			public void run() {
 				
-				JOptionPane.showMessageDialog(frame, "Connection Closed", "Info", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frame, user.getLabel(11), "",
+						JOptionPane.INFORMATION_MESSAGE);
 				run = false;
 				frame.dispose();				
 			}
@@ -288,13 +289,6 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 		this.connectedLaunguage = connectedLaunguage;
 	}
 
-	public String getLaunguage() {
-		return launguage;
-	}
-
-	public void setLaunguage(String launguage) {
-		this.launguage = launguage;
-	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -312,14 +306,5 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 	public void setRun(boolean run) {
 		this.run = run;
 	}
-	
-	public String getMyName() {
-		return myName;
-	}
-
-	public void setMyName(String myName) {
-		this.myName = myName;
-	}
-
 
 }

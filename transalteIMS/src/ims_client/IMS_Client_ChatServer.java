@@ -7,6 +7,7 @@ import java.util.List;
 import org.java_websocket.WebSocket; 
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+import ims_user.IMS_User;
 import javax.swing.SwingUtilities;
 
 /**
@@ -16,14 +17,12 @@ import javax.swing.SwingUtilities;
 public class IMS_Client_ChatServer extends WebSocketServer {
 
 	private List<IMS_Client_ServerConnectThreadGUI> list = new ArrayList<IMS_Client_ServerConnectThreadGUI>();
-	private String launguage = null;
-	private String myName;
+	IMS_User user;
 
 
-	public IMS_Client_ChatServer(int port, String launguage, String myName) throws UnknownHostException {
+	public IMS_Client_ChatServer(int port,  IMS_User user) throws UnknownHostException {
 		super(new InetSocketAddress(port));
-		this.launguage = launguage;
-		this.myName = myName;
+		this.user = user;
 	}
 
 	public IMS_Client_ChatServer(InetSocketAddress address) {
@@ -33,10 +32,8 @@ public class IMS_Client_ChatServer extends WebSocketServer {
 	@Override
 	public void onOpen(WebSocket conn, ClientHandshake handshake) {
 
-		IMS_Client_ServerConnectThreadGUI sThreadframe = new IMS_Client_ServerConnectThreadGUI(conn); // associate  a websocket with each IMS_Server_ConnectThread object
+		IMS_Client_ServerConnectThreadGUI sThreadframe = new IMS_Client_ServerConnectThreadGUI(conn, user); // associate  a websocket with each IMS_Server_ConnectThread object
 		new Thread(sThreadframe).start();
-		sThreadframe.setMyName( myName ); 
-		sThreadframe.setLaunguage(launguage);
 		list.add(sThreadframe); 
 	}
 
@@ -102,7 +99,6 @@ public class IMS_Client_ChatServer extends WebSocketServer {
 						if (serverThread.getName() == null) {
 							serverThread.setName(messageObject.getName());
 							serverThread.setConnectedLaunguage(messageObject.getLaunguage());
-							serverThread.setLaunguage(launguage);
 						}
 						
 						System.out.println(messageObject.getMessage());

@@ -17,17 +17,15 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import org.jdesktop.swingx.prompt.PromptSupport;
-
 import ims_translate.Language;
 import ims_translate.Translate;
-
+import ims_user.IMS_User;
 import org.java_websocket.WebSocketImpl;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -47,10 +45,8 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 	private StyledDocument doc;
 	private SimpleAttributeSet left;
 	private SimpleAttributeSet right;
-	private String myName;
 	private String name;
 	private String ip;
-	private String launguage;
 	private WebSocketClient wsc;
 	private boolean run;
 	private JFrame frame;
@@ -59,16 +55,16 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 	private JScrollPane scrollPane_1;
 	private JScrollPane scrollPane_2;
 	private Object translatedText;
+	private IMS_User user;
 
 	/**
 	 * Launch the application.
 	 * 
 	 */
-	public IMS_Client_ClientConnectThreadGUI(String myName, String name, String ip, String launguage ) {
-		this.myName = myName;
+	public IMS_Client_ClientConnectThreadGUI(IMS_User user, String name, String ip) {
+		this.user = user;
 		this.name = name;
 		this.ip = ip;
-		this.launguage = launguage;
 		initialize();
 	}
 
@@ -111,7 +107,7 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 			panel_2.add(scrollPane_2, "cell 0 4,grow");
 			{
 				txtTypeAMessage = new JTextField();
-				PromptSupport.setPrompt("Enter Message here", txtTypeAMessage);
+				PromptSupport.setPrompt(user.getLabel(13), txtTypeAMessage);
 				txtTypeAMessage.setFont(new Font("Dialog", Font.BOLD, 14));
 				txtTypeAMessage.setColumns(10);
 				scrollPane_2.setViewportView(txtTypeAMessage);
@@ -124,7 +120,7 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 			panel_2.add(panel_3, "cell 0 5,grow");
 			{
 
-				JButton btnNewButton = new JButton("Quit");
+				JButton btnNewButton = new JButton(user.getLabel(6));
 				btnNewButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 
@@ -149,13 +145,12 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 			}
 		};
 		txtTypeAMessage.addActionListener(action);
-		
-		
+
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 				frame.dispose();
-				run = false;							
+				run = false;
 			}
 		});
 
@@ -196,7 +191,7 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 				public void onOpen(ServerHandshake handshake) {
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							JOptionPane.showMessageDialog(frame, "You are connected to", name,
+							JOptionPane.showMessageDialog(frame, user.getLabel(10) + ": " + name, "",
 									JOptionPane.YES_NO_CANCEL_OPTION);
 						}
 					});
@@ -206,8 +201,8 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 				public void onClose(int code, String reason, boolean remote) {
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							JOptionPane.showMessageDialog(frame, "You have terminated call", "Error",
-									JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(frame, user.getLabel(11), "",
+									JOptionPane.INFORMATION_MESSAGE);
 							frame.dispose();
 							run = false;
 						}
@@ -245,17 +240,18 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 	 */
 	void sentMessage() {
 
-		IMS_Client_Message user = new IMS_Client_Message();
+		IMS_Client_Message messageObject = new IMS_Client_Message();
 
-		user.setName(myName);
-		user.setMessage(txtTypeAMessage.getText());
-		user.setLaunguage(launguage);
+		System.out.println("Printing my Name: " + user.getName());
+		messageObject.setName(user.getName());
+		messageObject.setMessage(txtTypeAMessage.getText());
+		messageObject.setLaunguage(user.getLaunguage());
 
-		IMS_Client_JsonEncode jec = new IMS_Client_JsonEncode(user);
+		IMS_Client_JsonEncode jec = new IMS_Client_JsonEncode(messageObject);
 		String messageCreate = jec.encodeToString();
-		
+
 		System.out.println(messageCreate);
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -281,18 +277,17 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 	 *            (read through websocket)
 	 */
 	void recievedMessage(String message) {
-		
 
 		IMS_Client_JsonDecode jdc = new IMS_Client_JsonDecode(message);
 
 		IMS_Client_Message messageObject = jdc.decodeFormString();
-		
+
 		try {
-			translatedText = Translate.execute( messageObject.getMessage() , Language.fromString(messageObject.getLaunguage()) , Language.fromString(launguage) );
+			translatedText = Translate.execute(messageObject.getMessage(),
+					Language.fromString(messageObject.getLaunguage()), Language.fromString(user.getLaunguage()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -300,7 +295,8 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 
 				try {
 					doc.setParagraphAttributes(doc.getLength(), 1, right, false);
-					doc.insertString(doc.getLength(), "\n" + messageObject.getName() + ": \n" + translatedText + "\n", right);
+					doc.insertString(doc.getLength(), "\n" + messageObject.getName() + ": \n" + translatedText + "\n",
+							right);
 				} catch (BadLocationException e1) {
 					e1.printStackTrace();
 				}
