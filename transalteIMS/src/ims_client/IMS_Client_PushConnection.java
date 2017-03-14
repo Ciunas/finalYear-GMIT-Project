@@ -111,9 +111,9 @@ public class IMS_Client_PushConnection implements Runnable{
 	 */
 	void recievedMessage(String message) {
 
-		IMS_Clinet_JsonDecodeOnlineUsers jdc = new IMS_Clinet_JsonDecodeOnlineUsers(message);
+		IMS_Client_JsonDecode jdc = new IMS_Client_JsonDecode(message);
 
-		IMS_User messageObject = jdc.decodeFormString();
+		IMS_User messageObject = jdc.decodeFormStringIMS_User();
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
