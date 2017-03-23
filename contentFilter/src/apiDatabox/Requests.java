@@ -18,6 +18,13 @@ public class Requests {
 	public Requests() {
 	}
 
+	/**
+	 * Create a POST to datumbox, sets all required detials and returns if string is safe or not.
+	 * @param text2Classify text you want checked in adult filter.
+	 * @return bolean, true if safe for chrildren, false if not.
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
 	public boolean creteRequest(String text2Classify) throws MalformedURLException, IOException {
 
 		String key = "";
@@ -40,11 +47,7 @@ public class Requests {
 		return false;
 	}
 
-	/**
-	 * @param args
-	 * @throws IOException
-	 * @throws MalformedURLException
-	 */
+	 
 	public static void main(String[] args) throws MalformedURLException, IOException {
 
 		Requests rq = new Requests();
@@ -52,6 +55,15 @@ public class Requests {
 
 	}
 
+	/**
+	 * POSTS to datumbox the string(s) that are to be catagoriesd as safe or unsafe
+	 * @param connection	Connection to datumbox.
+	 * @param url datumbox address
+	 * @param urlParameters APIKEY and string to check
+	 * @return returns  an Inputstream connected to datumbox
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
 	public static InputStream postURL(HttpURLConnection connection, URL url, String urlParameters)
 			throws MalformedURLException, IOException {
 
