@@ -44,7 +44,9 @@ public class Proxy_ThreadBuilder extends Thread {
 	public void run() {
 		
 		String[] tokens = null;
-		Requests_CosineSimilarity cs = new Requests_CosineSimilarity();		
+		Requests_CosineSimilarity cs = new Requests_CosineSimilarity();	
+		Proxy_RedirectMessages rm = new Proxy_RedirectMessages();
+		
 		try {
 			tokens = Proxy_HeaderParser.parser(bReader);
 			Proxy_GUI.displayInGui("Connecting and returnig URL");
@@ -54,17 +56,23 @@ public class Proxy_ThreadBuilder extends Thread {
 		
 		System.out.println(tokens[1].toString());
 		
-		if(cs.cosineSimilarity(tokens[1].toString())  < 0.5){
-			System.out.println("Low Similatity");
-		}else{
-			System.out.println("High Similarity");
-			try {
-				Proxy_RedirectMessages.pmessage( dataOut);
-			} catch (IOException e) { 
-				e.printStackTrace();
-			}
-		}
+//		if(cs.cosineSimilarity(tokens[1].toString())  < 0.5){
+//			System.out.println("Low Similatity");
+//		}else{
+//			System.out.println("High Similarity");
+//			try {
+//				rm.pmessage( dataOut);
+//			} catch (IOException e) { 
+//				e.printStackTrace();
+//			}
+//		}
 		
+		try {
+			rm.pmessage( dataOut );
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		if (tokens[0].equalsIgnoreCase("GET")) {
 			try {
