@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 
 //
 
-public class ProxyStart {
+public class Proxy_Start {
 
     
     public static void main(String[] args) throws IOException {
@@ -22,7 +22,7 @@ public class ProxyStart {
         }
 
         while (proxyRunnig) {
-            new ProxyThreadBuilder(serverSocket.accept()).start();
+            new Proxy_ThreadBuilder(serverSocket.accept()).start();
         }
         serverSocket.close();
     }

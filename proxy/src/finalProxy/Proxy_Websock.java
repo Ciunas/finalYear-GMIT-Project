@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class Websock implements Runnable{
+public class Proxy_Websock implements Runnable{
 
 	private OutputStream OutStream = null;
 	private InputStream InStream = null;
 	Boolean  runnig = false;
 	//public  synchronized
 
-	public Websock(InputStream in, OutputStream os, Boolean running) {
+	public Proxy_Websock(InputStream in, OutputStream os, Boolean running) {
 
 		this.runnig = running;
 		this.OutStream = os;
@@ -39,7 +39,7 @@ public class Websock implements Runnable{
 			}
 			
 		}
-		ProxyGUI.displayInGui("Closeing Websocket for Port 80");
+		Proxy_GUI.displayInGui("Closeing Websocket for Port 80");
 		return;
 	}
 	

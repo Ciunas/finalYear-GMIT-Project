@@ -4,16 +4,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class SSLconect implements Runnable {
+public class Proxy_SSLconect implements Runnable {
 
 	private OutputStream outStream = null;
 	private InputStream inStream = null;
 
-	private Record currentRecord = new Record();
+	private Proxy_Record currentRecord = new Proxy_Record();
 	private boolean upStream;
 	private  boolean running = true;
 
-	public SSLconect(InputStream in, OutputStream out, boolean upStream) {
+	public Proxy_SSLconect(InputStream in, OutputStream out, boolean upStream) {
 		this.outStream = out;
 		this.inStream = in;
 		this.upStream = upStream;
@@ -27,7 +27,7 @@ public class SSLconect implements Runnable {
 			currentRecord.write(outStream);
 			// System.out.println("alive in records");
 		}
-		ProxyGUI.displayInGui("Finished writeing records for CONNECT method");
+		Proxy_GUI.displayInGui("Finished writeing records for CONNECT method");
 		try {
 			inStream.close();
 			outStream.close();
@@ -38,7 +38,7 @@ public class SSLconect implements Runnable {
 	}
 
 	public void stopThread(boolean running, long id) {
-		ProxyGUI.displayInGui("Stopping Thread: " + id);
+		Proxy_GUI.displayInGui("Stopping Thread: " + id);
 		this.running = running;
 	}
 

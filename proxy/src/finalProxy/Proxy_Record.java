@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 
-public class Record {
+public class Proxy_Record {
 	
 	   public enum CopyStatus {
 		   
@@ -53,7 +53,7 @@ public class Record {
 	    public static final int HANDSHAKE_RECORD_HDR_SIZE = 4;
 	    public static final int HANDSHAKE_MESSAGE_HDR_SIZE = 4;
 
-	    public Record() {
+	    public Proxy_Record() {
 
 	    }
 	    /**

@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
-public class HeaderParser {
+public class Proxy_HeaderParser {
 
 	
 	public static String[]  parser(BufferedReader bReader) throws IOException {
@@ -30,7 +30,7 @@ public class HeaderParser {
 				tokens = inputLine.split(" ");
 				requestType = tokens[0];
 				url = tokens[1];
-				ProxyGUI.displayInGui(requestType + " Request for: " + url);
+				Proxy_GUI.displayInGui(requestType + " Request for: " + url);
 				//System.out.println(requestType + " Request for: " + url);
 			}else{
 				//Add the rest of the request This data is needed for a post request.

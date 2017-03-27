@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class HttpRequests {
+public class Proxy_HttpRequests {
 	
 	public static void processHttp(String urlCall, DataOutputStream dataOut) throws IOException{
 		

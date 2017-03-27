@@ -8,19 +8,20 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import apiDatabox.Requests_CosineSimilarity;
 
-public class ProxyThreadBuilder extends Thread {
+
+public class Proxy_ThreadBuilder extends Thread {
 
 	private Socket clinetSocket = null;
 	// Streams from the Client and Server
 	private InputStream fromClient = null;
 	private OutputStream toClient = null;
-	String[] tokens = null;
 	BufferedReader bReader = null;
 	DataOutputStream dataOut = null;
 
 	// Bind to client socket.
-	public ProxyThreadBuilder(Socket socket) {
+	public Proxy_ThreadBuilder(Socket socket) {
 		super();
 		this.clinetSocket = socket;
 		try {
@@ -41,17 +42,34 @@ public class ProxyThreadBuilder extends Thread {
 	
 	// @Override
 	public void run() {
+		
+		String[] tokens = null;
+		Requests_CosineSimilarity cs = new Requests_CosineSimilarity();		
 		try {
-			tokens = HeaderParser.parser(bReader);
-			ProxyGUI.displayInGui("Connecting and returnig URL");
+			tokens = Proxy_HeaderParser.parser(bReader);
+			Proxy_GUI.displayInGui("Connecting and returnig URL");
 		} catch (IOException e) {
 			e.printStackTrace();
+		} 
+		
+		System.out.println(tokens[1].toString());
+		
+		if(cs.cosineSimilarity(tokens[1].toString())  < 0.5){
+			System.out.println("Low Similatity");
+		}else{
+			System.out.println("High Similarity");
+			try {
+				Proxy_RedirectMessages.pmessage( dataOut);
+			} catch (IOException e) { 
+				e.printStackTrace();
+			}
 		}
-
+		
+		
 		if (tokens[0].equalsIgnoreCase("GET")) {
 			try {
 				
-				HttpRequests.processHttp(tokens[1].toString(), dataOut);
+				Proxy_HttpRequests.processHttp(tokens[1].toString(), dataOut);
 				
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -59,7 +77,7 @@ public class ProxyThreadBuilder extends Thread {
 		} else if (tokens[0].equalsIgnoreCase("CONNECT")) {
 
 			try {
-				HttpsRequests.processHttps(tokens, fromClient, toClient);
+				Proxy_HttpsRequests.processHttps(tokens, fromClient, toClient);
 
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -70,10 +88,9 @@ public class ProxyThreadBuilder extends Thread {
 		} else if (tokens[0].equalsIgnoreCase("POST")) {
 			
 			try {
-				Post.postProcess(tokens, dataOut);
+				Proxy_Post.postProcess(tokens, dataOut);
 
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			

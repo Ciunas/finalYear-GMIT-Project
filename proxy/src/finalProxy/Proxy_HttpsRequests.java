@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 
-public class HttpsRequests {
+public class Proxy_HttpsRequests {
 
 	static Socket serverSocket = null;
 
@@ -22,11 +22,11 @@ public class HttpsRequests {
 		
 		if(Integer.parseInt(serverInfo[1]) == 443){
 			processHttps443(serverInfo,  fromClient,  toClient);
-			ProxyGUI.displayInGui("Processing Https Connection on port 433");
+			Proxy_GUI.displayInGui("Processing Https Connection on port 433");
 			//System.out.println("processing port 433 data");
 		}else{
 			processHttps80(serverInfo, fromClient ,  toClient);
-			ProxyGUI.displayInGui("Processing Https Connection on port 80 data");
+			Proxy_GUI.displayInGui("Processing Https Connection on port 80 data");
 			//System.out.println("processing port 80 data");
 		}
 	}
@@ -50,9 +50,9 @@ public class HttpsRequests {
 		toClient.flush();
 
 		// CLient to Server
-		SSLconect streamToServer = new SSLconect(fromClient, toServer, true);
+		Proxy_SSLconect streamToServer = new Proxy_SSLconect(fromClient, toServer, true);
 		// Server to Client
-		SSLconect streamToClient = new SSLconect(fromServer, toClient, false);
+		Proxy_SSLconect streamToClient = new Proxy_SSLconect(fromServer, toClient, false);
 
 		// separate threads for each stream
 		Thread t1 = new Thread(streamToServer);
@@ -64,7 +64,7 @@ public class HttpsRequests {
 		while (t1.isAlive() || t2.isAlive()) {
 			threadId = t1.getId();
 			threadId2 = t2.getId();
-			 ProxyGUI.displayInGui("Https:433 thread with ID: " +threadId + " still alive" + " Thread2 ID: " + threadId2);
+			 Proxy_GUI.displayInGui("Https:433 thread with ID: " +threadId + " still alive" + " Thread2 ID: " + threadId2);
 			try {
 				
 				Thread.sleep(5000);
@@ -108,8 +108,8 @@ public class HttpsRequests {
 		toClient.flush();
 		
 		
-		Websock streamToServer  = new Websock(fromClient, toServer, true);
-		Websock streamToClient = new Websock(fromServer, toClient, true);
+		Proxy_Websock streamToServer  = new Proxy_Websock(fromClient, toServer, true);
+		Proxy_Websock streamToClient = new Proxy_Websock(fromServer, toClient, true);
 		
 		Thread t1 = new Thread(streamToServer);
 		Thread t2 = new Thread(streamToClient);
@@ -119,7 +119,7 @@ public class HttpsRequests {
 		while (t1.isAlive() || t2.isAlive()) {
 			threadId =  t1.getId();
 			threadId2 = t2.getId();
-			ProxyGUI.displayInGui("Https:80 thread with ID: " +threadId + " still alive" + " Thread2 ID: " + threadId2);
+			Proxy_GUI.displayInGui("Https:80 thread with ID: " +threadId + " still alive" + " Thread2 ID: " + threadId2);
 			try {
 				
 				Thread.sleep(5000);
