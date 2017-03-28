@@ -1,7 +1,6 @@
 package finalProxy;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
@@ -26,6 +25,7 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.border.TitledBorder; 
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
+import java.awt.Dimension;
 
 public class Proxy_GUI {
 
@@ -44,13 +44,13 @@ public class Proxy_GUI {
 //					 UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
 //					 UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
 //					 UIManager.setLookAndFeel("com.jtattoo.plaf.mint.MintLookAndFeel");
-//					 UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
+					 UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
 //					 UIManager.setLookAndFeel("com.jtattoo.plaf.luna.LunaLookAndFeel");
 //					 UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
 //					 UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
 //					 UIManager.setLookAndFeel("com.jtattoo.plaf.fast.FastLookAndFeel");
 //					 UIManager.setLookAndFeel("com.jtattoo.plaf.bernstein.BernsteinLookAndFeel");
-					 UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
+//					 UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
 //					 UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
 					Proxy_GUI window = new Proxy_GUI();
 					window.frame.setVisible(true);
@@ -61,6 +61,7 @@ public class Proxy_GUI {
 		});
 	}
 
+	
 	/**
 	 * Create the application.
 	 */
@@ -68,11 +69,13 @@ public class Proxy_GUI {
 		initialize();
 	}
 
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setResizable(false);
 		frame.setBounds(100, 100, 1250, 705);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -100,7 +103,7 @@ public class Proxy_GUI {
 		JPanel panel_5 = new JPanel();
 		panel_3.add(panel_5);
 		
-		JLabel lblChoseIntereface = new JLabel("IP address for proxy to bind to:");
+		JLabel lblChoseIntereface = new JLabel("IP address for proxy to bind to:      ");
 		panel_5.add(lblChoseIntereface);
 		lblChoseIntereface.setFont(new Font("Dialog", Font.BOLD, 16));
 		
@@ -140,6 +143,7 @@ public class Proxy_GUI {
 		scrollPane.setViewportView(output);
 		
 		JButton btnStart = new JButton("Start Proxy");
+		btnStart.setPreferredSize(new Dimension(200, 35));
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (textField_1.getText().equals("") || textField.getText().equals("")) { 
@@ -155,6 +159,7 @@ public class Proxy_GUI {
 		panel_4.add(btnStart, "cell 0 0,alignx center,aligny center");
 		
 		JButton btnStopProxy = new JButton("Stop Proxy");
+		btnStopProxy.setPreferredSize(new Dimension(200, 35));
 		btnStopProxy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(-1);
@@ -165,9 +170,10 @@ public class Proxy_GUI {
 	}
 	
 	
-	/*
-	 * Thread that waits for a connection to a socket and then passes that socket to another thread for processing. 
-	 */
+	 
+	/**
+	 *Thread that waits for a connection to a socket and then passes that socket to another thread for processing. 
+	 */ 
 	public class proxyRunnable implements Runnable {
 
 	    public void run() {
@@ -187,8 +193,7 @@ public class Proxy_GUI {
 			
 	        try {
 	            serverSocket = new ServerSocket(server_Port,50, server_IP);
-	            displayInGui("Proxy Binded to interface with IP \"" + textField.getText() + "\" and listening on port \"" + textField_1.getText() + "\"");
-	            //System.out.println("Started on: " + server_Port);
+	            displayInGui("Proxy Binded to interface with IP \"" + textField.getText() + "\" and listening on port \"" + textField_1.getText() + "\""); 
 	        } catch (IOException e) {
 	            System.exit(-1);
 	        }
@@ -209,9 +214,10 @@ public class Proxy_GUI {
 
 	}
 	
-	
-	/*
-	 * Update the GUI using the EDT  and swingUtilities
+	 
+	/**
+	 * Update the GUI with proxy info using the EDT  and swingUtilities
+	 * @param info Data that  is displayed 
 	 */
 	static void displayInGui(String info){
 		

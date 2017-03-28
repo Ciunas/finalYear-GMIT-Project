@@ -12,14 +12,17 @@ import apiDatabox.Requests_CosineSimilarity;
 
 public class Proxy_ThreadBuilder extends Thread {
 
-	private Socket clinetSocket = null;
-	// Streams from the Client and Server
+	private Socket clinetSocket = null; 
 	private InputStream fromClient = null;
 	private OutputStream toClient = null;
 	BufferedReader bReader = null;
 	DataOutputStream dataOut = null;
 
-	// Bind to client socket.
+
+	/**
+	 * 	Bind to client socket.
+	 * @param socket
+	 */
 	public Proxy_ThreadBuilder(Socket socket) {
 		super();
 		this.clinetSocket = socket;
@@ -54,7 +57,7 @@ public class Proxy_ThreadBuilder extends Thread {
 
 		System.out.println(tokens[1].toString());
 
-		if (cs.cosineSimilarity(tokens[1].toString()) > 0.5) {
+		if (cs.cosineSimilarity(tokens[1].toString()) < 0.5 ) {
 
 			System.out.println("Low Similatity");
 			if (tokens[0].equalsIgnoreCase("GET")) {
@@ -104,7 +107,7 @@ public class Proxy_ThreadBuilder extends Thread {
 		} else {
 			System.out.println("High Similarity");
 			try {
-				rm.pmessage(dataOut);
+				rm.pmessage( dataOut );
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

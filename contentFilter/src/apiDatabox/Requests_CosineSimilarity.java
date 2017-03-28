@@ -1,8 +1,7 @@
 package apiDatabox;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileNotFoundException; 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,7 +20,7 @@ public class Requests_CosineSimilarity {
 	public static void main(String[] args){
 			
 		Requests_CosineSimilarity cs = new Requests_CosineSimilarity();
-		System.out.println(cs.cosineSimilarity("xnxx.com/home/1")); 
+		System.out.println(cs.cosineSimilarity("uploadwikimediaorg443")); 
 		
 	}
 	
@@ -32,23 +31,31 @@ public class Requests_CosineSimilarity {
      */
     public  double cosineSimilarity(String url) {
     	
-    	double highestDotProduct = 0;
-        double dotProduct = 0;
+    	double highestDotProduct = 0.0;
+        double dotProduct = 0.0;
         double	magURL = 0; 
         double	magRULE = 0;       
-        url = url.replaceFirst("^(http://www\\.|http://|www\\.) | (\\.) ", "").replace(".", "").replace("/", "");
-        
+        url = url.replaceFirst("^(http://www\\.|http://|www\\.|https://www\\.|https://|www\\.)","");
+        url = url.replace(".", "").replace("/", "");
+        System.out.println(url);
         Map<String, Integer> URL = termFrequencyToMap(url.split("(?!^)"));	//create a  vector from data    		
-        HashSet<String> intersection = new HashSet<>(URL.keySet());	
+        HashSet<String> intersection;	
          
-        InputStream in = getClass().getResourceAsStream("RULE");
+        InputStream in = getClass().getResourceAsStream("/resources/RULE.txt");
+        
+        Map<String, Integer> RULE = null;
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(in)) ) {
 			String temp = null;
 
 			while ((temp = br.readLine()) != null) {
 				
-				Map<String, Integer> RULE = termFrequencyToMap(temp.split("(?!^)"));
-				dotProduct = 0;
+				System.out.println(temp);
+				
+				
+				RULE = termFrequencyToMap(temp.split("(?!^)"));
+				
+				dotProduct = 0.0;
+				intersection = new HashSet<>( URL.keySet() );
 				intersection.retainAll(RULE.keySet()); 								// uniqe words related to each map
 
 				for (String item : intersection) {
@@ -63,10 +70,15 @@ public class Requests_CosineSimilarity {
 				}
 							
 				dotProduct = dotProduct / Math.sqrt(magURL * magRULE);
-				System.out.println(dotProduct);
-				if(dotProduct > highestDotProduct){
+				 
+				if (dotProduct > highestDotProduct){
 					highestDotProduct = dotProduct;
-				}			
+				}	
+				System.out.println(dotProduct);
+				magURL = 0.0;
+				magRULE = 0.0;
+				intersection.clear();
+				RULE.clear(); 
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

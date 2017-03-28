@@ -3,8 +3,7 @@ package finalProxy;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.URL; 
 
 public class Proxy_Post {
 
