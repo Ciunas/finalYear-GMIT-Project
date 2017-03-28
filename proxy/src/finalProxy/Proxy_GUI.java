@@ -8,11 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
-import javax.swing.JTextPane;
-import javax.swing.SwingConstants;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-
+import javax.swing.UIManager; 
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.border.EtchedBorder;
@@ -23,6 +21,11 @@ import java.net.ServerSocket;
 import java.net.UnknownHostException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
+import java.awt.Font;
+import net.miginfocom.swing.MigLayout;
+import javax.swing.border.TitledBorder; 
+import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
 
 public class Proxy_GUI {
 
@@ -70,7 +73,7 @@ public class Proxy_GUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 931, 558);
+		frame.setBounds(100, 100, 1250, 705);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -81,50 +84,75 @@ public class Proxy_GUI {
 		JPanel panel = new JPanel();
 		panel_1.add(panel, BorderLayout.NORTH);
 		
-		JLabel lblProxy = new JLabel("Proxy");
+		JLabel lblProxy = new JLabel("Ciunas Proxy");
 		panel.add(lblProxy);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 		panel_1.add(panel_2, BorderLayout.CENTER);
-		panel_2.setLayout(new BorderLayout(0, 0));
+		panel_2.setLayout(new MigLayout("", "[550px][100][grow]", "[58px]"));
 		
 		JPanel panel_3 = new JPanel();
-		panel_2.add(panel_3, BorderLayout.CENTER);
+		panel_3.setBorder(new TitledBorder(null, "Enter Required Settings", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_2.add(panel_3, "cell 0 0,alignx left,aligny top");
 		panel_3.setLayout(new GridLayout(2, 2, 0, 0));
 		
-		JLabel lblChoseIntereface = new JLabel("Enter Interface IP address for proxy to bind to:");
-		panel_3.add(lblChoseIntereface);
+		JPanel panel_5 = new JPanel();
+		panel_3.add(panel_5);
 		
-		textField = new JTextField();
-		panel_3.add(textField);
+		JLabel lblChoseIntereface = new JLabel("IP address for proxy to bind to:");
+		panel_5.add(lblChoseIntereface);
+		lblChoseIntereface.setFont(new Font("Dialog", Font.BOLD, 16));
+		
+		textField = new JTextField("");
+		textField.setFont(new Font("Dialog", Font.BOLD, 16));
+		textField.setHorizontalAlignment(SwingConstants.LEFT);
+		panel_5.add(textField);
 		textField.setColumns(10);
 		
-		JLabel lblChoosePort = new JLabel("Enter Port number for proxy to listen on: ");
-		panel_3.add(lblChoosePort);
+		JPanel panel_6 = new JPanel();
+		panel_3.add(panel_6);
 		
-		textField_1 = new JTextField();
-		panel_3.add(textField_1);
+		JLabel lblChoosePort = new JLabel("Port number for proxy to listen on: ");
+		panel_6.add(lblChoosePort);
+		lblChoosePort.setFont(new Font("Dialog", Font.BOLD, 16));
+		
+		textField_1 = new JTextField("");
+		textField_1.setFont(new Font("Dialog", Font.BOLD, 16));
+		panel_6.add(textField_1);
 		textField_1.setColumns(10);
 		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon(Proxy_GUI.class.getResource("/resources/Proxy.png")));
+		panel_2.add(lblNewLabel, "cell 1 0");
+		
 		JPanel panel_4 = new JPanel();
-		panel_2.add(panel_4, BorderLayout.EAST);
+		panel_4.setBorder(new TitledBorder(null, "Start/Stop", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_2.add(panel_4, "cell 2 0,grow");
 
 		JScrollPane scrollPane = new JScrollPane();
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		
 		output = new JTextArea();
+		output.setFont(new Font("Dialog", Font.PLAIN, 16));
+		output.setEditable(false);
 		output.setText("Proxy Output.");
 		scrollPane.setViewportView(output);
 		
 		JButton btnStart = new JButton("Start Proxy");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				output.setText("");
-				new Thread(new proxyRunnable()).start();
+				if (textField_1.getText().equals("") || textField.getText().equals("")) { 
+					
+					JOptionPane.showMessageDialog(frame, "Nothing entered in fields");
+				} else {
+					output.setText("");
+					new Thread(new proxyRunnable()).start();
+				}
 			}
 		});
-		panel_4.add(btnStart);
+		panel_4.setLayout(new MigLayout("", "[grow][grow]", "[grow]"));
+		panel_4.add(btnStart, "cell 0 0,alignx center,aligny center");
 		
 		JButton btnStopProxy = new JButton("Stop Proxy");
 		btnStopProxy.addActionListener(new ActionListener() {
@@ -132,7 +160,7 @@ public class Proxy_GUI {
 				System.exit(-1);
 			}
 		});
-		panel_4.add(btnStopProxy);
+		panel_4.add(btnStopProxy, "cell 1 0,alignx center,aligny center");
 		
 	}
 	

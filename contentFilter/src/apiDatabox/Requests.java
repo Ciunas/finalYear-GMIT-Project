@@ -32,7 +32,7 @@ public class Requests {
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		int i;
 
-		InputStream is = postURL(connection, url, "api_key=" + key + "&text=" + text2Classify);
+		InputStream is = postURL(connection, url, "api_key=19d40e1166d2fc0d3b1f8b3315b2ba91" + key + "&text=" + text2Classify);
 		StringBuilder sb = new StringBuilder();
 		while ((i = is.read()) != -1) {
 			sb.append((char) i);

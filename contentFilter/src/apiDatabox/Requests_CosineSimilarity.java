@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -25,7 +27,7 @@ public class Requests_CosineSimilarity {
 	
 
     /**
-     * @param URL that is to be tested, allow block.
+     * @param URL that is to be tested, allow/block.
      * @return cosine similarity of text1 and text2
      */
     public  double cosineSimilarity(String url) {
@@ -39,7 +41,8 @@ public class Requests_CosineSimilarity {
         Map<String, Integer> URL = termFrequencyToMap(url.split("(?!^)"));	//create a  vector from data    		
         HashSet<String> intersection = new HashSet<>(URL.keySet());	
          
-		try (BufferedReader br = new BufferedReader(new FileReader("src/apiDatabox/RULE"))) {
+        InputStream in = getClass().getResourceAsStream("RULE");
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(in)) ) {
 			String temp = null;
 
 			while ((temp = br.readLine()) != null) {

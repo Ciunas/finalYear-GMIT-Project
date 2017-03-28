@@ -10,7 +10,6 @@ import java.net.Socket;
 import java.net.SocketException;
 import apiDatabox.Requests_CosineSimilarity;
 
-
 public class Proxy_ThreadBuilder extends Thread {
 
 	private Socket clinetSocket = null;
@@ -39,84 +38,76 @@ public class Proxy_ThreadBuilder extends Thread {
 		}
 	}
 
-	
 	// @Override
 	public void run() {
-		
+
 		String[] tokens = null;
-		Requests_CosineSimilarity cs = new Requests_CosineSimilarity();	
+		Requests_CosineSimilarity cs = new Requests_CosineSimilarity();
 		Proxy_RedirectMessages rm = new Proxy_RedirectMessages();
-		
+
 		try {
 			tokens = Proxy_HeaderParser.parser(bReader);
 			Proxy_GUI.displayInGui("Connecting and returnig URL");
 		} catch (IOException e) {
 			e.printStackTrace();
-		} 
-		
+		}
+
 		System.out.println(tokens[1].toString());
-		
-//		if(cs.cosineSimilarity(tokens[1].toString())  < 0.5){
-//			System.out.println("Low Similatity");
-//		}else{
-//			System.out.println("High Similarity");
-//			try {
-//				rm.pmessage( dataOut);
-//			} catch (IOException e) { 
-//				e.printStackTrace();
-//			}
-//		}
-		
-		try {
-			rm.pmessage( dataOut );
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		if (tokens[0].equalsIgnoreCase("GET")) {
+
+		if (cs.cosineSimilarity(tokens[1].toString()) > 0.5) {
+
+			System.out.println("Low Similatity");
+			if (tokens[0].equalsIgnoreCase("GET")) {
+				try {
+
+					Proxy_HttpRequests.processHttp(tokens[1].toString(), dataOut);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else if (tokens[0].equalsIgnoreCase("CONNECT")) {
+
+				try {
+					Proxy_HttpsRequests.processHttps(tokens, fromClient, toClient);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				// System.out.println("CONNECT Thread Finshed");
+
+			} else if (tokens[0].equalsIgnoreCase("POST")) {
+
+				try {
+					Proxy_Post.postProcess(tokens, dataOut);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				// System.out.println("POST Thread Finsihed");
+			}
 			try {
-				
-				Proxy_HttpRequests.processHttp(tokens[1].toString(), dataOut);
-				
+				if (bReader != null) {
+					bReader.close();
+				}
+				if (dataOut != null) {
+					dataOut.close();
+				}
+				if (clinetSocket != null) {
+					clinetSocket.close();
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else if (tokens[0].equalsIgnoreCase("CONNECT")) {
-
+			
+		} else {
+			System.out.println("High Similarity");
 			try {
-				Proxy_HttpsRequests.processHttps(tokens, fromClient, toClient);
-
+				rm.pmessage(dataOut);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
-			//System.out.println("CONNECT Thread Finshed");
-
-		} else if (tokens[0].equalsIgnoreCase("POST")) {
-			
-			try {
-				Proxy_Post.postProcess(tokens, dataOut);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			
-			//System.out.println("POST Thread Finsihed");
-		}
-		try {
-			if (bReader != null) {
-				bReader.close();
-			}
-			if (dataOut != null) {
-				dataOut.close();
-			}
-			if (clinetSocket != null) {
-				clinetSocket.close();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
