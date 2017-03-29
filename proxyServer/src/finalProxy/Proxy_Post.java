@@ -2,12 +2,13 @@ package finalProxy;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL; 
 
 public class Proxy_Post {
 
-	public static void postProcess(String[] data, DataOutputStream toClient) throws Exception {
+	public static void postProcess(String[] data, OutputStream toClient) throws Exception {
 
 		String[] specDetailes;
 		URL url = null;

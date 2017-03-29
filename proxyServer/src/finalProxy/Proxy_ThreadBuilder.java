@@ -16,7 +16,6 @@ public class Proxy_ThreadBuilder extends Thread {
 	private InputStream fromClient = null;
 	private OutputStream toClient = null;
 	BufferedReader bReader = null;
-	DataOutputStream dataOut = null;
 
 
 	/**
@@ -30,9 +29,7 @@ public class Proxy_ThreadBuilder extends Thread {
 
 			fromClient = clinetSocket.getInputStream();
 			toClient = clinetSocket.getOutputStream();
-
 			bReader = new BufferedReader(new InputStreamReader(fromClient));
-			dataOut = new DataOutputStream(toClient);
 
 		} catch (SocketException se) {
 			se.printStackTrace();
@@ -55,15 +52,14 @@ public class Proxy_ThreadBuilder extends Thread {
 			e.printStackTrace();
 		}
 
-		System.out.println(tokens[1].toString());
 
-		if (cs.cosineSimilarity(tokens[1].toString()) < 0.5 ) {
+		if (cs.cosineSimilarity(tokens[1].toString()) < 0.7 ) {
 
 			System.out.println("Low Similatity");
 			if (tokens[0].equalsIgnoreCase("GET")) {
 				try {
 
-					Proxy_HttpRequests.processHttp(tokens[1].toString(), dataOut);
+					Proxy_HttpRequests.processHttp(tokens[1].toString(), toClient);
 
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -82,7 +78,7 @@ public class Proxy_ThreadBuilder extends Thread {
 			} else if (tokens[0].equalsIgnoreCase("POST")) {
 
 				try {
-					Proxy_Post.postProcess(tokens, dataOut);
+					Proxy_Post.postProcess(tokens, toClient);
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -90,27 +86,38 @@ public class Proxy_ThreadBuilder extends Thread {
 
 				// System.out.println("POST Thread Finsihed");
 			}
-			try {
-				if (bReader != null) {
-					bReader.close();
-				}
-				if (dataOut != null) {
-					dataOut.close();
-				}
-				if (clinetSocket != null) {
-					clinetSocket.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 			
+
 		} else {
 			System.out.println("High Similarity");
+			System.out.println(tokens[0]);
+			System.out.println(tokens[1]);
 			try {
-				rm.pmessage( dataOut );
+				rm.pmessage( tokens[0],  toClient );
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+		
+		try {
+			if (bReader != null) {
+				bReader.close();
+				System.out.println("Close Breader");
+			}
+			if (toClient != null) {
+				toClient.close();
+				System.out.println("Close toClient");
+			}
+			if (fromClient != null) {
+				fromClient.close();
+				System.out.println("Close fromCLient");
+			}
+			if (clinetSocket != null) {
+				clinetSocket.close();
+				System.out.println("Close Socket");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

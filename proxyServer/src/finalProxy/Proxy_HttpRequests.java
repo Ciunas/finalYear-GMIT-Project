@@ -5,12 +5,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class Proxy_HttpRequests {
 	
-	public static void processHttp(String urlCall, DataOutputStream dataOut) throws IOException{
+	public static void processHttp(String urlCall, OutputStream dataOut) throws IOException{
 		
 		final int SIZE = 32768;
 		InputStream is = null;
