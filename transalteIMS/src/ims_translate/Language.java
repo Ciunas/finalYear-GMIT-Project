@@ -15,19 +15,13 @@
  */
 package ims_translate;
 
-  
-
 /**
  * Language - an enum of language codes supported by the Yandex API
  */
-
 public enum Language {
-	
   ALBANIAN("sq"),
-  //DEFAULT(Translate.DEFAULT_LANG.toString()),
   ARMENIAN("hy"),
   AZERBAIJANI("az"),
-  ARABIC("ar"),
   BELARUSIAN("be"),
   BULGARIAN("bg"),
   CATALAN("ca"),
@@ -35,11 +29,11 @@ public enum Language {
   CZECH("cs"),
   DANISH("da"),
   DUTCH("nl"),
-  ENGLISH("English"),
+  ENGLISH("en"),
   ESTONIAN("et"),
   FINNISH("fi"),
-  FRENCH("French"),
-  GERMAN("German"),
+  FRENCH("fr"),
+  GERMAN("de"),
   GEORGIAN("ka"),
   GREEK("el"),
   HUNGARIAN("hu"),
@@ -48,7 +42,7 @@ public enum Language {
   LITHUANIAN("lt"),
   MACEDONIAN("mk"),
   NORWEGIAN("no"),
-  POLISH("Polish"),
+  POLISH("pl"),
   PORTUGUESE("pt"),
   ROMANIAN("ro"),
   RUSSIAN("ru"),
@@ -60,10 +54,10 @@ public enum Language {
   TURKISH("tr"),
   UKRAINIAN("uk");
 
-/**
+  /**
    * String representation of this language.
    */
-  private  String language = "en" ;
+  private final String language;
 
   /**
    * Enum constructor.
@@ -74,10 +68,8 @@ public enum Language {
   }
 
   public static Language fromString(final String pLanguage) {
-	  System.out.println("here");
     for (Language l : values()) {
       if (l.toString().equals(pLanguage)) {
-    	  System.out.println("Returning");
         return l;
       }
     }

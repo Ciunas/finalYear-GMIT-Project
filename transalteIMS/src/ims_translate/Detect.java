@@ -18,7 +18,6 @@ package ims_translate;
 import java.net.URL;
 import java.net.URLEncoder;
 
-
 /**
  * Provides an interface to the Yandex Translator Detect service method
  */
@@ -57,7 +56,6 @@ public final class Detect extends YandexTranslatorAPI {
       try {
         Translate.setKey(ApiKeys.YANDEX_API_KEY);
         Language translation = Detect.execute("The quick brown fox jumps over the lazy dog.");
-        System.out.println("here");
         System.out.println("Detected: " + translation.toString());
       } catch (Exception e) {
         // TODO Auto-generated catch block

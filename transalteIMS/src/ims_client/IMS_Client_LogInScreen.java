@@ -43,23 +43,19 @@ public class IMS_Client_LogInScreen extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private JButton btnLogin;
 	private JButton btnCancel;
-
 	private JPanel panel_1;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
 	private JTextField userName;
-	private JPasswordField passwordField;
-	
+	private JPasswordField passwordField;	
 	private boolean succeeded;
 	protected boolean chBox;
 	private boolean cancel = false;
-
 	public String name = null;
 	public String password = null;
 	public List<String> labels = new ArrayList<String>();
 	public InetAddress ip;
-
 	private String[] launguage = { "English", "German", "Spanish", "French", "Polish" };
 	@SuppressWarnings("rawtypes")
 	private JComboBox comboBox;
