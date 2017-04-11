@@ -56,6 +56,7 @@ public class IMS_Client_LogInScreen extends JDialog {
 	public String password = null;
 	public List<String> labels = new ArrayList<String>();
 	public InetAddress ip;
+	private String[] launguageShort = { "en", "de", "sp", "fr", "pl" };
 	private String[] launguage = { "English", "German", "Spanish", "French", "Polish" };
 	@SuppressWarnings("rawtypes")
 	private JComboBox comboBox;
@@ -212,7 +213,11 @@ public class IMS_Client_LogInScreen extends JDialog {
 			
 			dataOut.println(getUsername());
 			dataOut.println(getPassword());
-			dataOut.println(String.valueOf(comboBox.getSelectedItem()));
+			int index = comboBox.getSelectedIndex(); 
+			System.out.println("Index value: " + index);
+			System.out.println(launguageShort[index]);
+			dataOut.println(String.valueOf(launguageShort[index]));
+			//dataOut.println(String.valueOf(comboBox.getSelectedItem()));
 			dataOut.println(ip.getHostAddress());
 			if (chBox == true)
 				dataOut.println("New");

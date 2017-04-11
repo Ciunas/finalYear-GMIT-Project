@@ -39,6 +39,7 @@ public final class Translate extends YandexTranslatorAPI {
    * @throws Exception on error.
    */
   public static String execute(final String text, final Language from, final Language to) throws Exception {
+	  Translate.setKey(ApiKeys.YANDEX_API_KEY);
     validateServiceState(text); 
     final String params = 
         PARAM_API_KEY + URLEncoder.encode(apiKey,ENCODING) 
@@ -59,7 +60,7 @@ public final class Translate extends YandexTranslatorAPI {
   public static void main(String[] args) {
     try {
       Translate.setKey(ApiKeys.YANDEX_API_KEY);
-      String translation = Translate.execute("The quick brown fox jumps over the lazy dog.", Language.ENGLISH, Language.SPANISH);
+      String translation = Translate.execute("HOw are you", Language.ENGLISH, Language.GERMAN);
       System.out.println("Translation: " + translation);
     } catch (Exception e) {
       // TODO Auto-generated catch block

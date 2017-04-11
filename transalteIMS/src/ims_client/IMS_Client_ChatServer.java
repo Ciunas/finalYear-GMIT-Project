@@ -17,6 +17,7 @@ import javax.swing.SwingUtilities;
 public class IMS_Client_ChatServer extends WebSocketServer {
 
 	private List<IMS_Client_ServerConnectThreadGUI> list = new ArrayList<IMS_Client_ServerConnectThreadGUI>();
+	
 	IMS_User user;
 
 
@@ -101,7 +102,7 @@ public class IMS_Client_ChatServer extends WebSocketServer {
 							serverThread.setConnectedLaunguage(messageObject.getLaunguage());
 						}
 						
-						System.out.println(messageObject.getMessage());
+						System.out.println("Sent message" + messageObject.getMessage());
 						
 						serverThread.recievedMessage(messageObject.getMessage()); // Send message  to correct thread.
 					}

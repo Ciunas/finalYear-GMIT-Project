@@ -5,6 +5,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
@@ -29,6 +30,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 
 /**
  * @author ciunas
@@ -55,6 +57,8 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 	private JScrollPane scrollPane_2;
 	private WebSocket ws;
 	private IMS_User  user;
+	private JPanel panel;
+	private JLabel lblNewLabel;
 
 	
 
@@ -146,6 +150,14 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 				panel_3.add(btnNewButton);
 			}
 		}
+		
+		panel = new JPanel();
+		frame.getContentPane().add(panel, BorderLayout.NORTH);
+		panel.setLayout(new BorderLayout(0, 0));
+		
+		lblNewLabel = new JLabel(user.getLabel(10) );
+		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		panel.add(lblNewLabel);
 
 		//Send message using the "Enter" button that is in JTextField.
 		Action action = new AbstractAction() {
@@ -229,29 +241,35 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 	 * @param message (read through websocket)
 	 */
 	void recievedMessage(String message) {
-		
-		System.out.println("Message to translate: " + message);
-		try {
-			translatedText = Translate.execute( message , Language.fromString(connectedLaunguage) , Language.fromString(user.getLaunguage()) );
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
-		System.out.println("translating message");
-		
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-
-				try {
-					doc.setParagraphAttributes(doc.getLength(), 1, right, false);
-					doc.insertString(doc.getLength(), "\n" + name + ": \n" + translatedText + "\n", right);
-				} catch (BadLocationException e1) {
-					e1.printStackTrace();
-				}
-
+		//System.out.println("Message to translate: " + message);
+		if ( message.compareTo("SetUp") == 0) {
+			//System.out.println("Setup");
+			lblNewLabel.setText( user.getLabel(10)  + " " + name );
+		} else {
+			try {
+				translatedText = Translate.execute(message, Language.fromString(connectedLaunguage),
+						Language.fromString(user.getLaunguage()));
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		});
+
+			System.out.println("translating message");
+
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+
+					try {						
+						doc.setParagraphAttributes(doc.getLength(), 1, right, false);
+						doc.insertString(doc.getLength(), "\n" + name + ": \n" + translatedText + "\n", right);
+					} catch (BadLocationException e1) {
+						e1.printStackTrace();
+					}
+
+				}
+			});
+		}
 	}
 	
 	/**
@@ -265,8 +283,8 @@ public class IMS_Client_ServerConnectThreadGUI extends JFrame implements Runnabl
 			@Override
 			public void run() {
 				
-				JOptionPane.showMessageDialog(frame, user.getLabel(11), "",
-						JOptionPane.INFORMATION_MESSAGE);
+//				JOptionPane.showMessageDialog(frame, user.getLabel(11), "",
+//						JOptionPane.INFORMATION_MESSAGE);
 				run = false;
 				frame.dispose();				
 			}

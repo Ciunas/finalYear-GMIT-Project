@@ -140,6 +140,7 @@ public class IMS_Client {
 	 * @param IMS_User
 	 *            takes a user objcet
 	 * @throws UnknownHostException
+	 * @wbp.parser.entryPoint
 	 */
 	private void initialize(IMS_User user) throws UnknownHostException {
 

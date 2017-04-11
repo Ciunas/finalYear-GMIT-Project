@@ -41,8 +41,8 @@ public class IMS_Server_UserNew_Authenticate {
 				newNotnew = bReader.readLine();
 
 				if ((temp = bReader.readLine()).compareTo("Data Sent") == 0) {
-//					System.out.println("User authenticated, username: " + userName + " Password: " + password
-//							+ " New or not new: " + newNotnew + " Launguage: " + launguage + " IP: " + tempIP);
+					System.out.println("User authenticated, username: " + userName + " Password: " + password
+							+ " New or not new: " + newNotnew + " Launguage: " + launguage + " IP: " + tempIP);
 				}
 			} else {
 				temp = bReader.readLine();

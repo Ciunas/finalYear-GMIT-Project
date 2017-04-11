@@ -30,6 +30,8 @@ import java.awt.event.ActionListener;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.swing.JTextPane;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 /**
  * @author ciunas
@@ -56,6 +58,10 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 	private JScrollPane scrollPane_2;
 	private Object translatedText;
 	private IMS_User user;
+	private JPanel panel;
+	private JLabel lblNewLabel;
+	private JPanel panel_1;
+	private JLabel lblNewLabel_1;
 
 	/**
 	 * Launch the application.
@@ -132,6 +138,16 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 				panel_3.add(btnNewButton);
 			}
 		}
+		
+		panel_1 = new JPanel();
+		frame.getContentPane().add(panel_1, BorderLayout.NORTH);
+		panel_1.setLayout(new BorderLayout(0, 0));
+		
+		lblNewLabel_1 = new JLabel( user.getLabel(10) + " " + name);
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
+		panel_1.add(lblNewLabel_1);
+		
+           
 
 		// Send message using the "Enter" button that is in JTextField.
 		Action action = new AbstractAction() {
@@ -191,8 +207,19 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 				public void onOpen(ServerHandshake handshake) {
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							JOptionPane.showMessageDialog(frame, user.getLabel(10) + ": " + name, "",
-									JOptionPane.YES_NO_CANCEL_OPTION);
+							IMS_Client_Message messageObject = new IMS_Client_Message();
+							messageObject.setName(user.getName());
+							messageObject.setMessage("SetUp");
+							messageObject.setLaunguage(user.getLaunguage());
+
+							IMS_Client_JsonEncode jec = new IMS_Client_JsonEncode(messageObject);
+							String messageCreate = jec.encodeToString();
+							if (wsc != null) { // check websocket is still connected
+								wsc.send(messageCreate);
+							}
+							
+//							JOptionPane.showMessageDialog(frame, user.getLabel(10) + ": " + name, "",
+//									JOptionPane.YES_NO_CANCEL_OPTION);
 						}
 					});
 				}
@@ -201,8 +228,8 @@ public class IMS_Client_ClientConnectThreadGUI extends JFrame implements Runnabl
 				public void onClose(int code, String reason, boolean remote) {
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							JOptionPane.showMessageDialog(frame, user.getLabel(11), "",
-									JOptionPane.INFORMATION_MESSAGE);
+//							JOptionPane.showMessageDialog(frame, user.getLabel(11), "",
+//									JOptionPane.INFORMATION_MESSAGE);
 							frame.dispose();
 							run = false;
 						}
