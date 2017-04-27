@@ -1,4 +1,4 @@
-package apiDatabox;
+package cosineDatabox;
 
 import java.io.IOException; 
 import org.codehaus.jackson.map.ObjectMapper;

@@ -1,4 +1,4 @@
-package apiDatabox;
+package cosineDatabox;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

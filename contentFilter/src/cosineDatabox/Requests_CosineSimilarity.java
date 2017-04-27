@@ -1,4 +1,4 @@
-package apiDatabox;
+package cosineDatabox;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException; 
@@ -49,7 +49,7 @@ public class Requests_CosineSimilarity {
 
 			while ((temp = br.readLine()) != null) {
 				
-				System.out.println(temp);
+				//System.out.println(temp);
 				
 				
 				RULE = termFrequencyToMap(temp.split("(?!^)"));
