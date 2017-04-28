@@ -1,7 +1,8 @@
 package cosineDatabox;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException; 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,7 +21,7 @@ public class Requests_CosineSimilarity {
 	public static void main(String[] args){
 			
 		Requests_CosineSimilarity cs = new Requests_CosineSimilarity();
-		System.out.println(cs.cosineSimilarity("uploadwikimediaorg443")); 
+		System.out.println(cs.cosineSimilarity("http://www.adverts.ie/for-sale/cars-motorbikes-boats/cars/2/")); 
 		
 	}
 	
@@ -31,26 +32,30 @@ public class Requests_CosineSimilarity {
      */
     public  double cosineSimilarity(String url) {
     	
-    	double highestDotProduct = 0.0;
+    	double dotProductHighest = 0.0;
+    	double dotProductAdded = 0.0;
         double dotProduct = 0.0;
         double	magURL = 0; 
         double	magRULE = 0;       
         url = url.replaceFirst("^(http://www\\.|http://|www\\.|https://www\\.|https://|www\\.)","");
-        url = url.replace(".", "").replace("/", "");
+        url = url.replace(".ie", "").replace(".com", "").replace(".uk", "");
+        url = url.replace(".", "").replace("/", "").replace("-", "");
+
         System.out.println(url);
         Map<String, Integer> URL = termFrequencyToMap(url.split("(?!^)"));	//create a  vector from data    		
         HashSet<String> intersection;	
-         
-        InputStream in = getClass().getResourceAsStream("/resources/RULE.txt");
+          
         
         Map<String, Integer> RULE = null;
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(in)) ) {
+		try (BufferedReader br = new BufferedReader(new FileReader("/home/ciunas/RULES.txt")); ) {
 			String temp = null;
 
 			while ((temp = br.readLine()) != null) {
 				
-				//System.out.println(temp);
 				
+				if(url.contains(temp)){
+					dotProductAdded += 0.2;
+				}
 				
 				RULE = termFrequencyToMap(temp.split("(?!^)"));
 				
@@ -65,16 +70,17 @@ public class Requests_CosineSimilarity {
 				for (String k : URL.keySet()) { 									// Calculate magnitude for URL and RULE
 					magURL += Math.pow(URL.get(k), 2);
 				}
+				
 				for (String k : RULE.keySet()) {
 					magRULE += Math.pow(RULE.get(k), 2);
 				}
 							
 				dotProduct = dotProduct / Math.sqrt(magURL * magRULE);
 				 
-				if (dotProduct > highestDotProduct){
-					highestDotProduct = dotProduct;
-				}	
-				System.out.println(dotProduct);
+				if (dotProduct > dotProductHighest){
+					dotProductHighest = dotProduct;
+				}
+				System.out.println("dot product: " + dotProduct);
 				magURL = 0.0;
 				magRULE = 0.0;
 				intersection.clear();
@@ -85,8 +91,9 @@ public class Requests_CosineSimilarity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-        return highestDotProduct;
+		System.out.println("dot product added: " + dotProductAdded);
+		System.out.println("dot product added + Highest: " + dotProductHighest + dotProductAdded);
+        return dotProductHighest + dotProductAdded;
     }
     
     
