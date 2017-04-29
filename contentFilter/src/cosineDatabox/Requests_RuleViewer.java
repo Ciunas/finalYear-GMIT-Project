@@ -1,22 +1,22 @@
 package cosineDatabox;
 
-import java.awt.EventQueue; 
+import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.Color; 
+import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException; 
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 import org.jdesktop.swingx.prompt.PromptSupport;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JButton; 
+import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
@@ -29,8 +29,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
-import javax.swing.JTextField; 
-import javax.swing.ImageIcon; 
+import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
@@ -50,6 +50,7 @@ public class Requests_RuleViewer {
 	public Vector<String> myVector = new Vector<String>();
 	private JTextField textField;
 
+	
 	/**
 	 * Launch the application.
 	 */
@@ -77,6 +78,7 @@ public class Requests_RuleViewer {
 		});
 	}
 
+	
 	/**
 	 * Create the application.
 	 */
@@ -84,6 +86,7 @@ public class Requests_RuleViewer {
 		initialize();
 	}
 
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -105,21 +108,20 @@ public class Requests_RuleViewer {
 		panel_3.add(btnAdd, "cell 1 0");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				addRule();
-			
+
 			}
 
 		});
 		panel_1 = new JPanel();
 		panel.add(panel_1, "cell 0 1,grow");
 
-
 		textField = new JTextField();
 		panel_3.add(textField, "cell 0 0,growx");
 		textField.setColumns(10);
 		PromptSupport.setPrompt("Enter New Phrase", textField);
-		
+
 		resultTableScrollPane = new JScrollPane();
 		table = new JTable();
 		table.setBackground(Color.WHITE);
@@ -192,7 +194,8 @@ public class Requests_RuleViewer {
 		});
 
 		JPanel panel_6 = new JPanel();
-		panel_6.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(255, 0, 0)), "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_6.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(255, 0, 0)), "",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_4.add(panel_6, "cell 4 0,grow");
 		panel_6.setLayout(new BorderLayout(0, 0));
 
@@ -231,8 +234,8 @@ public class Requests_RuleViewer {
 	/**
 	 * viewRules
 	 * 
-	 * publishes all phrases contained in the file the content filter uses
-	 * to a JPanel, using swing utilities to make thread safe.
+	 * publishes all phrases contained in the content phrases file the content filter uses to a
+	 * JPanel, using swing utilities to make it thread safe.
 	 */
 	private void viewRules() {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -241,13 +244,13 @@ public class Requests_RuleViewer {
 				myVector.clear();
 
 				try {
-					 
+
 					BufferedReader br = new BufferedReader(new FileReader("/home/ciunas/RULES.txt"));
 					String temp = null;
 					while ((temp = br.readLine()) != null) {
 						myVector.add(temp);
 					}
-					br.close(); 
+					br.close();
 				} catch (IOException ie) {
 					System.out.println("exception");
 				}
@@ -264,10 +267,12 @@ public class Requests_RuleViewer {
 
 	}
 
+	
 	/**
 	 * removeWord
 	 * 
-	 * removes a phrase from the text file containing all the content filter phrases
+	 * removes a highlighted phrase in the Jtable, from the text file containing
+	 * all the content filter phrases.
 	 */
 	private void removeWord() {
 
@@ -278,14 +283,14 @@ public class Requests_RuleViewer {
 			return;
 		}
 
-		String temp = (String) table.getValueAt(row, 1); 
+		String temp = (String) table.getValueAt(row, 1);
 		try {
 			PrintWriter writer = new PrintWriter(new File("/home/ciunas/RULES.txt"));
 
 			for (int i = 0; i < myVector.size(); i++) {
 				if (myVector.get(i).contains(temp)) {
 
-				} else { 
+				} else {
 					writer.print(myVector.get(i) + "\n");
 					writer.flush();
 
@@ -304,7 +309,9 @@ public class Requests_RuleViewer {
 	/**
 	 * addRule
 	 * 
-	 * adds  new phrase to the file containing  all the phrases used by the content filter
+	 * adds a new phrase to the file containing all the phrases used by the
+	 * content filter, gives the user a list of synonoums realating to phrase
+	 * and option to add them to list also
 	 */
 	private void addRule() {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -315,44 +322,41 @@ public class Requests_RuleViewer {
 					try {
 
 						Requests_Synonyms rq = new Requests_Synonyms();
-						String[] parts = rq.requests_Synonyms(temp, "en_US", "O1bfTqexYlaHlwtSDyWm", "xml");
+						String[] parts = rq.requests_Synonyms(temp, "en_US", "password", "xml");
 
-						int selectedOption = JOptionPane.showConfirmDialog(frame, parts, "Add New Phrases",
+						PrintWriter writer = new PrintWriter(
+								new FileOutputStream(new File("/home/ciunas/RULES.txt"), true));
+						writer.append(temp + "\n");
+						int selectedOption = JOptionPane.showConfirmDialog(frame, parts, "Add Generated Phrases",
 								JOptionPane.YES_NO_OPTION);
 						if (selectedOption == JOptionPane.YES_OPTION) {
 
-							PrintWriter writer = new PrintWriter(
-									new FileOutputStream(new File("/home/ciunas/RULES.txt"), true));
-							
-							for(int i = 0; i < parts.length; i++){
-								writer.append(parts[i] + "\n");		
+							for (int i = 0; i < parts.length; i++) {
+								writer.append(parts[i] + "\n");
 							}
-							writer.flush();	
-							writer.close();
-							viewRules();
 						}
+						writer.flush();
+						writer.close();
+						viewRules();
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
-				}else{
-					   JOptionPane.showMessageDialog(frame,
-						        "No Entry in field");
+				} else {
+					JOptionPane.showMessageDialog(frame, "No Entry in field");
 				}
 			}
 		});
 	}
 
-	
 	/**
 	 * clearResults
 	 * 
 	 * Method to clear the rule table of any data.
 	 */
 	public void clearResults() {
-		
+
 		DefaultTableModel tm = (DefaultTableModel) table.getModel();
 		tm.setRowCount(0); // clear the table
 	}
- 
 
 }
