@@ -27,16 +27,16 @@ public class Requests_Synonyms {
 	public static void main(String[] args) {
 
 		Requests_Synonyms rq = new Requests_Synonyms();
-		String[] parts = rq.requests_Synonyms("car", "en_US", "O1bfTqexYlaHlwtSDyWm", "xml");
+		String[] parts = rq.requests_Synonyms("car", "en_US", "password", "xml");
 		System.out.println(parts[2]);
 	}
 	
 
 	/**
 	 * requests_Synonyms
-	 * @param word word to get synonoums for
-	 * @param language launguage to check word in
-	 * @param key users key 
+	 * @param word  to get synonoums for
+	 * @param language  to check word in
+	 * @param key users API key 
 	 * @param output format of returned data xml or json
 	 * @return a String array containing synonoums of word passed to method
 	 */
@@ -45,7 +45,7 @@ public class Requests_Synonyms {
 		String[] parts = null;
 		try {
 			URL serverAddress = new URL("http://thesaurus.altervista.org/thesaurus/v1" + "?word=" + URLEncoder.encode(word, "UTF-8") + "&language=" + language
-					+ "&key=" + "O1bfTqexYlaHlwtSDyWm" + "&output=" + output);
+					+ "&key=" + key + "&output=" + output);
 			HttpURLConnection connection = (HttpURLConnection) serverAddress.openConnection();
 			connection.connect();
 			int rc = connection.getResponseCode();

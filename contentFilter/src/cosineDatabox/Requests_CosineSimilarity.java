@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -21,7 +19,7 @@ public class Requests_CosineSimilarity {
 	public static void main(String[] args){
 			
 		Requests_CosineSimilarity cs = new Requests_CosineSimilarity();
-		System.out.println(cs.cosineSimilarity("http://www.adverts.ie/for-sale/cars-motorbikes-boats/cars/2/")); 
+		System.out.println(cs.cosineSimilarity("")); 
 		
 	}
 	
@@ -80,7 +78,7 @@ public class Requests_CosineSimilarity {
 				if (dotProduct > dotProductHighest){
 					dotProductHighest = dotProduct;
 				}
-				System.out.println("dot product: " + dotProduct);
+				
 				magURL = 0.0;
 				magRULE = 0.0;
 				intersection.clear();
@@ -91,8 +89,7 @@ public class Requests_CosineSimilarity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("dot product added: " + dotProductAdded);
-		System.out.println("dot product added + Highest: " + dotProductHighest + dotProductAdded);
+		
         return dotProductHighest + dotProductAdded;
     }
     

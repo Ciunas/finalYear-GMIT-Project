@@ -234,8 +234,8 @@ public class Requests_RuleViewer {
 	/**
 	 * viewRules
 	 * 
-	 * publishes all phrases contained in the content phrases file the content filter uses to a
-	 * JPanel, using swing utilities to make it thread safe.
+	 * publishes all phrases contained in the content phrases file, to a
+	 * JPanel using swing utilities to make it thread safe.
 	 */
 	private void viewRules() {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -271,7 +271,7 @@ public class Requests_RuleViewer {
 	/**
 	 * removeWord
 	 * 
-	 * removes a highlighted phrase in the Jtable, from the text file containing
+	 * removes a highlighted phrase in the Jtable from the text file containing
 	 * all the content filter phrases.
 	 */
 	private void removeWord() {
@@ -288,19 +288,17 @@ public class Requests_RuleViewer {
 			PrintWriter writer = new PrintWriter(new File("/home/ciunas/RULES.txt"));
 
 			for (int i = 0; i < myVector.size(); i++) {
-				if (myVector.get(i).contains(temp)) {
+				if (myVector.get(i).equals(temp)) {
 
 				} else {
 					writer.print(myVector.get(i) + "\n");
 					writer.flush();
 
 				}
-
 			}
 			writer.close();
 			viewRules();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -322,7 +320,7 @@ public class Requests_RuleViewer {
 					try {
 
 						Requests_Synonyms rq = new Requests_Synonyms();
-						String[] parts = rq.requests_Synonyms(temp, "en_US", "password", "xml");
+						String[] parts = rq.requests_Synonyms(temp, "en_US", "O1bfTqexYlaHlwtSDyWm", "xml");
 
 						PrintWriter writer = new PrintWriter(
 								new FileOutputStream(new File("/home/ciunas/RULES.txt"), true));
@@ -342,7 +340,7 @@ public class Requests_RuleViewer {
 						e.printStackTrace();
 					}
 				} else {
-					JOptionPane.showMessageDialog(frame, "No Entry in field");
+					JOptionPane.showMessageDialog(frame, "No Entry in Field");
 				}
 			}
 		});

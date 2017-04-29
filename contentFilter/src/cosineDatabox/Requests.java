@@ -41,8 +41,9 @@ public class Requests {
 		Requests_JsonDecode rjdc = new Requests_JsonDecode(sb.toString());
 		Requests_Message rm = rjdc.decodeFormString();
 
-		if (rm.output.toString().contains("noadult")) {
+		if (rm.output.toString().equals("adult")) { 
 			return true;
+			
 		}
 		return false;
 	}
@@ -51,8 +52,7 @@ public class Requests {
 	public static void main(String[] args) throws MalformedURLException, IOException {
 
 		Requests rq = new Requests();
-		rq.creteRequest("Hello");
-
+		rq.creteRequest("  XVIDEOS.COM BIGGER and BETTER than the other ");
 	}
 
 	/**

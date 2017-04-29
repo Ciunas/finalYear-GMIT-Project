@@ -27,7 +27,7 @@ public class Requests_JsonDecode {
 
 	    Requests_Message message = null;
 		ObjectMapper mapper = new ObjectMapper();
-		System.out.println(jsonInString);
+		//System.out.println(jsonInString);
 		try {
 			message = mapper.readValue(jsonInString,  Requests_Message.class);	// Convert JSON string to Object
 		} catch (IOException e) {
