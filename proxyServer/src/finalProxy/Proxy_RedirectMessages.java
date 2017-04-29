@@ -17,37 +17,22 @@ public class Proxy_RedirectMessages {
 	 */
 	public void pmessage(String protocol, OutputStream dataOut) throws IOException {
 
-		final int SIZE = 32768;
-
-		ClassLoader classloader = Thread.currentThread().getContextClassLoader(); // read HTML page
-		InputStream is = classloader.getResourceAsStream("resources/block.html");
 
 		if ( protocol.equalsIgnoreCase("CONNECT") ) {
 
 			//Write message to client port 433
-			dataOut.write("HTTP/1.1 403 Not Allowed Mime-Type: text/html".getBytes());
+			dataOut.write("HTTP/1.1 302 Object moved".getBytes());
 			dataOut.write("\r\n".getBytes());
-			dataOut.write("Cache-Control: no-cache,no-store".getBytes());
-			dataOut.write("\r\n".getBytes());
-			dataOut.write("Connection: close".getBytes());
+			dataOut.write("Location: https://s3.amazonaws.com/aws-website-myfinalyearproject-4ljth/block.html".getBytes());
 			dataOut.write("\r\n".getBytes());
 
 		} else {
 
 			// Send headers and error message to client
-			byte by[] = new byte[SIZE];
-			dataOut.write("HTTP/1.1 403 Not Allowed Mime-Type: text/html\r\n".getBytes());
-			dataOut.write("Cache-Control: no-cache,no-store\r\n".getBytes());
-			dataOut.write("Connection: close\r\n".getBytes());
-			dataOut.write("Content-Type: text/html\n".getBytes());
-			dataOut.write("Content-Length: 278\r\n".getBytes());
+			dataOut.write("HTTP/1.1 302 Object moved".getBytes());
 			dataOut.write("\r\n".getBytes());
-
-			int index = is.read(by, 0, SIZE);
-			while (index != -1) {
-				dataOut.write(by, 0, index);
-				index = is.read(by, 0, SIZE);
-			}
+			dataOut.write("Location: https://s3.amazonaws.com/aws-website-myfinalyearproject-4ljth/block.html".getBytes());
+			dataOut.write("\r\n".getBytes());
 		}
 		dataOut.flush();
 

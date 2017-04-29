@@ -8,37 +8,42 @@ public class Proxy_SSLconect implements Runnable {
 
 	private OutputStream outStream = null;
 	private InputStream inStream = null;
+	private Proxy_Record currentRecord;
+	private boolean running = true;
 
-	private Proxy_Record currentRecord = new Proxy_Record();
-	private boolean upStream;
-	private  boolean running = true;
-
-	public Proxy_SSLconect(InputStream in, OutputStream out, boolean upStream) {
+	/**
+	 * reads and writes records to client
+	 * 
+	 * @param in
+	 *            inpustream from client
+	 * @param out
+	 *            outputstream to client
+	 */
+	public Proxy_SSLconect(InputStream in, OutputStream out) {
 		this.outStream = out;
 		this.inStream = in;
-		this.upStream = upStream;
+		currentRecord = new Proxy_Record();
 	}
 
 	public void run() {
 
 		// reading and writing messages
-		while (currentRecord.read(inStream) > -1  && running == true) {
+		while (currentRecord.read(inStream) > -1 && running == true) {
 
 			currentRecord.write(outStream);
-			// System.out.println("alive in records");
 		}
-		Proxy_GUI.displayInGui("Finished writeing records for CONNECT method");
+		Proxy_GUI.displayInGui("Finished writeing records for CONNECT method", "BLACK");
 		try {
 			inStream.close();
 			outStream.close();
 		} catch (IOException e) {
-						e.printStackTrace();
+			e.printStackTrace();
 		}
 		return;
 	}
 
 	public void stopThread(boolean running, long id) {
-		Proxy_GUI.displayInGui("Stopping Thread: " + id);
+		Proxy_GUI.displayInGui("Stopping Thread: " + id, "BLACK");
 		this.running = running;
 	}
 

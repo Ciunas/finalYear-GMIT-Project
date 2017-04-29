@@ -8,6 +8,12 @@ import java.net.URL;
 
 public class Proxy_Post {
 
+	/**
+	 * process any POST request sent to client
+	 * @param data String array containing all data feilds 
+	 * @param toClient Outpustream to client 
+	 * @throws Exception
+	 */
 	public static void postProcess(String[] data, OutputStream toClient) throws Exception {
 
 		String[] specDetailes;
@@ -15,12 +21,12 @@ public class Proxy_Post {
 		
 		if (data[1].contains("?")) {
 			specDetailes = data[1].split("\\?");
-			Proxy_GUI.displayInGui("Post details: " + specDetailes[1]);
+			Proxy_GUI.displayInGui("Post details: " + specDetailes[1], "BLACK");
 			url = new URL(specDetailes[0]);
 		} else {
 			specDetailes = "empty?empty".split("\\?");
 			url = new URL(data[1]);
-			Proxy_GUI.displayInGui("Url: " + url );
+			Proxy_GUI.displayInGui("Url: " + url , "BLACK");
 		}
 
 	
@@ -38,63 +44,51 @@ public class Proxy_Post {
 			
 			if (temp[0].toLowerCase().equals("content-type")) {
 				connection.setRequestProperty("Content-Type", temp[1]);
-				Proxy_GUI.displayInGui("content type set" + temp[1]);
-				//System.out.println("content type set" + temp[1]);
+				Proxy_GUI.displayInGui("content type set" + temp[1], "BLACK");
 
-			} else if (temp[0].toLowerCase().equals("content-length")) {
-				int contentLenght = 0;
+			} else if (temp[0].toLowerCase().equals("content-length")) { 
 				connection.setRequestProperty("Content-Length", temp[1]);
-				temp[1] = temp[1].replaceAll("\\s","");
-				contentLenght = temp[1].toString().length();
-				Proxy_GUI.displayInGui("Content lenght set " + temp[1].toString().length());
-				//System.out.println("content lenght set " + temp[1].toString().length());
+				temp[1] = temp[1].replaceAll("\\s",""); 
+				Proxy_GUI.displayInGui("Content lenght set " + temp[1].toString().length(), "BLACK");
 
 			} else if (temp[0].toLowerCase().equals("connection")) {
 				connection.setRequestProperty("Connection", temp[1]);
-				Proxy_GUI.displayInGui("Connection set " + temp[1]);
-				//System.out.println("connection set " + temp[1]);
+				Proxy_GUI.displayInGui("Connection set " + temp[1], "BLACK");
 				
 
 			} else if (temp[0].toLowerCase().equals("accept-language")) {
 				connection.setRequestProperty("Accept-Language", temp[1]);
-				Proxy_GUI.displayInGui("Accept launguage set" + temp[1]);
-				//System.out.println("Accept launguage set" + temp[1]);
+				Proxy_GUI.displayInGui("Accept launguage set" + temp[1], "BLACK");
 				
 				
 			} else if (temp[0].toLowerCase().equals("user-agent")) {
-				//System.out.println("User Agent: "  + temp[1]);
 				connection.setRequestProperty("User-Agent", temp[1]);
-				Proxy_GUI.displayInGui("User Agent: "  + temp[1]);
+				Proxy_GUI.displayInGui("User Agent: "  + temp[1], "BLACK");
 
 				
 			} else if (temp[0].toLowerCase().equals("accept-encoding")) {
-				//System.out.println("Accept-Encoding: "  + temp[1]);
 				connection.setRequestProperty("Accept-Encoding", temp[1]);
-				Proxy_GUI.displayInGui("Accept-Encoding: "  + temp[1]);
+				Proxy_GUI.displayInGui("Accept-Encoding: "  + temp[1], "BLACK");
 
 				
 			} else if (temp[0].toLowerCase().equals("host")) {
-				//System.out.println("Host: "  + temp[1]);
 				connection.setRequestProperty("Host", temp[1]);
-				Proxy_GUI.displayInGui("Host: "  + temp[1]);
+				Proxy_GUI.displayInGui("Host: "  + temp[1], "BLACK");
 
 				
 			} else if (temp[0].toLowerCase().equals("charset")) {
-				//System.out.println("charset: "  + temp[1]);
 				connection.setRequestProperty("charset", temp[1]);
-				Proxy_GUI.displayInGui("Charset: "  + temp[1]);
+				Proxy_GUI.displayInGui("Charset: "  + temp[1], "BLACK");
 
 				
 			} else if (temp[0].toLowerCase().equals("accept")) {
-				//System.out.println("Accept: "  + temp[1]);
 				connection.setRequestProperty("Accept", temp[1]);
-				Proxy_GUI.displayInGui("Accept: "  + temp[1]);
+				Proxy_GUI.displayInGui("Accept: "  + temp[1], "BLACK");
 
 				
 			} else if (temp[0].toLowerCase().equals("dnt")) {
-				//System.out.println("DNT:"  + temp[1]);
 				connection.setRequestProperty("DNT", temp[1]);
-				Proxy_GUI.displayInGui("DNT:"  + temp[1]);
+				Proxy_GUI.displayInGui("DNT:"  + temp[1], "BLACK");
 			}	
 		}
 
@@ -109,7 +103,6 @@ public class Proxy_Post {
 		}
 		
 		final int SIZE = 32768;
-
 		int responseCode = connection.getResponseCode();
 		
 		// send response to client
@@ -119,7 +112,7 @@ public class Proxy_Post {
 
 		
 		while (index != -1) {
-			Proxy_GUI.displayInGui("Sending  Data to Client");
+			Proxy_GUI.displayInGui("Sending  Data to Client", "BLACK");
 			toClient.write(by, 0, index);
 			index = dataInServer.read(by, 0, SIZE);
 		}
